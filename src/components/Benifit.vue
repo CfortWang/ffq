@@ -34,12 +34,11 @@
 							<div class="inner">
 								<div class="select-wrapper" style="width:100%;padding:0;">
 									<label style="padding-left:10px;font-size:14px;">2018 年</label>
-									<select name="sd_year" onchange="select_update();">
+									<select name="sd_year">
                                         <option value="2016">2016 年</option>
                                         <option value="2017">2017 年</option>
                                         <option value="2018" selected="">2018 年</option>
 									</select>
-									<i></i>
 								</div>
 							</div>
 						</td>
@@ -47,7 +46,7 @@
 							<div class="inner" style="padding-left:0;">
 								<div class="select-wrapper" style="width:100%;padding:0;">
 									<label style="padding-left:10px;font-size:14px;">12 月</label>
-									<select name="sd_month" onchange="select_update();">
+									<select name="sd_month">
                                         <option value="01">01 月</option>
                                         <option value="02">02 月</option>
                                         <option value="03">03 月</option>
@@ -61,7 +60,6 @@
                                         <option value="11">11 月</option>
                                         <option value="12" selected="">12 月</option>
                                     </select>
-									<i></i>
 								</div>
 							</div>
 						</td>
@@ -69,7 +67,7 @@
 							<div class="inner" style="padding-left:0;">
 								<div class="select-wrapper" style="width:100%;padding:0;">
 									<label style="padding-left:10px;font-size:14px;">02 日</label>
-									<select name="sd_day" onchange="select_update();">
+									<select name="sd_day">
                                         <option value="01">01 日</option>
                                         <option value="02" selected="">02 日</option>
                                         <option value="03">03 日</option>
@@ -102,7 +100,6 @@
                                         <option value="30">30 日</option>
                                         <option value="31">31 日</option>
                                     </select>
-									<i></i>
 								</div>
 							</div>
 						</td>
@@ -115,12 +112,11 @@
 							<div class="inner">
 								<div class="select-wrapper" style="width:100%;padding:0;">
 									<label style="padding-left:10px;font-size:14px;">2018 年</label>
-									<select name="ed_year" onchange="select_update();">
+									<select name="ed_year">
                                         <option value="2016">2016 年</option>
                                         <option value="2017">2017 年</option>
                                         <option value="2018" selected="">2018 年</option>
                                     </select>
-									<i></i>
 								</div>
 							</div>
 						</td>
@@ -128,7 +124,7 @@
 							<div class="inner" style="padding-left:0;">
 								<div class="select-wrapper" style="width:100%;padding:0;">
 									<label style="padding-left:10px;font-size:14px;">12 月</label>
-									<select name="ed_month" onchange="select_update();">
+									<select name="ed_month">
                                         <option value="01">01 月</option>
                                         <option value="02">02 月</option>
                                         <option value="03">03 月</option>
@@ -142,7 +138,6 @@
                                         <option value="11">11 月</option>
                                         <option value="12" selected="">12 月</option>
 									</select>
-									<i></i>
 								</div>
 							</div>
 						</td>
@@ -150,7 +145,7 @@
 							<div class="inner" style="padding-left:0;">
 								<div class="select-wrapper" style="width:100%;padding:0;">
 									<label style="padding-left:10px;font-size:14px;">02 日</label>
-									<select name="ed_day" onchange="select_update();">
+									<select name="ed_day">
                                         <option value="01">01 日</option>
                                         <option value="02" selected="">02 日</option>
                                         <option value="03">03 日</option>
@@ -183,7 +178,6 @@
                                         <option value="30">30 日</option>
                                         <option value="31">31 日</option>
                                     </select>
-									<i></i>
 								</div>
 							</div>
 						</td>

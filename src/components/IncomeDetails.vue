@@ -58,7 +58,7 @@ export default {
 		return {
             amountList: '',
             allPage: '',
-            pageSize: '10',
+            pageSize: 10,
             pageNumber: 0
 		}
 	},
@@ -80,7 +80,7 @@ export default {
                 let responseData = response.data.data
                 console.log(responseData)
                 this.amountList = responseData.data
-                this.allPage = responseData.all
+                this.allPage = Math.ceil(responseData.all / this.pageSize)
             }).catch((ex) => {
                 console.log(ex)
             })

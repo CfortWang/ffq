@@ -17,15 +17,15 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <div class="text-icon">{{allNumber}}</div>
+                                    <div class="text-icon" v-on:click="getTeamList(userID, pageSize, pageNumber - 1, 'all')">{{allNumber}}</div>
                                     <div class="text">全部团队</div>
                                 </td>
                                 <td>
-                                    <div class="text-icon">{{direct}}</div>
+                                    <div class="text-icon" v-on:click="getTeamList(userID, pageSize, pageNumber - 1, 'direct')">{{direct}}</div>
                                     <div class="text">直接分享</div>
                                 </td>
                                 <td>
-                                    <div class="text-icon">{{inDirect}}</div>
+                                    <div class="text-icon" v-on:click="getTeamList(userID, pageSize, pageNumber - 1, 'indirect')">{{inDirect}}</div>
                                     <div class="text">间接分享</div>
                                 </td>
                             </tr>
@@ -35,7 +35,7 @@
             </div>
             
             <div class="search-box">
-                <div class="button" id="search-button" v-on:click="getTeamList()"></div>
+                <div class="button" id="search-button" v-on:click="getTeamList(userID, pageSize, pageNumber, type)"></div>
                 <input type="text" class="input" name="q" v-model="userID" placeholder="搜索会员ID">
             </div>
 
@@ -69,7 +69,7 @@
             </div>
             
             <div id="page">
-                <div class="page"><a class="pre" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">1/4</a><a class="next" hidefocus="true"><span>&gt;</span></a></div>
+                <div class="page"><a class="pre" v-on:click="getTeamList(userID, pageSize, pageNumber - 1, type)" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">{{pageNumber + 1}}/1</a><a class="next" v-on:click="getTeamList(userID, pageSize, pageNumber + 1, type)" hidefocus="true"><span>&gt;</span></a></div>
             </div>
         </div>
   	</div>
@@ -86,6 +86,7 @@ export default {
             userID: '',
             pageSize: 10,
             pageNumber: 0,
+            type: 'all',
             teamList: []
 		}
 	},
@@ -104,18 +105,19 @@ export default {
             console.log(ex)
         })
 
-        this.getTeamList(this.userID, this.pageSize, this.pageNumber)
+        this.getTeamList(this.userID, this.pageSize, this.pageNumber, this.type)
         
 	},
 	methods: {
-        getTeamList: function (id, pageSize, pageNumber) {
+        getTeamList: function (id, pageSize, pageNumber, type) {
             axios({
                 method: 'GET',
                 url: process.env.api_url + '/user/myTeamList',
                 params: {
                     id: id,
                     pageSize: pageSize,
-                    pageNumber: pageNumber
+                    pageNumber: pageNumber,
+                    type: type
                 },
                 withCredentials: true,
                 headers: {"lang": 'zh'}
