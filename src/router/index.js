@@ -97,9 +97,9 @@ export default new VueRouter({
       component: (resolve) => require(['@/components/MyTeam'], resolve)
     },
     {
-      path: '/benefit',
-      name: 'Benefit',
-      component: (resolve) => require(['@/components/Benefit'], resolve)
+      path: '/benifit',
+      name: 'Benifit',
+      component: (resolve) => require(['@/components/Benifit'], resolve)
     },
     {
       path: '/service',
