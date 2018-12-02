@@ -9,6 +9,10 @@ Vue.config.productionTip = false
 Vue.prototype.jumpTo = function (url) {
   window.location.href = url
 }
+Vue.prototype.goBack = function () {
+  window.history.back()
+  console.log("1")
+}
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

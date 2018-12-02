@@ -15,11 +15,11 @@
                 <div class="login-btn">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</div>
             </div>
             <div class="bottom-box">
-                <div class="bottom-desc">老用户请选择找回密码进行密码重置后登录。<a href="">用户协议</a></div>
+                <div class="bottom-desc">老用户请选择找回密码进行密码重置后登录。<a href="/userProtocol">用户协议</a></div>
                 <div class="dividing-line"></div>
                 <div class="bottom-btn clearfix">
-                    <div class="find-pwd">找回密码?</div>
-                    <div class="register">免费注册</div>
+                    <div class="find-pwd" v-on:click="jumpTo('/findPassword')">找回密码?</div>
+                    <div class="register" v-on:click="jumpTo('/register')">免费注册</div>
                 </div>
             </div>
         </div>

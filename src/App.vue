@@ -87,6 +87,7 @@ input:focus{
     position: absolute;
     left: 15px;
     top: 15px;
+    z-index: 9999;
 }
 .left-btn img{
     width: 20px;
