@@ -13,12 +13,12 @@
                 <div class="center-bar" style="width: 340px;">
                     <div class="x-scrolling-bar-inner" style="width: 360px;">
                         <div class="x-scrolling-bar-inner-fixed" id="type-selector">
-                            <li class="current item">全部</li>
-                            <li class="item">今日</li>
-                            <li class="item">昨日</li>
-                            <li class="item">本周</li>
-                            <li class="item">本月</li>
-                            <li class="item">上月</li>
+                            <li class="current item" v-on:click="getBenifit('', '')">全部</li>
+                            <li class="item" v-on:click="getBenifit(today, today)">今日</li>
+                            <li class="item" v-on:click="getBenifit(yesterday, today)">昨日</li>
+                            <li class="item" v-on:click="getBenifit(thisWeek[0], thisWeek[6])">本周</li>
+                            <li class="item" v-on:click="getBenifit(thisMonthStart, thisMonthEnd)">本月</li>
+                            <li class="item" v-on:click="getBenifit(lastMonthStart, lastMonthEnd)">上月</li>
                             <li class="item">自定义</li>
                         </div>
                     </div>
@@ -194,7 +194,7 @@
             <ul class="common-list clearfix" id="sales-statistics">
                 <li class="onlyinfo clearfix" id="sales-details-total">
                     <span class="title">总收益</span>
-                    <span class="price" style="color:#ec2d2d;padding-right:30px;"><span id="group-profits-total">71.9</span> </span>
+                    <span class="price" style="color:#ec2d2d;padding-right:30px;"><span id="group-profits-total">{{totalBenifit}}</span> </span>
                     <div class="view-more"><img src="/static/img/personal/gray-right-arrow.png"></div>
                     <div class="clear"></div>
                 </li>
@@ -210,35 +210,63 @@
 </template>
 
 <script>
+function add0 (m) {
+    return m<10?'0'+m:m 
+}
+function format (shijianchuo) {
+    var time = new Date(shijianchuo);
+    var y = time.getFullYear();
+    var m = time.getMonth()+1;
+    var d = time.getDate();
+    return y+'-'+add0(m)+'-'+add0(d);
+}
+function getWeekDay(dateString) {
+    let dateStringReg = /^\d{4}[/-]\d{1,2}[/-]\d{1,2}$/;
+
+    if (dateString.match(dateStringReg)) {
+        let presentDate = new Date(dateString),
+            today = presentDate.getDay() !== 0 ? presentDate.getDay() : 7;
+
+        return Array.from(new Array(7), function(val, index) {
+            return formatDate(new Date(presentDate.getTime() - (today - index-1) * 24 * 60 * 60 * 1000));
+        });
+
+    } else {
+        throw new Error('dateString should be like "yyyy-mm-dd" or "yyyy/mm/dd"');
+    }
+
+    function formatDate(date) {
+        return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+    }
+}
 export default {
 	name: 'Benifit',
   	data () {
 		return {
             totalBenifit: '',
-            nowDate: ''
+            today: '',
+            yesterday: '',
+            thisWeek: [],
+            thisMonthStart: '',
+            thisMonthEnd: '',
+            lastMonthStart: '',
+            lastMonthEnd: '',
 		}
 	},
 	created: function () {
-        this.nowDate = new Date().this.format("yyyy-MM-dd")
-        console.log(this.nowDate)
-        // this.getBenifit()
+        var time = new Date()
+        let today = time.setDate(time.getDate())
+        let yesterday = time.setDate(time.getDate() - 1)
+        this.today = format(today)
+        this.yesterday = format(yesterday)
+        this.thisWeek = getWeekDay(this.today)
+        this.thisMonthStart = this.today.slice(0, 8) + '01'
+        this.thisMonthEnd = this.today.slice(0, 8) + '30'
+        this.lastMonthStart = time.getFullYear() + '-' + time.getMonth() + '-01'
+        this.lastMonthEnd = time.getFullYear() + '-' + time.getMonth() + '-30'
+        this.getBenifit('', '')
 	},
 	methods: {
-        format: function (fmt) {
-            var o = {
-                "M+": this.getMonth() + 1, //月份 
-                "d+": this.getDate(), //日 
-                "h+": this.getHours(), //小时 
-                "m+": this.getMinutes(), //分 
-                "s+": this.getSeconds(), //秒 
-                "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-                "S": this.getMilliseconds() //毫秒 
-            };
-            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-            for (var k in o)
-            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            return fmt;
-        },
         getBenifit: function (start, end) {
             axios({ // 获取收益
                 method: 'GET',
@@ -250,10 +278,7 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                let responseData = response.data.data
-                console.log(responseData)
-                // this.amountList = responseData.data
-                // this.allPage = Math.ceil(responseData.all / this.pageSize)
+                this.totalBenifit = response.data.data
             }).catch((ex) => {
                 console.log(ex)
             })
