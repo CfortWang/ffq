@@ -271,6 +271,6 @@ export default {
     color: #888;
     width: 44px;
     height: 44px;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0
 }
 </style>
