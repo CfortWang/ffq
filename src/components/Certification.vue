@@ -99,7 +99,7 @@ export default {
     height: 42px;
     line-height: 42px;
     text-align: center;
-    background: #f67969;
+    background: #4C9CD6;
     font-size: 16px;
     color: #fff;
     border-radius: 4px;
@@ -117,7 +117,7 @@ export default {
 }
 .binding-btn, .re-binding-btn{
     padding: 8px 12px;
-    background: #f67969;
+    background: #4C9CD6;
     color: #ffffff;
     border-radius: 4px;
     margin: 0 auto;

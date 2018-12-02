@@ -367,7 +367,7 @@ export default {
     z-index: 100;
 }
 .common-red-button {
-    background: #f67969;
+    background: #4C9CD6;
     color: #fff;
     text-align: center;
     font-size: 16px;

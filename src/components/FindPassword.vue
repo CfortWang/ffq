@@ -26,7 +26,7 @@
             </div>
             <div class="bottom-box">
                 <div class="bottom-btn clearfix">
-                    <div class="login">返回登录</div>
+                    <div class="login" v-on:click="jumpTo('/login')">返回登录</div>
                 </div>
             </div>
         </div>
@@ -110,7 +110,7 @@ export default {
     height: 42px;
     line-height: 42px;
     text-align: center;
-    background: #f67969;
+    background: #4C9CD6;
     font-size: 16px;
     color: #fff;
     border-radius: 4px;
@@ -121,7 +121,7 @@ export default {
 }
 .reg-btn{
     padding: 8px 12px;
-    background: #f67969;
+    background: #4C9CD6;
     color: #ffffff;
     border-radius: 4px;
     margin: 0 auto;

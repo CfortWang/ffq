@@ -15,12 +15,12 @@
                     <li class="user-info-title">会员编号</li>
                 </ul>
 				<div class="user-info-border"></div>
-				<ul class="user-info-div">
+				<ul class="user-info-div"  v-on:click="jumpTo('/joinVip')">
                     <li class="user-level">{{userLevel}}</li>
                     <li class="user-info-title">会员等级</li>
                 </ul>
 				<div class="user-info-border"></div>
-				<ul class="user-info-div">
+				<ul class="user-info-div" v-on:click="jumpTo('/myTeam')">
                     <li class="user-spread">{{recommendCount}}</li>
                     <li class="user-info-title">推广人数</li>
                 </ul>
@@ -36,13 +36,13 @@
 					</div>
 					<p class="option-name">账户钱包</p>
 				</div>
-				<div class="menu-option">
+				<div class="menu-option" v-on:click="jumpTo('/tasksHistory')">
 					<div class="option-icon">
 						<img src="/static/img/personal/task.png" alt="">
 					</div>
 					<p class="option-name">任务记录</p>
 				</div>
-				<div class="menu-option">
+				<div class="menu-option" v-on:click="jumpTo('/joinVip')">
 					<div class="option-icon">
 						<img src="/static/img/personal/vip.png" alt="">
 					</div>
@@ -54,25 +54,25 @@
 		<!-- 菜单2 -->
 		<div class="bottom-menu">
 			<div class="menu-option-box">
-				<div class="menu-option">
+				<div class="menu-option" v-on:click="jumpTo('/myTeam')">
 					<div class="option-icon">
 						<img src="/static/img/personal/subusers.png" alt="">
 					</div>
 					<p class="option-name">团队人数</p>
 				</div>
-				<div class="menu-option">
+				<div class="menu-option" v-on:click="jumpTo('/benifit')">
 					<div class="option-icon">
 						<img src="/static/img/personal/brokerage.png" alt="">
 					</div>
 					<p class="option-name">收益统计</p>
 				</div>
-				<div class="menu-option">
+				<div class="menu-option" v-on:click="jumpTo('/service')">
 					<div class="option-icon">
 						<img src="/static/img/personal/service.png" alt="">
 					</div>
 					<p class="option-name">联系客服</p>
 				</div>
-				<div class="menu-option" v-on:click="jumpPage">
+				<div class="menu-option"  v-on:click="jumpTo('/superior')">
 					<div class="option-icon">
 						<img src="/static/img/personal/superior.png" alt="">
 					</div>
@@ -80,25 +80,25 @@
 				</div>
 			</div>
 			<div class="menu-option-box">
-				<div class="menu-option">
+				<div class="menu-option" v-on:click="jumpTo('/certification')">
 					<div class="option-icon">
 						<img src="/static/img/personal/cellphone.png" alt="">
 					</div>
 					<p class="option-name">手机认证</p>
 				</div>
-				<div class="menu-option">
+				<div class="menu-option" v-on:click="jumpTo('/promotion')">
 					<div class="option-icon">
 						<img src="/static/img/personal/share.png" alt="">
 					</div>
 					<p class="option-name">分享推广</p>
 				</div>
-				<div class="menu-option">
+				<div class="menu-option" v-on:click="jumpTo('/news')">
 					<div class="option-icon">
 						<img src="/static/img/personal/news.png" alt="">
 					</div>
 					<p class="option-name">新闻中心</p>
 				</div>
-				<div class="menu-option">
+				<div class="menu-option" v-on:click="jumpTo('/introduction')">
 					<div class="option-icon">
 						<img src="/static/img/personal/introduction.png" alt="">
 					</div>
@@ -197,7 +197,7 @@ export default {
 
 <style scoped>
 .user-info-box{
-	background: -webkit-linear-gradient(270deg,#f67969,#fffffe);
+	background: -webkit-linear-gradient(270deg,#4C9CD6,#fffffe);
 	margin-bottom: 10px;
 }
 .user-avatar{
@@ -299,7 +299,7 @@ export default {
 	font-size: 16px;
 	color: #ffffff;
 	border-radius: 4px;
-	background: #f67969;
+	background: #4C9CD6;
 	padding: 8px;
 	margin: 0 auto;
 }

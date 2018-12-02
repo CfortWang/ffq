@@ -52,6 +52,11 @@ export default new VueRouter({
       component: (resolve) => require(['@/components/AddHistory'], resolve)
     },
     {
+      path: '/addHistoryDetails',
+      name: 'AddHistoryDetails',
+      component: (resolve) => require(['@/components/AddHistoryDetails'], resolve)
+    },
+    {
       path: '/promotion',
       name: 'Promotion',
       component: (resolve) => require(['@/components/Promotion'], resolve)
@@ -120,6 +125,11 @@ export default new VueRouter({
       path: '/news',
       name: 'News',
       component: (resolve) => require(['@/components/News'], resolve)
+    },
+    {
+      path: '/newsDetails',
+      name: 'NewsDetails',
+      component: (resolve) => require(['@/components/NewsDetails'], resolve)
     },
     {
       path: '/introduction',

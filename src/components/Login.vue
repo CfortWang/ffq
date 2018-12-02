@@ -83,7 +83,7 @@ export default {
 }
 .login-btn{
     padding: 8px 12px;
-    background: #f67969;
+    background: #4C9CD6;
     color: #ffffff;
     border-radius: 4px;
     margin: 0 auto;

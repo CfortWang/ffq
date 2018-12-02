@@ -7,6 +7,14 @@
         <div class="msg-buttons">
             <div class="ok-btn" id="msg-ok-btn">确认</div>
         </div>
+    </div> 
+    <div id="cover" level="1"></div> -->
+
+    <!-- <div class="addresses-not-found">
+        <div class="image">
+            <img src="http://adv.xcnong.com/templates/images/wind.png" style="width:128px;">
+        </div>
+        <div class="text">暂无数据...</div>
     </div> -->
   </div>
 </template>
@@ -73,7 +81,7 @@ input:focus{
 }
 .header{
     height: 50px;
-    background: #f67969;
+    background: #4C9CD6;
     position: fixed;
     left: 0;
     top: 0;
@@ -138,10 +146,69 @@ input:focus{
 	font-size: 14px;
 }
 .footer-active{
-	color: #f67969;
+	color: #4C9CD6;
 }
 .footer img{
 	width: 22px;
 	margin-top: 10px;
+}
+
+#cover {
+    width: 100vw; 
+    height: 100vh;
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    background: #000;
+    opacity: .7;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+#msg {
+    border-radius: 6px;
+    z-index: 10000;
+    width: 86%;
+    top: 40%;
+    left: 7%;
+    background: #fff;
+    overflow: hidden;
+    position: fixed;
+}
+#msg .msg-title {
+    background: #eee;
+    height: 46px;
+    line-height: 46px;
+    padding-left: 15px;
+    text-align: left;
+    color: #222;
+    font-size: 18px;
+    font-weight: bold;
+}
+#msg .msg-contents {
+    border-top: 1px solid #eee;
+    text-align: left;
+    padding: 20px 15px;
+    font-size: 14px;
+    color: #666;
+}
+#msg .msg-buttons {
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+    font-size: 16px;
+    background: #f67969;
+    color: #fff;
+}
+
+
+.addresses-not-found {
+    padding-top: 40px;
+    font-size: 14px;
+    text-align: center;
+}
+.addresses-not-found .text {
+    margin-top: 20px;
 }
 </style>

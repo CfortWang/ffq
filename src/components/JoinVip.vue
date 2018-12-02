@@ -74,7 +74,7 @@ export default {
 
 <style scoped>
 .head {
-    background: #f67969;
+    background: #4C9CD6;
     background-repeat: no-repeat;
     background-size: 100% 220px;
     color: #fff;
@@ -86,7 +86,7 @@ export default {
 }
 #header {
     height: 50px;
-    background: #f67969;
+    background: #4C9CD6;
     position: fixed;
     left: 0;
     top: 0;
@@ -118,7 +118,7 @@ export default {
     text-align: center;
     margin: auto;
     color: white;
-    background: -webkit-linear-gradient(0deg, #f67969, #ffd4cf) !important;
+    background: -webkit-linear-gradient(0deg, #4C9CD6, #ffd4cf) !important;
     margin-top: 10px;
 }
 .selected {
@@ -146,7 +146,7 @@ export default {
     padding: 7px;
     font-size: 16px;
     color: white;
-    background: #f67969;
+    background: #4C9CD6;
 }
 
 </style>

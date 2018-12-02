@@ -112,7 +112,7 @@ export default {
 .my-assets{
     height: 95px;
     padding: 40px 0;
-    background: -webkit-linear-gradient(180deg,#f67969,#f8571e);
+    background: -webkit-linear-gradient(180deg,#4C9CD6,#2d9cec);
 }
 .wallet-title{
     font-size: 13px;
@@ -177,7 +177,7 @@ select:focus{
     font-size: 16px;
     width: 45%;
     display: inline-block;
-    background: #f67969;
+    background: #4C9CD6;
     color: #fff;
     height: 35px;
     line-height: 35px;

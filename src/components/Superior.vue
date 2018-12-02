@@ -84,7 +84,7 @@ export default {
     height: 42px;
     line-height: 42px;
     text-align: center;
-    background: #f67969;
+    background: #4C9CD6;
     font-size: 16px;
     color: #fff;
     border-radius: 4px;

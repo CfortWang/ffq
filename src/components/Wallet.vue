@@ -68,7 +68,7 @@ export default {
 .my-assets{
     height: 95px;
     padding: 40px 0;
-    background: -webkit-linear-gradient(180deg,#f67969,#f8571e);
+    background: -webkit-linear-gradient(180deg,#4C9CD6,#2d9cec);
 }
 .wallet-title{
     font-size: 13px;

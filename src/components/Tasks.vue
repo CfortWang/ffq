@@ -31,19 +31,19 @@
 		<!-- 任务菜单 -->
         <div class="task-menu">
             <div class="free">
-                <img src="/static/img/tasks/task.png" alt="">
+                <img src="/static/img/tasks/task1.png" alt="">
                 <div class="task-title">自由任务大厅</div>
             </div>
             <div class="member">
-                <img src="/static/img/tasks/task.png" alt="">
+                <img src="/static/img/tasks/task2.png" alt="">
                 <div class="task-title">会员任务大厅</div>
             </div>
             <div class="intermediate">
-                <img src="/static/img/tasks/task.png" alt="">
+                <img src="/static/img/tasks/task3.png" alt="">
                 <div class="task-title">中级任务大厅</div>
             </div>
             <div class="advanced">
-                <img src="/static/img/tasks/task.png" alt="">
+                <img src="/static/img/tasks/task4.png" alt="">
                 <div class="task-title">高级任务大厅</div>
             </div>
         </div>
