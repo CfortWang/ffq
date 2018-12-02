@@ -3,7 +3,7 @@
 		<!-- 用户信息 -->
     	<div class="user-info-box">
 			<div class="user-avatar">
-				<img src="/static/img/personol/avatar.png" alt="">
+				<img src="/static/img/personal/avatar.png" alt="">
 			</div>
 			<div class="reg-info">
 				<div class="nickname">{{nickname}}</div>

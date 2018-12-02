@@ -13,13 +13,13 @@
                 <div class="center-bar" style="width: 340px;">
                     <div class="x-scrolling-bar-inner" style="width: 360px;">
                         <div class="x-scrolling-bar-inner-fixed" id="type-selector">
-                            <li class="current item" data-type="">全部</li>
-                            <li class="item" data-type="today">今日</li>
-                            <li class="item" data-type="yestoday">昨日</li>
-                            <li class="item" data-type="week">本周</li>
-                            <li class="item" data-type="month">本月</li>
-                            <li class="item" data-type="last-month">上月</li>
-                            <li class="item" data-type="custom">自定义</li>
+                            <li class="current item">全部</li>
+                            <li class="item">今日</li>
+                            <li class="item">昨日</li>
+                            <li class="item">本周</li>
+                            <li class="item">本月</li>
+                            <li class="item">上月</li>
+                            <li class="item">自定义</li>
                         </div>
                     </div>
                 </div>
@@ -195,13 +195,13 @@
                 <li class="onlyinfo clearfix" id="sales-details-total">
                     <span class="title">总收益</span>
                     <span class="price" style="color:#ec2d2d;padding-right:30px;"><span id="group-profits-total">71.9</span> </span>
-                    <div class="view-more"><img src="http://adv.xcnong.com/templates/images/gray-right-arrow.png"></div>
+                    <div class="view-more"><img src="/static/img/personal/gray-right-arrow.png"></div>
                     <div class="clear"></div>
                 </li>
                 <li class="onlyinfo clearfix" id="sales-details-miss" style="display: none;">
                     <span class="title">错失收益</span>
                     <span class="price" style="color:#ec2d2d;padding-right:30px;"><span id="group-profits-miss">0</span> </span>
-                    <div class="view-more"><img src="http://adv.xcnong.com/templates/images/gray-right-arrow.png"></div>
+                    <div class="view-more"><img src="/static/img/personal/gray-right-arrow.png"></div>
                     <div class="clear"></div>
                 </li>
             </ul>
@@ -214,14 +214,50 @@ export default {
 	name: 'Benifit',
   	data () {
 		return {
-			
+            totalBenifit: '',
+            nowDate: ''
 		}
 	},
 	created: function () {
-
+        this.nowDate = new Date().this.format("yyyy-MM-dd")
+        console.log(this.nowDate)
+        // this.getBenifit()
 	},
 	methods: {
-
+        format: function (fmt) {
+            var o = {
+                "M+": this.getMonth() + 1, //月份 
+                "d+": this.getDate(), //日 
+                "h+": this.getHours(), //小时 
+                "m+": this.getMinutes(), //分 
+                "s+": this.getSeconds(), //秒 
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+                "S": this.getMilliseconds() //毫秒 
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        },
+        getBenifit: function (start, end) {
+            axios({ // 获取收益
+                method: 'GET',
+                url: process.env.api_url + '/user/gain',
+                params: {
+                    start_at: start,
+                    end_at: end
+                },
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                let responseData = response.data.data
+                console.log(responseData)
+                // this.amountList = responseData.data
+                // this.allPage = Math.ceil(responseData.all / this.pageSize)
+            }).catch((ex) => {
+                console.log(ex)
+            })
+        }
 	}
 }
 </script>
