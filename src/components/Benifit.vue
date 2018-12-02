@@ -13,18 +13,18 @@
                 <div class="center-bar" style="width: 340px;">
                     <div class="x-scrolling-bar-inner" style="width: 360px;">
                         <div class="x-scrolling-bar-inner-fixed" id="type-selector">
-                            <li class="current item" v-on:click="getBenifit('', '')">全部</li>
-                            <li class="item" v-on:click="getBenifit(today, today)">今日</li>
-                            <li class="item" v-on:click="getBenifit(yesterday, today)">昨日</li>
-                            <li class="item" v-on:click="getBenifit(thisWeek[0], thisWeek[6])">本周</li>
-                            <li class="item" v-on:click="getBenifit(thisMonthStart, thisMonthEnd)">本月</li>
-                            <li class="item" v-on:click="getBenifit(lastMonthStart, lastMonthEnd)">上月</li>
-                            <li class="item">自定义</li>
+                            <li class="current item" v-on:click="getBenifit('', '', $event)">全部</li>
+                            <li class="item" v-on:click="getBenifit(today, today, $event)">今日</li>
+                            <li class="item" v-on:click="getBenifit(yesterday, today, $event)">昨日</li>
+                            <li class="item" v-on:click="getBenifit(thisWeek[0], thisWeek[6], $event)">本周</li>
+                            <li class="item" v-on:click="getBenifit(thisMonthStart, thisMonthEnd, $event)">本月</li>
+                            <li class="item" v-on:click="getBenifit(lastMonthStart, lastMonthEnd, $event)">上月</li>
+                            <li class="item" v-on:click="changeStatus($event)">自定义</li>
                         </div>
                     </div>
                 </div>
             </div>
-            <table class="new-address-table custom-table" style="display:none;" cellpadding="0" cellspacing="0">
+            <table class="new-address-table custom-table" v-if="isCustomize" cellpadding="0" cellspacing="0">
                 <tbody>
                     <tr>
 						<td class="center" colspan="3"><div class="title">起始时间</div></td>
@@ -33,11 +33,11 @@
 						<td class="center">
 							<div class="inner">
 								<div class="select-wrapper" style="width:100%;padding:0;">
-									<label style="padding-left:10px;font-size:14px;">2018 年</label>
-									<select name="sd_year">
+									<label id="startYear" style="padding-left:10px;font-size:14px;" for="sd_year">2018</label>
+									<select name="sd_year" v-on:change="changeValue($event)">
                                         <option value="2016">2016 年</option>
                                         <option value="2017">2017 年</option>
-                                        <option value="2018" selected="">2018 年</option>
+                                        <option value="2018" selected>2018 年</option>
 									</select>
 								</div>
 							</div>
@@ -45,8 +45,8 @@
 						<td class="center">
 							<div class="inner" style="padding-left:0;">
 								<div class="select-wrapper" style="width:100%;padding:0;">
-									<label style="padding-left:10px;font-size:14px;">12 月</label>
-									<select name="sd_month">
+									<label id="startMonth" style="padding-left:10px;font-size:14px;">12</label>
+									<select name="sd_month" v-on:change="changeValue($event)">
                                         <option value="01">01 月</option>
                                         <option value="02">02 月</option>
                                         <option value="03">03 月</option>
@@ -66,8 +66,8 @@
 						<td class="center">
 							<div class="inner" style="padding-left:0;">
 								<div class="select-wrapper" style="width:100%;padding:0;">
-									<label style="padding-left:10px;font-size:14px;">02 日</label>
-									<select name="sd_day">
+									<label id="startDay" style="padding-left:10px;font-size:14px;">02</label>
+									<select name="sd_day" v-on:change="changeValue($event)">
                                         <option value="01">01 日</option>
                                         <option value="02" selected="">02 日</option>
                                         <option value="03">03 日</option>
@@ -111,8 +111,8 @@
 						<td class="center">
 							<div class="inner">
 								<div class="select-wrapper" style="width:100%;padding:0;">
-									<label style="padding-left:10px;font-size:14px;">2018 年</label>
-									<select name="ed_year">
+									<label id="endYear" style="padding-left:10px;font-size:14px;">2018</label>
+									<select name="ed_year" v-on:change="changeValue($event)">
                                         <option value="2016">2016 年</option>
                                         <option value="2017">2017 年</option>
                                         <option value="2018" selected="">2018 年</option>
@@ -123,8 +123,8 @@
 						<td class="center">
 							<div class="inner" style="padding-left:0;">
 								<div class="select-wrapper" style="width:100%;padding:0;">
-									<label style="padding-left:10px;font-size:14px;">12 月</label>
-									<select name="ed_month">
+									<label id="endMonth" style="padding-left:10px;font-size:14px;">12</label>
+									<select name="ed_month" v-on:change="changeValue($event)">
                                         <option value="01">01 月</option>
                                         <option value="02">02 月</option>
                                         <option value="03">03 月</option>
@@ -144,8 +144,8 @@
 						<td class="center">
 							<div class="inner" style="padding-left:0;">
 								<div class="select-wrapper" style="width:100%;padding:0;">
-									<label style="padding-left:10px;font-size:14px;">02 日</label>
-									<select name="ed_day">
+									<label id="endDay" style="padding-left:10px;font-size:14px;">02</label>
+									<select name="ed_day" v-on:change="changeValue($event)">
                                         <option value="01">01 日</option>
                                         <option value="02" selected="">02 日</option>
                                         <option value="03">03 日</option>
@@ -185,14 +185,14 @@
 					<tr>
 						<td colspan="3" class="center">
 							<div class="inner">
-								<div class="common-red-button" id="custom-search-button">自定义统计筛选</div>
+								<div class="common-red-button" v-on:click="customize" id="custom-search-button">自定义统计筛选</div>
 							</div>
 						</td>
 					</tr>
 				</tbody>
             </table>
             <ul class="common-list clearfix" id="sales-statistics">
-                <li class="onlyinfo clearfix" id="sales-details-total">
+                <li class="onlyinfo clearfix" id="sales-details-total" v-on:click="jumpTo('/benifitDetails')">
                     <span class="title">总收益</span>
                     <span class="price" style="color:#ec2d2d;padding-right:30px;"><span id="group-profits-total">{{totalBenifit}}</span> </span>
                     <div class="view-more"><img src="/static/img/personal/gray-right-arrow.png"></div>
@@ -251,6 +251,9 @@ export default {
             thisMonthEnd: '',
             lastMonthStart: '',
             lastMonthEnd: '',
+            customizeStart: '',
+            customizeEnd: '',
+            isCustomize: false
 		}
 	},
 	created: function () {
@@ -264,16 +267,65 @@ export default {
         this.thisMonthEnd = this.today.slice(0, 8) + '30'
         this.lastMonthStart = time.getFullYear() + '-' + time.getMonth() + '-01'
         this.lastMonthEnd = time.getFullYear() + '-' + time.getMonth() + '-30'
-        this.getBenifit('', '')
+        
+        axios({ // 获取收益
+            method: 'GET',
+            url: process.env.api_url + '/user/gain',
+            params: {
+                start_at: '',
+                end_at: ''
+            },
+            withCredentials: true,
+            headers: {"lang": 'zh'}
+        }).then((response) => {
+            this.totalBenifit = response.data.data
+        }).catch((ex) => {
+            console.log(ex)
+        })
 	},
 	methods: {
-        getBenifit: function (start, end) {
+        changeStatus: function (e) {
+            document.getElementsByClassName('current')[0].classList.remove("current")
+            e.target.classList.add("current")
+            this.isCustomize = true
+            this.totalBenifit = 0
+        },
+        changeValue: function (e) {
+            e.target.previousElementSibling.innerHTML = e.target.value
+        },
+        getBenifit: function (start, end, e) {
+            document.getElementsByClassName('current')[0].classList.remove("current")
+            e.target.classList.add("current")
             axios({ // 获取收益
                 method: 'GET',
                 url: process.env.api_url + '/user/gain',
                 params: {
                     start_at: start,
                     end_at: end
+                },
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                this.totalBenifit = response.data.data
+            }).catch((ex) => {
+                console.log(ex)
+            })
+        },
+        customize: function () {
+            let startYear = document.getElementById("startYear").innerHTML
+            let startMonth = document.getElementById("startMonth").innerHTML
+            let startDay = document.getElementById("startDay").innerHTML
+            let endYear = document.getElementById("endYear").innerHTML
+            let endMonth = document.getElementById("endMonth").innerHTML
+            let endDay = document.getElementById("endDay").innerHTML
+            this.customizeStart = startYear + '-' + startMonth + '-' + startDay
+            this.customizeEnd = endYear + '-' + endMonth + '-' + endDay
+            axios({
+                method: 'GET',
+                url: process.env.api_url + '/user/gain',
+                params: {
+                    start_at: this.customizeStart,
+                    end_at: this.customizeEnd
                 },
                 withCredentials: true,
                 headers: {"lang": 'zh'}

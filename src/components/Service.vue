@@ -70,7 +70,7 @@ export default {
     margin-top: 10px;
 }
 .service-grid-table tr .blue {
-    background-color: #f67969;
+    background-color: #4C9CD6;
     margin-right: 8px;
 }
 .service-grid-table tr td {

@@ -198,7 +198,7 @@ input:focus{
     line-height: 42px;
     text-align: center;
     font-size: 16px;
-    background: #f67969;
+    background: #4C9CD6;
     color: #fff;
 }
 

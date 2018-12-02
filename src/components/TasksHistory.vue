@@ -8,12 +8,12 @@
         </div>
         <div class="empty"></div>
         
-        <div class="task-list">
-            <div class="task">
-                <span class="name">mo</span>
+        <div class="task-list" v-for="item in taskList" v-bind:key="item.index">
+            <div class="task" v-on:click="jumpTo('/tasksHistoryDetails')">
+                <span class="name">{{item.title}}</span>
                 <span class="status"></span>
-                <span class="price">￥2.00</span>
-                <span class="type">普通</span>
+                <span class="price">￥{{item.price}}</span>
+                <span class="type">{{item.type}}</span>
                 <img class="arrow" src="/static/img/personal/gray-right-arrow.png" img="">
             </div>
         </div>
@@ -26,11 +26,30 @@ export default {
 	name: 'TasksHistory',
   	data () {
 		return {
-			
+            type: '0',
+            taskList: '',
+            allPage: '',
+            pageSize: 10,
+            pageNumber: 0
 		}
 	},
 	created: function () {
-
+        axios({ // 获取任务列表
+            method: 'GET',
+            url: process.env.api_url + '/task/list',
+            params: {
+                type: this.type,
+                pageSize: this.pageSize,
+                pageNumber: this.pageNumber
+            },
+            withCredentials: true,
+            headers: {"lang": 'zh'}
+        }).then((response) => {
+            this.taskList = response.data.data
+            // this.allPage = Math.ceil(responseData.all / this.pageSize)
+        }).catch((ex) => {
+            console.log(ex)
+        })
 	},
 	methods: {
 

@@ -72,6 +72,11 @@ export default new VueRouter({
       component: (resolve) => require(['@/components/TasksHistory'], resolve)
     },
     {
+      path: '/tasksHistoryDetails',
+      name: 'TasksHistoryDetails',
+      component: (resolve) => require(['@/components/TasksHistoryDetails'], resolve)
+    },
+    {
       path: '/tasksHall',
       name: 'TasksHall',
       component: (resolve) => require(['@/components/TasksHall'], resolve)
@@ -105,6 +110,11 @@ export default new VueRouter({
       path: '/benifit',
       name: 'Benifit',
       component: (resolve) => require(['@/components/Benifit'], resolve)
+    },
+    {
+      path: '/benifitDetails',
+      name: 'BenifitDetails',
+      component: (resolve) => require(['@/components/BenifitDetails'], resolve)
     },
     {
       path: '/service',
