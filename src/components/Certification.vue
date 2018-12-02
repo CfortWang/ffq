@@ -57,7 +57,7 @@
 
 <script>
 export default {
-	name: 'FindPassword',
+	name: 'Certification',
   	data () {
 		return {
 			

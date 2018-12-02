@@ -8,7 +8,7 @@
         </div>
         <div class="empty"></div>
         <div class="reg-box">
-            <div class="phone-num">
+            <!-- <div class="phone-num">
                 <input type="number" name="phoneNum" id="phoneNum" value="" placeholder="手机号码"/>
             </div>
             <div class="password">
@@ -28,14 +28,14 @@
                 <div class="bottom-btn clearfix">
                     <div class="login">返回登录</div>
                 </div>
-            </div>
+            </div> -->
         </div>
   	</div>
 </template>
 
 <script>
 export default {
-	name: 'Register',
+	name: 'AddTasks',
   	data () {
 		return {
 			

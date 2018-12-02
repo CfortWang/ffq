@@ -75,7 +75,7 @@
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 export default {
-	name: 'HomePage',
+	name: 'Tasks',
   	components: {
 		swiper,
 		swiperSlide

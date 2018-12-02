@@ -21,7 +21,7 @@
 
 <script>
 export default {
-	name: 'FindPassword',
+	name: 'Superior',
   	data () {
 		return {
             isVerification: '',

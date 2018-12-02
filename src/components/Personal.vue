@@ -138,7 +138,7 @@
 
 <script>
 export default {
-	name: 'HomePage',
+	name: 'Personal',
   	data () {
 		return {
 			nickname: '',
