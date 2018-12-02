@@ -2,7 +2,7 @@
 	<div class="content">
 		<!-- 资产 -->
     	<div class="my-assets">
-            <div class="left-btn">
+            <div class="left-btn" v-on:click="goBack()">
                 <img src="/static/img/index/go-back.png" alt="">
             </div>
             <div class="wallet-amount">

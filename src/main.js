@@ -11,7 +11,6 @@ Vue.prototype.jumpTo = function (url) {
 }
 Vue.prototype.goBack = function () {
   window.history.back()
-  console.log("1")
 }
 /* eslint-disable no-new */
 new Vue({
