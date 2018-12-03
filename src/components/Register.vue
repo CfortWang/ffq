@@ -12,7 +12,7 @@
                 <input type="text" name="graphicCode" id="graphicCode" value="" placeholder="图形码"/>
             </div> -->
             <div class="nickname">
-                <input type="text" name="nickname" id="nickname" v-model="name" placeholder="您的称呼"/>
+                <input type="text" name="nickname" id="nickname" v-model="name" placeholder="用户名"/>
             </div>
             <div class="password">
                 <input type="password" name="password" id="password" v-model="password" placeholder="登录密码"/>
@@ -44,6 +44,13 @@
                 </div>
             </div>
         </div>
+        <div id="regMsg">
+            <div class="msg-title">系统提示</div>
+            <div class="reg-msg-contents">注册成功！</div>
+            <div class="msg-buttons">
+                <div class="ok-btn" id="msg-ok-btn" v-on:click="goToLogin">前往登录</div>
+            </div>
+        </div> 
   	</div>
 </template>
 
@@ -65,7 +72,24 @@ export default {
         this.recommendCode = this.$route.query.recommendCode
 	},
 	methods: {
+        showRegMsg: function () {
+            let ele1 = document.getElementById('regMsg')
+            let ele2 = document.getElementById('cover')
+            ele1.style.display = 'block'
+            ele2.style.display = 'block'
+        },
+        goToLogin: function () {
+            let ele1 = document.getElementById('regMsg')
+            let ele2 = document.getElementById('cover')
+            ele1.style.display = 'none'
+            ele2.style.display = 'none'
+            this.$router.push({name: 'Login', params:{phoneNumber: this.phoneNumber}})
+        },
         getVerificationCode: function () {
+            if (this.phoneNumber == '' || this.phoneNumber == null) {
+                this.showMsg("请输入手机号码！")
+                return false
+            }
             axios({ // 获取验证码
                 method: 'POST',
                 url: process.env.api_url + '/login/msg',
@@ -74,8 +98,13 @@ export default {
                     type: 'register'
                 }
             }).then((response) => {
-                let responseMessage = response.data.message
-                console.log(response)
+                if (response.data.code == 200) {
+                    this.showMsg("验证码发送成功！")
+                    return false
+                } else {
+                    let responseMessage = response.data.message
+                    this.showMsg(responseMessage)
+                }
             }).catch((ex) => {
                 console.log(ex)
             })
@@ -84,6 +113,45 @@ export default {
             this.isAgree = !this.isAgree
         },
         doRigster: function () {
+            if (this.phoneNumber == '' || this.phoneNumber == null) {
+                this.showMsg("请输入手机号码！")
+                return false
+            }
+            if (this.name == '' || this.name == null) {
+                this.showMsg("请输入用户名！")
+                return false
+            }
+            if (this.password == '' || this.password == null) {
+                this.showMsg("请输入密码！")
+                return false
+            }
+            if (this.repreatPassword == '' || this.repreatPassword == null) {
+                this.showMsg("请确认密码！")
+                return false
+            }
+            if (this.password != this.repreatPassword) {
+                this.showMsg("两次输入密码不一致！")
+                return false
+            }
+            if (this.recommendCode) {
+                console.log("1")
+                if (this.recommendCode.length != 6) {
+                    this.showMsg("推荐码应为6位数字！")
+                    return false
+                }
+            }
+            if (this.verificationCode == '' || this.verificationCode == null) {
+                this.showMsg("请输入验证码！")
+                return false
+            }
+            if (this.verificationCode.length != 4) {
+                this.showMsg("验证码应为4位数字！")
+                return false
+            }
+            if (!this.isAgree) {
+                this.showMsg("请仔细阅读并同意用户协议！")
+                return false
+            }
             axios({ // 注册
                 method: 'POST',
                 url: process.env.api_url + '/login/create',
@@ -96,8 +164,14 @@ export default {
                     code: this.verificationCode
                 }
             }).then((response) => {
-                let responseMessage = response.data.message
-                this.$router.push({name: 'Login', params:{phoneNumber: this.phoneNumber}})
+                if (response.data.code == 200) {
+                    this.showRegMsg()
+                    return false
+                } else {
+                    let responseMessage = response.data.message
+                    this.showMsg(responseMessage)
+                    return false
+                }
             }).catch((ex) => {
                 console.log(ex)
             })

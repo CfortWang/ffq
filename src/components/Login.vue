@@ -6,7 +6,7 @@
         <div class="empty"></div>
         <div class="login-box">
             <div class="phone-num-box">
-                <input type="number" name="phoneNum" id="phoneNum" v-model="phoneNumber" placeholder="手机号或用户ID"/>
+                <input type="number" name="phoneNum" id="phoneNum" v-model="phoneNumber" placeholder="手机号码"/>
             </div>
             <div class="password-box">
                 <input type="password" name="password" id="password" v-model="password" placeholder="登录密码"/>
@@ -36,10 +36,20 @@ export default {
 		}
 	},
 	created: function () {
-        this.phoneNumber = this.$route.query.phoneNumber
+        if (this.$route.params.phoneNumber) {
+            this.phoneNumber = this.$route.params.phoneNumber
+        }
 	},
 	methods: {
         doLogin: function () {
+            if (this.phoneNumber == '' || this.phoneNumber == null) {
+                this.showMsg("请输入手机号码！")
+                return false
+            }
+            if (this.password == '' || this.password == null) {
+                this.showMsg("请输入密码！")
+                return false
+            }
             axios({ // 登录
                 method: 'POST',
                 url: process.env.api_url + '/login',
@@ -50,9 +60,13 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                let responseMessage = response.data.message
-                // console.log(response)
-                this.$router.push({name: 'Personal'})
+                if (response.data.code == 200) {
+                    this.$router.push({name: 'Personal'})
+                } else {
+                    let responseMessage = response.data.message
+                    this.showMsg(responseMessage)
+                    return false
+                }
             }).catch((ex) => {
                 console.log(ex)
             })

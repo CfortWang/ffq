@@ -85,6 +85,26 @@ export default {
 	},
 	methods: {
         cashOut: function () {
+            if (this.amount == '' || this.amount == null) {
+                this.showMsg("请输入提现金额！")
+                return false
+            }
+            if (this.payMethod == '' || this.payMethod == null) {
+                this.showMsg("请选择提现方式！")
+                return false
+            }
+            if (this.alipayName == '' || this.alipayName == null) {
+                this.showMsg("请输入您的真实姓名！")
+                return false
+            }
+            if (this.alipayAccount == '' || this.alipayAccount == null) {
+                this.showMsg("请输入支付宝账号！")
+                return false
+            }
+            if (this.password == '' || this.password == null) {
+                this.showMsg("请输入发发圈登录密码！")
+                return false
+            }
             axios({ // 申请提现
                 method: 'POST',
                 url: process.env.api_url + '/user/cashout',
@@ -98,8 +118,13 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                let responseData = response.data.data
-                // this.totalAmount = responseData.total_amount
+                if (response.data.code == 200) {
+                    this.showMsg("申请提现成功！")
+                    return false
+                } else {
+                    let responseMessage = response.data.message
+                    this.showMsg(responseMessage)
+                }
             }).catch((ex) => {
                 console.log(ex)
             })

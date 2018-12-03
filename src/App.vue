@@ -3,7 +3,7 @@
     <router-view/>
     <div id="msg">
         <div class="msg-title">系统提示</div>
-        <div class="msg-contents">即将上线，敬请期待。</div>
+        <div class="msg-contents"></div>
         <div class="msg-buttons">
             <div class="ok-btn" id="msg-ok-btn" v-on:click="closeMsg">确认</div>
         </div>
@@ -165,7 +165,7 @@ input:focus{
     height: 100%;
     display: none;
 }
-#msg {
+#msg, #regMsg{
     border-radius: 6px;
     z-index: 10000;
     width: 86%;
@@ -176,7 +176,7 @@ input:focus{
     position: fixed;
     display: none;
 }
-#msg .msg-title {
+.msg-title {
     background: #eee;
     height: 46px;
     line-height: 46px;
@@ -186,14 +186,14 @@ input:focus{
     font-size: 18px;
     font-weight: bold;
 }
-#msg .msg-contents {
+.msg-contents, .reg-msg-contents{
     border-top: 1px solid #eee;
     text-align: left;
     padding: 20px 15px;
     font-size: 14px;
     color: #666;
 }
-#msg .msg-buttons {
+.msg-buttons {
     height: 42px;
     line-height: 42px;
     text-align: center;

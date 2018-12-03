@@ -12,7 +12,7 @@
                 <input type="number" name="phoneNum" id="phoneNum" v-model="phoneNumber" placeholder="手机号码"/>
             </div>
             <div class="password">
-                <input type="password" name="password" id="password" v-model="password" placeholder="请输入8-12位新密码"/>
+                <input type="password" name="password" id="password" v-model="password" placeholder="请输入4-12位新密码"/>
             </div>
             <div class="re-password">
                 <input type="password" name="rePassword" id="rePassword" v-model="repeatPassword" placeholder="确认新密码"/>
@@ -30,6 +30,13 @@
                 </div>
             </div>
         </div>
+        <div id="regMsg">
+            <div class="msg-title">系统提示</div>
+            <div class="reg-msg-contents">密码重置成功！</div>
+            <div class="msg-buttons">
+                <div class="ok-btn" id="msg-ok-btn" v-on:click="goToLogin">前往登录</div>
+            </div>
+        </div> 
   	</div>
 </template>
 
@@ -48,7 +55,24 @@ export default {
 
 	},
 	methods: {
+        showRegMsg: function () {
+            let ele1 = document.getElementById('regMsg')
+            let ele2 = document.getElementById('cover')
+            ele1.style.display = 'block'
+            ele2.style.display = 'block'
+        },
+        goToLogin: function () {
+            let ele1 = document.getElementById('regMsg')
+            let ele2 = document.getElementById('cover')
+            ele1.style.display = 'none'
+            ele2.style.display = 'none'
+            this.$router.push({name: 'Login', params:{phoneNumber: this.phoneNumber}})
+        },
         getVerificationCode: function () {
+            if (this.phoneNumber == '' || this.phoneNumber == null) {
+                this.showMsg("请输入手机号码！")
+                return false
+            }
             axios({ // 获取验证码
                 method: 'POST',
                 url: process.env.api_url + '/login/msg',
@@ -57,13 +81,42 @@ export default {
                     type: 'reset_password'
                 }
             }).then((response) => {
-                let responseMessage = response.data.message
-                console.log(response)
+                if (response.data.code == 200) {
+                    this.showMsg("验证码发送成功！")
+                    return false
+                } else {
+                    let responseMessage = response.data.message
+                    this.showMsg(responseMessage)
+                }
             }).catch((ex) => {
                 console.log(ex)
             })
         },
         findPasswoed: function () {
+            if (this.phoneNumber == '' || this.phoneNumber == null) {
+                this.showMsg("请输入手机号码！")
+                return false
+            }
+            if (this.password == '' || this.password == null) {
+                this.showMsg("请输入4-12位新密码！")
+                return false
+            }
+            if (this.repeatPassword == '' || this.repeatPassword == null) {
+                this.showMsg("请确认密码！")
+                return false
+            }
+            if (this.password != this.repeatPassword) {
+                this.showMsg("两次输入密码不一致！")
+                return false
+            }
+            if (this.verificationCode == '' || this.verificationCode == null) {
+                this.showMsg("请输入验证码！")
+                return false
+            }
+            if (this.verificationCode.length != 4) {
+                this.showMsg("验证码应为4位数字！")
+                return false
+            }
             axios({ // 注册
                 method: 'POST',
                 url: process.env.api_url + '/login/reset',
@@ -74,8 +127,14 @@ export default {
                     code: this.verificationCode
                 }
             }).then((response) => {
-                let responseMessage = response.data.message
-                console.log(response)
+                if (response.data.code == 200) {
+                    this.showRegMsg()
+                    return false
+                } else {
+                    let responseMessage = response.data.message
+                    this.showMsg(responseMessage)
+                    return false
+                }
             }).catch((ex) => {
                 console.log(ex)
             })
