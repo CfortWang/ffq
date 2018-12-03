@@ -9,7 +9,7 @@
         <div class="empty"></div>
         
         <div class="task-list" v-for="item in tasksList" v-bind:key="item.index">
-            <div class="task" style="border-bottom:4px solid #eee;margin-top: 0px ">
+            <div class="task" v-on:click="jumpTo('/tasksDetails?id=' + item.code_url)" style="border-bottom:4px solid #eee;margin-top: 0px ">
                 <span class="name">{{item.title}}</span>
                 <span class="status"></span>
                 <span class="price">￥{{item.price}}</span>

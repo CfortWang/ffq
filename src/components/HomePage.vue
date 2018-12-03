@@ -48,15 +48,21 @@
 					</div>
 					<p class="option-name">用户帮助</p>
 				</div>
-				<div class="menu-option" v-on:click="jumpTo('/')">
+				<!-- <div class="menu-option" v-on:click="jumpTo('/')">
 					<div class="option-icon">
 						<img src="/static/img/index/licai.png" alt="">
 					</div>
 					<p class="option-name">金融理财</p>
+				</div> -->
+				<div class="menu-option" v-on:click="jumpTo('/')">
+					<div class="option-icon">
+						<img src="/static/img/index/shop.png" alt="">
+					</div>
+					<p class="option-name">购物商场</p>
 				</div>
 			</div>
 			<div class="menu-option-box">
-				<div class="menu-option" v-on:click="jumpTo('/')">
+				<!-- <div class="menu-option" v-on:click="jumpTo('/')">
 					<div class="option-icon">
 						<img src="/static/img/index/shop.png" alt="">
 					</div>
@@ -67,13 +73,15 @@
 						<img src="/static/img/index/recharge.png" alt="">
 					</div>
 					<p class="option-name">充值中心</p>
-				</div>
+				</div> -->
 				<div class="menu-option" v-on:click="jumpTo('/')">
 					<div class="option-icon">
 						<img src="/static/img/index/city.png" alt="">
 					</div>
 					<p class="option-name">城市服务</p>
 				</div>
+				<div class="menu-option" style="border: none"></div>
+				<div class="menu-option" style="border: none"></div>
 			</div>
 		</div>
 

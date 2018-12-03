@@ -25,9 +25,9 @@
                 <p>3.0 整合资源，联盟各地广告合作商，打造全国最大的广告推广分享平台</p>
                 <br>
                 <p>4.0 公司筹备上市</p>
-                <p><img src="/static/img/personal/introduction1.png2" alt=""></p>
-                <p><img src="/static/img/personal/introduction1.png3" alt=""></p>
-                <p><img src="/static/img/personal/introduction1.png4" alt=""></p>
+                <p><img src="/static/img/personal/introduction2.png" alt=""></p>
+                <p><img src="/static/img/personal/introduction3.png" alt=""></p>
+                <p><img src="/static/img/personal/introduction4.png" alt=""></p>
             </div>
         </div>
   	</div>

@@ -13,31 +13,26 @@
                 <table cellpadding="0" cellspacing="0">
                     <tbody>
                         <tr>
-                            <td align="left">五常大米</td>
+                            <td align="left">{{taskTitle}}</td>
                         </tr>
                         <tr>
                             <td align="left">请将以下文案及图片发布到您的朋友圈（长按图片可保存图片到手机）</td>
                         </tr>
                         <tr>
-                            <td align="left" style="border-bottom: 0px" id="content">这家五常大米是我吃过最正宗的，一碗下锅满屋米香弥漫，出锅后粒粒晶莹饱满，香，软，弹，滑，很劲道，弹而不黏，地道五常人保证18年新米无抛光无掺假，原产地发货保证大米市场最低价，是您自购送礼最佳选择，如您到货不满意全额退款！扫描下方微信咨询购买↓↓↓</td>
+                            <td id="qqq" align="left" style="border-bottom: 0px">{{taskDesc}}</td>
+                            <textarea name="" id="taskDesc" v-model="taskDesc" cols="100" rows="100"></textarea>
                         </tr>
                         <tr>
                             <td style="border-top: 0px" align="center">
-                                <div id="copy-btn" class="common-small-button">复制</div>
+                                <div id="copy-btn" class="common-small-button" v-on:click="copyText">复制</div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div style="padding: 0px 16px">
+            <div style="padding: 0px 16px" v-for="item in taskImage" v-bind:key="item.index">
                 <div>
-                    <img style="width: 100%;height: 100%" src="/static/img/personal/qrCode.png">
-                </div>
-                <div>
-                    <img style="width: 100%;height: 100%" src="/static/img/personal/qrCode.png">
-                </div>
-                <div>
-                    <img style="width: 100%;height: 100%" src="/static/img/personal/qrCode.png">
+                    <img style="width: 100%;height: 100%" v-bind:src="item">
                 </div>
             </div>
             <div style="padding: 16px">
@@ -52,14 +47,39 @@ export default {
 	name: 'TasksDetails',
   	data () {
 		return {
-			
+            taskID: '',
+            taskTitle: '',
+            taskDesc: '',
+            taskPrice: '',
+            taskImage: []
 		}
 	},
 	created: function () {
-
+        this.taskID = this.$route.query.id
+        axios({ // 获取任务详情
+            method: 'GET',
+            url: process.env.api_url + '/task/info',
+            params: {
+                code_url: this.taskID
+            },
+            withCredentials: true,
+            headers: {"lang": 'zh'}
+        }).then((response) => {
+            let responseData = response.data.data
+            this.taskTitle = responseData.title
+            this.taskDesc = responseData.content
+            this.taskPrice = responseData.price
+            this.taskImage = responseData.image
+        }).catch((ex) => {
+            console.log(ex.response.data.message)
+        })
 	},
 	methods: {
-
+        copyText: function () {
+            document.designMode = 'on'
+            let a = document.getElementById("qqq")
+            let b = document.getElementById("textDesc")
+        }
 	}
 }
 </script>
@@ -94,5 +114,8 @@ export default {
     font-size: 16px;
     color: white;
     background: #4C9CD6;
+}
+#taskDesc{
+    display: none;
 }
 </style>
