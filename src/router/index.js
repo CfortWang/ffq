@@ -122,6 +122,16 @@ export default new VueRouter({
       component: (resolve) => require(['@/components/Service'], resolve)
     },
     {
+      path: '/service_zh',
+      name: 'Zhkf',
+      component: (resolve) => require(['@/components/Zhkf'], resolve)
+    },
+    {
+      path: '/service_gg',
+      name: 'Ggkf',
+      component: (resolve) => require(['@/components/Ggkf'], resolve)
+    },
+    {
       path: '/superior',
       name: 'Superior',
       component: (resolve) => require(['@/components/Superior'], resolve)

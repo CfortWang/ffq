@@ -14,23 +14,23 @@
 			</div>
 			<div id="subusers-list">
 				<table class="" cellpadding="0" cellspacing="0">
-					<tbody>
+					<tbody v-for="item in benifitList" v-bind:key="item.index">
                         <tr>
                             <td class="image" valign="top">
                                 <div class="image" style="width:42px;height:42px;">
-									<img src="http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJzwvCaiaQFBnsoZv5S8OFggEC2owrXlXNI4EkwQt2ULyfTUdCIvBCS4RHIRdDLzQhSupw2iap6XNoQ/132" style="width:42px;height:42px;">
+									<img src="/static/img/personal/avatar.png" style="width:42px;height:42px;">
                                 </div>
                             </td>
                             <td class="field" valign="top" style="padding-left:0;">
-                                <div class="price">获得1.00</div>
+                                <div class="price">获得{{item.amout}}</div>
                                 <div class="infos">
                                     <table cellpadding="0" cellspacing="0">
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <p class="nickname" style="height:20px;line-height:20px;overflow:hidden;">下雨天</p>
-                                                    <p style="height:20px;line-height:20px;overflow:hidden;margin-top:2px;color:#888;">消费 4.00  、 返佣1.00 </p>
-                                                    <p style="height:20px;line-height:20px;overflow:hidden;margin-top:2px;color:#888;">到账时间 2018-12-02 11:59:42</p>
+                                                    <p class="nickname" style="height:20px;line-height:20px;overflow:hidden;">{{item.name}}</p>
+                                                    <p style="height:20px;line-height:20px;overflow:hidden;margin-top:2px;color:#888;">消费{{item.from_user_spend}}、返佣{{item.amout}} </p>
+                                                    <p style="height:20px;line-height:20px;overflow:hidden;margin-top:2px;color:#888;">到账时间 {{item.created_at}}</p>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -78,9 +78,7 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                let responseData = response.data.data
-                console.log(responseData)
-                this.benifitList = responseData.data
+                this.benifitList = response.data.data
                 // this.allPage = Math.ceil(responseData.all / this.pageSize)
             }).catch((ex) => {
                 console.log(ex)

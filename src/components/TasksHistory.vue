@@ -18,6 +18,13 @@
             </div>
         </div>
 
+        <div class="addresses-not-found" v-if="noData">
+            <div class="image">
+                <img src="http://adv.xcnong.com/templates/images/wind.png" style="width:128px;">
+            </div>
+            <div class="text">暂无数据...</div>
+        </div>
+
   	</div>
 </template>
 
@@ -26,19 +33,18 @@ export default {
 	name: 'TasksHistory',
   	data () {
 		return {
-            type: '0',
             taskList: '',
             allPage: '',
             pageSize: 10,
-            pageNumber: 0
+            pageNumber: 0,
+            noData: false
 		}
 	},
 	created: function () {
         axios({ // 获取任务列表
             method: 'GET',
-            url: process.env.api_url + '/task/list',
+            url: process.env.api_url + '/task/joinlist',
             params: {
-                type: this.type,
                 pageSize: this.pageSize,
                 pageNumber: this.pageNumber
             },
@@ -46,6 +52,10 @@ export default {
             headers: {"lang": 'zh'}
         }).then((response) => {
             this.taskList = response.data.data
+            console.log(this.taskList)
+            if (this.taskList.length == 0) {
+                this.noData = true
+            }
             // this.allPage = Math.ceil(responseData.all / this.pageSize)
         }).catch((ex) => {
             console.log(ex)

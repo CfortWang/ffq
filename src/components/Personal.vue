@@ -80,7 +80,7 @@
 				</div>
 			</div>
 			<div class="menu-option-box">
-				<div class="menu-option" v-on:click="jumpTo('/certification')">
+				<div class="menu-option" v-on:click="jumpTo('/certification?phoneNum=' + phoneNumber + '&isVerification=' + isVerification)">
 					<div class="option-icon">
 						<img src="/static/img/personal/cellphone.png" alt="">
 					</div>
@@ -141,6 +141,7 @@ export default {
 	name: 'Personal',
   	data () {
 		return {
+			phoneNumber: '',
 			nickname: '',
 			registerTime: '',
 			userID: '',
@@ -161,6 +162,7 @@ export default {
 			let responseData = response.data.data
 			console.log(responseData)
 			this.nickname = responseData.name
+			this.phoneNumber = responseData.phone_number
 			this.registerTime = responseData.created_at
 			this.userID = responseData.recommend_code
 			this.userLevel = responseData.user_level_name

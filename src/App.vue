@@ -9,19 +9,17 @@
         </div>
     </div> 
     <div id="cover" level="1"></div> -->
-
-    <!-- <div class="addresses-not-found">
-        <div class="image">
-            <img src="http://adv.xcnong.com/templates/images/wind.png" style="width:128px;">
-        </div>
-        <div class="text">暂无数据...</div>
-    </div> -->
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data () {
+    return {
+        noData: false
+    }
+  }
 }
 </script>
 

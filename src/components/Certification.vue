@@ -7,7 +7,21 @@
             <div class="header-title">绑定手机号码</div>
         </div>
         <div class="empty"></div>
-        <div class="binding-box">
+        
+        <div v-if="hasVerification">
+            <div class="re-binding-box">
+                <div class="bind-info">
+                    <div class="bind-title">手机号码</div>
+                    <div class="bind-phone">{{phoneNumber}}</div>
+                </div>
+                <div class="bind-desc">您已成功绑定手机号码</div>
+            </div>
+            <div class="re-binding-btn-box">
+                <!-- <div class="re-binding-btn">取消绑定</div> -->
+            </div>
+        </div>
+
+        <div class="binding-box" v-else>
             <div class="phone-num">
                 <input type="number" name="phoneNum" id="phoneNum" value="" placeholder="手机号码"/>
             </div>
@@ -19,17 +33,6 @@
                 <div class="binding-btn">确认绑定</div>
             </div>
             <div class="protocol">点击确认绑定,即表示您同意<a href="">《发发圈用户协议》</a></div>
-        </div>
-        
-        <div class="re-binding-box">
-            <div class="bind-info">
-                <div class="bind-title">手机号码</div>
-                <div class="bind-phone">12312312312</div>
-            </div>
-            <div class="bind-desc">您已成功绑定手机号码</div>
-        </div>
-        <div class="re-binding-btn-box">
-            <div class="re-binding-btn">确认绑定</div>
         </div>
 
         <div class="footer">
@@ -60,14 +63,28 @@ export default {
 	name: 'Certification',
   	data () {
 		return {
-			
+            phoneNumber: '',
+            isVerification: '',
+            hasVerification: false
 		}
 	},
 	created: function () {
-
+        this.phoneNumber = this.$route.query.phoneNum
+        console.log(this.phoneNumber)
+        this.isVerification = this.$route.query.isVerification
+        if (this.isVerification == 1) {
+            this.hasVerification = true
+        } else {
+            this.hasVerification = false
+        }
 	},
 	methods: {
-
+        binding: function () {
+            
+        },
+        reBinding: function () {
+            this.hasVerification = false
+        }
 	}
 }
 </script>
@@ -75,7 +92,6 @@ export default {
 <style scoped>
 .binding-box{
 	padding: 15px;
-    display: none;
 }
 .binding-box > div{
     height: 42px;

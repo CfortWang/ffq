@@ -9,31 +9,31 @@
         <div class="empty"></div>
         
         <div id="contents" style="background-color: white">
-        <img style="width: 100%" src="https://ffq-adv.oss-cn-shenzhen.aliyuncs.com/templates/service/service.jpg">
+        <img style="width: 100%" src="/static/img/personal/service.jpg">
         <table class="service-grid-table" cellpadding="0" cellspacing="0">
             <tbody><tr>
-                <td class="blue" data-anchor="1" data-href="http://adv.xcnong.com/m/service_details/zh">
-                    <div><img src="https://ffq-adv.oss-cn-shenzhen.aliyuncs.com/templates/service/wx.png"></div>
+                <td class="blue" v-on:click="jumpTo('/service_zh')">
+                    <div><img src="/static/img/personal/wx.png"></div>
                     <p class="title">综合客服</p>
                     <p class="text">&nbsp;</p>
                     <p class="text">&nbsp;</p>
                 </td>
-                <td class="green" data-anchor="1" data-href="http://adv.xcnong.com/m/service_details/gg">
-                    <div><img src="https://ffq-adv.oss-cn-shenzhen.aliyuncs.com/templates/service/logo.png"></div>
+                <td class="green" v-on:click="jumpTo('/service_gg')">
+                    <div><img src="/static/img/personal/logo.png"></div>
                     <p class="title">广告投放客服</p>
                     <p class="text">&nbsp;</p>
                     <p class="text">&nbsp;</p>
                 </td>
             </tr>
             <tr>
-                <td class="green" data-anchor="1" data-href="http://fafaquan.mikecrm.com/YWNlmBb">
-                    <div><img src="https://ffq-adv.oss-cn-shenzhen.aliyuncs.com/templates/service/kf_03.png"></div>
+                <td class="green"  v-on:click="jumpTo('http://fafaquan.mikecrm.com/YWNlmBb')">
+                    <div><img src="/static/img/personal/jy.png"></div>
                     <p class="title">投诉建议</p>
                     <p class="text">&nbsp;</p>
                     <p class="text">&nbsp;</p>
                 </td>
                 <td class="blue">
-                    <div><img src="https://ffq-adv.oss-cn-shenzhen.aliyuncs.com/templates/service/kf_05.png"></div>
+                    <div><img src="/static/img/personal/sj.png"></div>
                     <p class="title">工作时间</p>
                     <p class="text">上午　09：00 - 12：00</p>
                     <p class="text">下午　14：00 - 18：00</p>
