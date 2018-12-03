@@ -19,8 +19,7 @@
                             <td align="left">请将以下文案及图片发布到您的朋友圈（长按图片可保存图片到手机）</td>
                         </tr>
                         <tr>
-                            <td id="qqq" align="left" style="border-bottom: 0px">{{taskDesc}}</td>
-                            <textarea name="" id="taskDesc" v-model="taskDesc" cols="100" rows="100"></textarea>
+                            <td align="left" style="border-bottom: 0px">{{taskDesc}}</td>
                         </tr>
                         <tr>
                             <td style="border-top: 0px" align="center">
@@ -36,9 +35,11 @@
                 </div>
             </div>
             <div style="padding: 16px">
-                <div class="common-theme-button" id="submit-button">立即领取</div>
+                <div class="common-theme-button" id="submit-button"  v-on:click="getTask">立即领取</div>
             </div>
         </div>
+        <input id="taskDesc" type="text" v-model="taskDesc" readonly>
+
   	</div>
 </template>
 
@@ -71,14 +72,34 @@ export default {
             this.taskPrice = responseData.price
             this.taskImage = responseData.image
         }).catch((ex) => {
-            console.log(ex.response.data.message)
+            this.showMsg(ex.response.data.message)
         })
 	},
 	methods: {
         copyText: function () {
             document.designMode = 'on'
-            let a = document.getElementById("qqq")
-            let b = document.getElementById("textDesc")
+            let b = document.getElementById("taskDesc")
+            b.select()
+            document.execCommand("copy")
+            if (document.execCommand("copy")) {
+                this.showMsg("复制成功")
+            }
+        },
+        getTask: function () {
+            axios({ // 领取任务
+                method: 'POST',
+                url: process.env.api_url + '/task/join',
+                params: {
+                    code_url: this.taskID
+                },
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                let responseMessage = response.data.message
+                this.showMsg(responseMessage)
+            }).catch((ex) => {
+                this.showMsg(ex.response.data.message)
+            })
         }
 	}
 }
@@ -116,6 +137,9 @@ export default {
     background: #4C9CD6;
 }
 #taskDesc{
-    display: none;
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    right: 0px;
 }
 </style>

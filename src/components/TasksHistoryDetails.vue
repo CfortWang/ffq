@@ -12,23 +12,15 @@
                 <table cellpadding="0" cellspacing="0">
                     <tbody>
                         <tr>
-                            <td align="left">清洁品牌——净态</td>
+                            <td align="left">{{taskTitle}}</td>
                         </tr>
                         <tr>
-                            <td style="border-bottom: 0px" id="content">
-                                <span>中国氧系清洁领导品牌——净态·懒人神器，开启清洁新时代</span><br>
-                                <span>去霉渍、衣服发黄、厨房用具油污垢等等</span><br>
-                                <span>懒人的最爱，让你摆脱清洁厨房卫生的烦恼</span><br>
-                                <span>欢迎咨询了解</span>
-                            </td>
+                            <td style="border-bottom: 0px" id="content">{{taskDesc}}</td>
                         </tr>
                         <tr>
                             <td>
-                                <div style="padding: 0px 16px">
-                                    <img style="width: 100%" src="/static/img/personal/qrCode.png">
-                                </div>
-                                <div>
-                                    <img style="width: 100%" src="/static/img/personal/qrCode.png">
+                                <div v-for="item in taskImage" v-bind:key="item.index">
+                                    <img style="width: 100%" v-bind:src="item">
                                 </div>
                             </td>
                         </tr>
@@ -49,14 +41,13 @@
                                 <input type="file" id="image" name="image" value="" style="width:0;height:0;overflow:hidden;margin-top:-9999px;">
                             </td>
                         </tr>
-                        <tr>
+                        <tr v-if="taskStatus == 1 || taskStatus == 2">
                             <td align="left" style="border: 1px solid #eee;padding: 8px;">
-                                <div id="tips" style="font-size: 16px;padding: 4px;color: indianred;display: none">上传图片成功</div>
-                                <div data-mode="2" id="mode-change-button">切换上传模式</div>
+                                <div id="tips" style="font-size: 16px;padding: 4px;color: indianred;text-align: center;"></div>
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr v-if="taskStatus == 0">
                             <td align="left" style="border: 1px solid #eee;padding: 8px;">
                                 <div>
                                     <div class="common-theme-button" id="submit-button">提交任务</div>
@@ -76,11 +67,37 @@ export default {
 	name: 'TasksHistoryDetails',
   	data () {
 		return {
-			
+			taskID: '',
+            taskTitle: '',
+            taskDesc: '',
+            taskStatus: '',
+            taskImage: []
 		}
 	},
 	created: function () {
-
+        this.taskID = this.$route.query.id
+        axios({ // 获取任务详情
+            method: 'GET',
+            url: process.env.api_url + '/task/detail',
+            params: {
+                id: this.taskID
+            },
+            withCredentials: true,
+            headers: {"lang": 'zh'}
+        }).then((response) => {
+            let task = response.data.data.task
+            this.taskTitle = task.title
+            this.taskDesc = task.content
+            this.taskImage = task.image
+            this.taskStatus = response.data.data.status
+            if (this.taskStatus == 1) {
+                document.getElementById('tips').innerText = "已完成"
+            } else if (this.taskStatus == 2) {
+                document.getElementById('tips').innerText = "审核被拒"
+            }
+        }).catch((ex) => {
+            this.showMsg(ex.response.data.message)
+        })
 	},
 	methods: {
 
@@ -137,5 +154,11 @@ export default {
     margin: 4px;
     width: 64px;
 }
-
+.common-theme-button {
+    text-align: center;
+    padding: 7px;
+    font-size: 16px;
+    color: white;
+    background: #4C9CD6;
+}
 </style>

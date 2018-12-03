@@ -9,11 +9,16 @@
         <div class="empty"></div>
         
         <div class="task-list" v-for="item in taskList" v-bind:key="item.index">
-            <div class="task" v-on:click="jumpTo('/tasksHistoryDetails')">
+            <div class="task" v-on:click="jumpTo('/tasksHistoryDetails?id=' + item.id)">
                 <span class="name">{{item.title}}</span>
                 <span class="status"></span>
                 <span class="price">￥{{item.price}}</span>
-                <span class="type">{{item.type}}</span>
+                <span class="type">
+                    <span v-if="item.user_level == 0">普通</span>
+                    <span v-else-if="item.user_level == 1">会员</span>
+                    <span v-else-if="item.user_level == 2">中级</span>
+                    <span v-else>高级</span>
+                </span>
                 <img class="arrow" src="/static/img/personal/gray-right-arrow.png" img="">
             </div>
         </div>
@@ -33,6 +38,7 @@ export default {
 	name: 'TasksHistory',
   	data () {
 		return {
+            taskStatus: '',
             taskList: '',
             allPage: '',
             pageSize: 10,
@@ -41,10 +47,12 @@ export default {
 		}
 	},
 	created: function () {
+        this.taskStatus = this.$route.query.status
         axios({ // 获取任务列表
             method: 'GET',
             url: process.env.api_url + '/task/joinlist',
             params: {
+                status: this.taskStatus,
                 pageSize: this.pageSize,
                 pageNumber: this.pageNumber
             },

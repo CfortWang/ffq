@@ -17,7 +17,7 @@
                 <img class="arrow" src="/static/img/personal/gray-right-arrow.png" img="">
             </div>
         </div>
-        <div id="page">
+        <div id="page" v-if="tasksList.length">
             <div class="page"><a class="pre" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">1/1</a><a class="next" hidefocus="true"><span>&gt;</span></a></div>
         </div>
 
@@ -74,7 +74,7 @@ export default {
             }).then((response) => {
                 this.tasksList = response.data.data
             }).catch((ex) => {
-                console.log(ex.response.data.message)
+                this.showMsg(ex.response.data.message)
             })
         }
 	}

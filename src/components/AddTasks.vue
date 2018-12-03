@@ -7,6 +7,8 @@
             <div class="header-title">发布任务</div>
         </div>
         <div class="empty"></div>
+
+        <!-- <form action="/"></form> -->
         <div class="top-box">
             <div class="textarea-box">
                 <div class="textarea-title">标题：</div>
@@ -28,7 +30,7 @@
                     </div>
                 </div>
                 <a href="javascript:;" class="file">请上传图片
-                    <input type="file" class="" id="product-image" name="file" onchange="selectImage(this, '.product')">
+                    <input type="file" class="" id="" name="file" v-on:change="uploadIamge($event)">
                 </a>
                 <div class="upload-desc">点击图片可删除</div>
             </div>
@@ -63,14 +65,51 @@ export default {
 	name: 'AddTasks',
   	data () {
 		return {
-			
+            file: '',
+            fd: ''
 		}
 	},
 	created: function () {
 
 	},
 	methods: {
-
+        uploadIamge: function (event) {
+            this.file = event.target.files[0]
+            this.fd = new FormData()
+            this.fd.append('file', this.file)
+            console.log(this.fd)
+            axios({
+                method: 'POST',
+                url: process.env.api_url + '/upload/image',
+                params: {
+                    file: this.fd
+                }
+            }).then((response) => {
+                console.log(response)
+            }).catch((ex) => {
+                console.log(ex)
+            })
+        },
+        selectImage: function (e) {
+            // if (!file.files || !file.files[0]) {
+            //     return;
+            // }
+            // var reader = new FileReader();
+            // reader.onload = function (evt) {
+            //     image = evt.target.result;
+            // }
+            // reader.readAsDataURL(file.files[0]);
+            // var fd = new FormData()
+            // fd.append('file', file.files[0])
+            // upLoadImage(fd);
+            let file = e.target.files[0]
+            let param = new FormData()
+            param.append('file',file)
+            console.log(param.get('file'))
+            this.$http.post('http://47.99.75.151:8080/upload/image',param).then(response=>{
+                console.log(response.data);
+            })
+        }
 	}
 }
 </script>

@@ -81,11 +81,6 @@ export default new VueRouter({
       name: 'TasksHall',
       component: (resolve) => require(['@/components/TasksHall'], resolve)
     },
-    {// 任务大厅对应的任务列表
-      path: '/tasksList',
-      name: 'TasksList',
-      component: (resolve) => require(['@/components/TasksList'], resolve)
-    },
     {// 任务大厅对应的任务详情
       path: '/tasksDetails',
       name: 'TasksDetails',

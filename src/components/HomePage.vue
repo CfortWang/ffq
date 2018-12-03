@@ -54,7 +54,7 @@
 					</div>
 					<p class="option-name">金融理财</p>
 				</div> -->
-				<div class="menu-option" v-on:click="jumpTo('/')">
+				<div class="menu-option" v-on:click="showMsg('即将上线，敬请期待。')">
 					<div class="option-icon">
 						<img src="/static/img/index/shop.png" alt="">
 					</div>
@@ -74,7 +74,7 @@
 					</div>
 					<p class="option-name">充值中心</p>
 				</div> -->
-				<div class="menu-option" v-on:click="jumpTo('/')">
+				<div class="menu-option" v-on:click="showMsg('即将上线，敬请期待。')">
 					<div class="option-icon">
 						<img src="/static/img/index/city.png" alt="">
 					</div>

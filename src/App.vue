@@ -1,14 +1,14 @@
 <template>
   <div id="app">
     <router-view/>
-    <!-- <div id="msg">
+    <div id="msg">
         <div class="msg-title">系统提示</div>
         <div class="msg-contents">即将上线，敬请期待。</div>
         <div class="msg-buttons">
-            <div class="ok-btn" id="msg-ok-btn">确认</div>
+            <div class="ok-btn" id="msg-ok-btn" v-on:click="closeMsg">确认</div>
         </div>
     </div> 
-    <div id="cover" level="1"></div> -->
+    <div id="cover" level="1"></div>
   </div>
 </template>
 
@@ -163,6 +163,7 @@ input:focus{
     top: 0;
     width: 100%;
     height: 100%;
+    display: none;
 }
 #msg {
     border-radius: 6px;
@@ -173,6 +174,7 @@ input:focus{
     background: #fff;
     overflow: hidden;
     position: fixed;
+    display: none;
 }
 #msg .msg-title {
     background: #eee;

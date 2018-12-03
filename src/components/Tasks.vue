@@ -9,7 +9,7 @@
 		</swiper>
 
         <div class="task-operate">
-            <div class="task-submit" v-on:click="jumpTo('/tasksHistory')">
+            <div class="task-submit" v-on:click="jumpTo('/tasksHistory?status=0')">
                 <img src="/static/img/tasks/upload.png" alt="">
                 <p>提交任务</p>
             </div>

@@ -8,14 +8,26 @@
         </div>
         <div class="empty"></div>
         
-        <div class="task-list">
-            <div class="task">
-                <span class="name">mo</span>
+        <div class="task-list" v-for="item in addList" v-bind:key="item.index">
+            <div class="task" v-on:click="jumpTo('/addHistoryDetails?id=' + item.code_url)">
+                <span class="name">{{item.title}}</span>
                 <span class="status"></span>
-                <span class="price">￥2.00</span>
-                <span class="type">普通</span>
+                <span class="price">￥{{item.price}}</span>
+                <span class="type">
+                    <span v-if="item.user_level == 0">普通</span>
+                    <span v-else-if="item.user_level == 1">会员</span>
+                    <span v-else-if="item.user_level == 2">中级</span>
+                    <span v-else>高级</span>
+                </span>
                 <img class="arrow" src="/static/img/personal/gray-right-arrow.png" img="">
             </div>
+        </div>
+        
+        <div class="addresses-not-found" v-if="!addList.length">
+            <div class="image">
+                <img src="/static/img/personal/wind.png" style="width:128px;">
+            </div>
+            <div class="text">暂无数据...</div>
         </div>
 
   	</div>
@@ -26,14 +38,31 @@ export default {
 	name: 'AddHistory',
   	data () {
 		return {
-			
+            pageNumber: 0,
+            pageSize: 10,
+            addList: []
 		}
 	},
 	created: function () {
-
+        this.getAddList(this.pageSize, this.pageNumber)
 	},
 	methods: {
-
+        getAddList: function (pageSize, pageNumber) {
+            axios({ // 获取任务数据
+                method: 'GET',
+                url: process.env.api_url + '/task/ownlist',
+                params: {
+                    pageSize: pageSize,
+                    pageNumber: pageNumber
+                },
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                this.addList = response.data.data
+            }).catch((ex) => {
+                this.showMsg(ex.response.data.message)
+            })
+        }
 	}
 }
 </script>
