@@ -27,10 +27,12 @@
                 <input type="text" name="verificationCode" id="verificationCode" v-model="verificationCode" placeholder="验证码"/>
                 <div class="verification-btn" v-on:click="getVerificationCode">发送验证码</div>
             </div>
-            <div class="user-protocol" v-on:click="changeStatus">
-                <img class="selected" src="/static/img/index/selected.png" v-if="isAgree" alt="">
-                <img class="unselect" src="/static/img/index/unselect.png" v-else alt="">
-                <span>《用户协议》</span>
+            <div class="user-protocol">
+                <span v-on:click="changeStatus">
+                    <img class="selected" src="/static/img/index/selected.png" v-if="isAgree" alt="">
+                    <img class="unselect" src="/static/img/index/unselect.png" v-else alt="">
+                </span>
+                <span  v-on:click="jumpTo('/userProtocol')">《用户协议》</span>
             </div>
             <div class="reg-btn-box" v-on:click="doRigster">
                 <div class="reg-btn">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</div>
@@ -60,7 +62,7 @@ export default {
 		}
 	},
 	created: function () {
-        
+        this.recommendCode = this.$route.query.recommendCode
 	},
 	methods: {
         getVerificationCode: function () {
@@ -95,7 +97,7 @@ export default {
                 }
             }).then((response) => {
                 let responseMessage = response.data.message
-                console.log(response)
+                this.$router.push({name: 'Login', params:{phoneNumber: this.phoneNumber}})
             }).catch((ex) => {
                 console.log(ex)
             })

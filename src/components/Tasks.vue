@@ -2,27 +2,18 @@
 	<div class="content">
 		<!-- 轮播 -->
     	<swiper :options="swiperOption">
-			<!-- <swiper-slide class="swiper-div" v-for="item in bannerItems" v-bind:key="item.index">
-				<img v-bind:src="item.image" alt="">
-			</swiper-slide> -->
-      		<swiper-slide class="swiper-div">
-				<img src="/static/img/index/Carousel1.jpg" alt="">
-			</swiper-slide>
-			<swiper-slide class="swiper-div">
-				<img src="/static/img/index/Carousel2.jpg" alt="">
-			</swiper-slide>
-			<swiper-slide class="swiper-div">
-				<img src="/static/img/index/Carousel3.jpg" alt="">
+			<swiper-slide class="swiper-div" v-for="item in bannerList" v-bind:key="item.index">
+				<img v-bind:src="item.image" alt="" v-on:click="jumpTo(item.link)">
 			</swiper-slide>
 			<div class="swiper-pagination"  slot="pagination"></div>
 		</swiper>
 
         <div class="task-operate">
-            <div class="task-submit">
+            <div class="task-submit" v-on:click="jumpTo('/tasksHistory')">
                 <img src="/static/img/tasks/upload.png" alt="">
                 <p>提交任务</p>
             </div>
-            <div class="task-history">
+            <div class="task-history" v-on:click="jumpTo('/tasksHistory')">
                 <img src="/static/img/tasks/task_list.png" alt="">
                 <p>任务记录</p>
             </div>
@@ -30,19 +21,19 @@
 
 		<!-- 任务菜单 -->
         <div class="task-menu">
-            <div class="free">
+            <div class="free" v-on:click="jumpTo('/tasksHall?type=0')">
                 <img src="/static/img/tasks/task1.png" alt="">
                 <div class="task-title">自由任务大厅</div>
             </div>
-            <div class="member">
+            <div class="member" v-on:click="jumpTo('/tasksHall?type=1')">
                 <img src="/static/img/tasks/task2.png" alt="">
                 <div class="task-title">会员任务大厅</div>
             </div>
-            <div class="intermediate">
+            <div class="intermediate" v-on:click="jumpTo('/tasksHall?type=2')">
                 <img src="/static/img/tasks/task3.png" alt="">
                 <div class="task-title">中级任务大厅</div>
             </div>
-            <div class="advanced">
+            <div class="advanced" v-on:click="jumpTo('/tasksHall?type=3')">
                 <img src="/static/img/tasks/task4.png" alt="">
                 <div class="task-title">高级任务大厅</div>
             </div>
@@ -90,11 +81,20 @@ export default {
 				},
 				centeredSlides: true,
 				loop: true
-			}
+			},
+			bannerList: ''
 		}
 	},
 	created: function () {
-
+		axios({ // 获取轮播图
+			method: 'GET',
+			url: process.env.api_url + '/home'
+		}).then((response) => {
+			let responseData = response.data.data
+			this.bannerList = responseData.banner
+		}).catch((ex) => {
+			console.log(ex)
+		})
 	},
 	methods: {
 

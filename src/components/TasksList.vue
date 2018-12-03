@@ -30,7 +30,7 @@
 
 <script>
 export default {
-	name: 'TasksHistory',
+	name: 'TasksList',
   	data () {
 		return {
             taskList: '',

@@ -45,7 +45,7 @@
                         <tr>
                             <td class="image" valign="top">
                                 <div class="image">
-                                    <img src="http://thirdwx.qlogo.cn/mmopen/vi_32/9zDgoFiclCic22ttuibWFlWWb6vSiaIPGd8yNZtg2MmoEOYJu0QSzOyBn1AD96NlYbNFGgu2vavYvuiaRicb2L0rOSGA/132">
+                                    <img src="/static/img/personal/avatar.png">
                                 </div>
                             </td>
                             <td class="field" valign="top">

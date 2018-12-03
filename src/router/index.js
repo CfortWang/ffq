@@ -46,12 +46,12 @@ export default new VueRouter({
       name: 'AddTasks',
       component: (resolve) => require(['@/components/AddTasks'], resolve)
     },
-    {
+    {// 任务发布记录
       path: '/addHistory',
       name: 'AddHistory',
       component: (resolve) => require(['@/components/AddHistory'], resolve)
     },
-    {
+    {// 任务发布记录对应的任务详情
       path: '/addHistoryDetails',
       name: 'AddHistoryDetails',
       component: (resolve) => require(['@/components/AddHistoryDetails'], resolve)
@@ -66,20 +66,30 @@ export default new VueRouter({
       name: 'JoinVip',
       component: (resolve) => require(['@/components/JoinVip'], resolve)
     },
-    {
+    {// 任务记录
       path: '/tasksHistory',
       name: 'TasksHistory',
       component: (resolve) => require(['@/components/TasksHistory'], resolve)
     },
-    {
+    {// 任务记录对应的任务详情
       path: '/tasksHistoryDetails',
       name: 'TasksHistoryDetails',
       component: (resolve) => require(['@/components/TasksHistoryDetails'], resolve)
     },
-    {
+    {// 任务大厅
       path: '/tasksHall',
       name: 'TasksHall',
       component: (resolve) => require(['@/components/TasksHall'], resolve)
+    },
+    {// 任务大厅对应的任务列表
+      path: '/tasksList',
+      name: 'TasksList',
+      component: (resolve) => require(['@/components/TasksList'], resolve)
+    },
+    {// 任务大厅对应的任务详情
+      path: '/tasksDetails',
+      name: 'TasksDetails',
+      component: (resolve) => require(['@/components/TasksDetails'], resolve)
     },
     {
       path: '/wallet',

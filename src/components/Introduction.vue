@@ -15,7 +15,7 @@
                 <p>发发圈打造一个互利共赢的平台，将闲置的朋友圈产生最大化的价值，为广告主创造效益，给会员创富未来！</p>
                 <br>
                 <p>同时，发发圈平台拿出巨额资金奖励给推广者，希望能将发发圈快速占领市场，为今后多业务板块的上线做好准备。</p>
-                <p><img src="https://ffq-adv.oss-cn-shenzhen.aliyuncs.com/kindeditor-img/20181122085957_78549.png" alt=""></p>
+                <p><img src="/static/img/personal/introduction1.png" alt=""></p>
                 <p>公司关于发发圈平台未来规划如下：</p>
                 <br>
                 <p>1.0 运营朋友圈分享广告模式</p>
@@ -25,9 +25,9 @@
                 <p>3.0 整合资源，联盟各地广告合作商，打造全国最大的广告推广分享平台</p>
                 <br>
                 <p>4.0 公司筹备上市</p>
-                <p><img src="https://ffq-adv.oss-cn-shenzhen.aliyuncs.com/kindeditor-img/20181122090013_26081.png" alt=""></p>
-                <p><img src="https://ffq-adv.oss-cn-shenzhen.aliyuncs.com/kindeditor-img/20181122090013_76917.png" alt=""></p>
-                <p><img src="https://ffq-adv.oss-cn-shenzhen.aliyuncs.com/kindeditor-img/20181122090014_31063.png" alt=""></p>
+                <p><img src="/static/img/personal/introduction1.png2" alt=""></p>
+                <p><img src="/static/img/personal/introduction1.png3" alt=""></p>
+                <p><img src="/static/img/personal/introduction1.png4" alt=""></p>
             </div>
         </div>
   	</div>

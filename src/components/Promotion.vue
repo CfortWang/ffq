@@ -1,7 +1,13 @@
 <template>
 	<div class="content">
 
-
+		<div class="contain">
+			<div class="share-text">
+				<span>{{nickname}}邀您加入</span>
+			</div>
+			<qrcode :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
+		</div>
+		
 		<!-- 底部 -->
 		<div class="footer">
 			<div class="homepage"  v-on:click="jumpTo('/')">
@@ -27,15 +33,32 @@
 </template>
 
 <script>
+import QRcode from '@xkeshi/vue-qrcode'
 export default {
 	name: 'Promotion',
+	components: {
+		qrcode : QRcode
+	},
   	data () {
 		return {
-			
+			nickname: '',
+			qrCodeUrl: ''
 		}
 	},
 	created: function () {
-		
+		axios({ // 获取个人信息
+			method: 'GET',
+			url: process.env.api_url + '/user/info',
+			withCredentials: true,
+			headers: {"lang": 'zh'}
+		}).then((response) => {
+			let responseData = response.data.data
+			this.nickname = responseData.name
+			let recommendCode = responseData.recommend_code
+			this.qrCodeUrl = "http://fafa.sumsia.com/register?recommendCode" + recommendCode
+		}).catch((ex) => {
+			console.log(ex.response.data.message)
+		})
 	},
 	methods: {
 		
@@ -44,5 +67,17 @@ export default {
 </script>
 
 <style scoped>
-
+.contain{
+	width: 100vw;
+	height: 141vw;
+	padding: 0px;
+	background: url('/static/img/personal/qrCode.png') no-repeat center;
+	background-size: 100% 100%;
+	text-align: center;
+	border-top: 1px solid #eee;
+}
+.share-text{
+	font-size: 12px;
+	margin-top: 49vw;
+}
 </style>

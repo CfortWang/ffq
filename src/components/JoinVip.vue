@@ -35,12 +35,12 @@
             <div style="padding: 8px 0px">
                 <input type="radio" checked="" name="payment" value="WEIXINPAY">
                 <span>微信支付</span>
-                <img align="right" style="padding-right:16px;width: 24px;line-height: 16px;vertical-align: middle;text-align: right" src="http://adv.xcnong.com/templates/images/wxpay.png">
+                <img align="right" style="padding-right:16px;width: 24px;line-height: 16px;vertical-align: middle;text-align: right" src="/static/img/personal/wxpay.png">
             </div>
             <div style="padding: 8px 0px;border-top: 1px solid #EEE;display: ">
                 <input type="radio" name="payment" value="ALIPAY">
                 <span>支付宝支付</span>
-                <img align="right" style="padding-right:16px;width: 24px;line-height: 16px;vertical-align: middle;text-align: right" src="http://adv.xcnong.com/templates/images/alipay.png">
+                <img align="right" style="padding-right:16px;width: 24px;line-height: 16px;vertical-align: middle;text-align: right" src="/static/img/personal/alipay.png">
             </div>
         </div>
 

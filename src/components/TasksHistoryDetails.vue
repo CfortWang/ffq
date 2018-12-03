@@ -25,10 +25,10 @@
                         <tr>
                             <td>
                                 <div style="padding: 0px 16px">
-                                    <img style="width: 100%" src="https://ffq-adv.oss-cn-shenzhen.aliyuncs.com/static/images/goods/sys7c79e76123c5ddda666c02c97262a0ac.jpg">
+                                    <img style="width: 100%" src="/static/img/personal/qrCode.png">
                                 </div>
                                 <div>
-                                    <img style="width: 100%" src="https://ffq-adv.oss-cn-shenzhen.aliyuncs.com/static/images/goods/syse4c6008ba8d54229682ca0441430284a.jpg">
+                                    <img style="width: 100%" src="/static/img/personal/qrCode.png">
                                 </div>
                             </td>
                         </tr>

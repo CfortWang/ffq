@@ -32,7 +32,7 @@
 
 			<div style="padding: 0px 16px">
 				<div>
-					<img style="width: 100%;height: 100%" src="https://ffq-adv.oss-cn-shenzhen.aliyuncs.com/static/images/goods/2508aeff1344c53ce521cb5025cad3de.jpg">
+					<img style="width: 100%;height: 100%" src="/static/img/personal/qrCode.png">
 				</div>
 			</div>
 			<div style="padding: 16px">

@@ -36,7 +36,7 @@ export default {
 		}
 	},
 	created: function () {
-
+        this.phoneNumber = this.$route.query.phoneNumber
 	},
 	methods: {
         doLogin: function () {

@@ -8,13 +8,13 @@
         </div>
         <div class="empty"></div>
         
-        <div class="task-list">
-            <div class="task" data-href="http://adv.xcnong.com/m/task_details/3241 " data-anchor="1" style="border-bottom:4px solid #eee;margin-top: 0px ">
-                <span class="name">五常大米</span>
+        <div class="task-list" v-for="item in tasksList" v-bind:key="item.index">
+            <div class="task" style="border-bottom:4px solid #eee;margin-top: 0px ">
+                <span class="name">{{item.title}}</span>
                 <span class="status"></span>
-                <span class="price">￥2.00</span>
-                <span class="type">普通</span>
-                <img class="arrow" src="http://adv.xcnong.com/templates//images/gray-right-arrow.png" img="">
+                <span class="price">￥{{item.price}}</span>
+                <span class="type">{{item.type}}</span>
+                <img class="arrow" src="/static/img/personal/gray-right-arrow.png" img="">
             </div>
         </div>
         <div id="page">
@@ -49,14 +49,34 @@ export default {
 	name: 'TasksHall',
   	data () {
 		return {
-			
+            type: '',
+            pageNumber: 0,
+            pageSize: 10,
+            tasksList: []
 		}
 	},
 	created: function () {
-
+        this.type = this.$route.query.type
+        this.getTasksList(this.type, this.pageSize, this.pageNumber)
 	},
 	methods: {
-
+        getTasksList: function (type, pageSize, pageNumber) {
+            axios({ // 获取任务数据
+                method: 'GET',
+                url: process.env.api_url + '/task/list',
+                params: {
+                    type: type,
+                    pageSize: pageSize,
+                    pageNumber: pageNumber
+                },
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                this.tasksList = response.data.data
+            }).catch((ex) => {
+                console.log(ex.response.data.message)
+            })
+        }
 	}
 }
 </script>
