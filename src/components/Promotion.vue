@@ -71,7 +71,7 @@ export default {
 	width: 100vw;
 	height: 141vw;
 	padding: 0px;
-	background: url('/static/img/personal/qrCode.png') no-repeat center;
+	background: url('/static/img/personal/qrCode.jpg') no-repeat center;
 	background-size: 100% 100%;
 	text-align: center;
 	border-top: 1px solid #eee;

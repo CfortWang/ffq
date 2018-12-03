@@ -147,7 +147,7 @@ input:focus{
 	color: #4C9CD6;
 }
 .footer img{
-	width: 22px;
+	width: 28px;
 	margin-top: 10px;
 }
 
