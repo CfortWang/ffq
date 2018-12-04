@@ -13,13 +13,13 @@
             <div class="textarea-box">
                 <div class="textarea-title">标题：</div>
                 <div class="textarea">
-                    <textarea name="" id="" cols="" rows="" placeholder="请输入任务标题"></textarea>
+                    <textarea name="" id="" v-model="taskTitle" cols="" rows="" placeholder="请输入任务标题"></textarea>
                 </div>
             </div>
             <div class="textarea-box">
                 <div class="textarea-title">内容：</div>
                 <div class="textarea">
-                    <textarea name="" id="" cols="" rows="" placeholder="请输入任务内容"></textarea>
+                    <textarea name="" id="" v-model="taskDesc" cols="" rows="" placeholder="请输入任务内容"></textarea>
                 </div>
             </div>
             <div class="image-box">
@@ -37,25 +37,25 @@
         </div>
 
         <div class="bottom-box">
-            <div class="ad-price"><span>今日广告单价：￥</span><span>2</span></div>
+            <div class="ad-price"><span>今日广告单价：￥</span><span>{{taskPrice}}</span></div>
             <div class="price-desc">本价格根据平台会员活跃指数动态调价</div>
             <div class="line"></div>
             <div class="task-info-box">
                 <div class="task-count">
                     <div class="task-count-title">任务数量：</div>
                     <div class="task-amount">
-                        <input type="number" placeholder="最低为2000">
+                        <input type="number" v-model="taskAmount" v-on:keyup="getTotal" placeholder="最低为2000">
                     </div>
                 </div>
                 <div class="task-count">
                     <div class="task-count-title">广告总价：</div>
-                    <div class="total-amount clearfix">
-                        0
+                    <div class="task-amount">
+                        <input type="number" v-model="taskTotalAmount" placeholder="0" readonly>
                     </div>
                 </div>
             </div>
-            <div class="publish-btn">发布任务</div>
-            <div class="publish-desc">注：发布需求超过1000的客户请直接联系客服，查 询广告发布套餐价</div>
+            <div class="publish-btn" v-on:click="publish">发布任务</div>
+            <div class="publish-desc">注：发布需求超过1000的客户请直接联系客服，查询广告发布套餐价</div>
         </div>
   	</div>
 </template>
@@ -67,11 +67,41 @@ export default {
 		return {
             fileData: '',
             imageArr: [],
-            newImageArr: []
+            taskTitle: '',
+            taskDesc: '',
+            taskPrice: '',
+            taskAmount: '',
+            taskTotalAmount: '',
+            userLevel: ''
 		}
 	},
 	created: function () {
+        axios({ // 获取用户级别
+			method: 'GET',
+			url: process.env.api_url + '/user/info',
+			withCredentials: true,
+			headers: {"lang": 'zh'}
+		}).then((response) => {
+			let responseData = response.data.data
+            this.userLevel = responseData.user_level_id
+            
+            axios({ // 获取广告单价
+                method: 'GET',
+                url: process.env.api_url + '/task/hallList',
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                let responseData = response.data.data
+                this.taskPrice = responseData[this.userLevel].price
+            }).catch((ex) => {
+                console.log(ex.response.data.message)
+            })
 
+		}).catch((ex) => {
+			console.log(ex.response.data.message)
+			this.$router.push({name: 'Login'})
+        })
+        this.taskTotalAmount = this.taskAmount * this.taskPrice
 	},
 	methods: {
         uploadIamge: function (event) {
@@ -98,15 +128,57 @@ export default {
             let self = e.currentTarget
             let parent = self.parentElement
             parent.removeChild(self)
-            this.newImageArr = []
             let index = self.getAttribute('data-index')
-            for (let i = 0, j = 0; i < this.imageArr.length; i++, j++) {
-                if (i != index) {
-                    this.newImageArr[j] = this.imageArr[i]
-                }
+            delete this.imageArr[index]
+        },
+        getTotal: function () {
+            this.taskTotalAmount = this.taskPrice * this.taskAmount
+        },
+        publish: function () {
+            if (this.taskTitle == '' || this.taskTitle == null) {
+                this.showMsg("请输入任务标题！")
+                return false
             }
-            console.log(this.imageArr)
-            console.log(this.newImageArr)
+            if (this.taskDesc == '' || this.taskDesc == null) {
+                this.showMsg("请输入任务内容！")
+                return false
+            }
+            if (this.imageArr == '' || this.taskTitle == null) {
+                this.showMsg("请上传任务图片！")
+                return false
+            }
+            if (this.taskAmount == '' || this.taskAmount == null) {
+                this.showMsg("请输入任务数量！")
+                return false
+            } else if (this.taskAmount < 2000) {
+                this.showMsg("任务数量不得小于2000！")
+                return false
+            }
+            axios({ // 发布任务
+                method: 'POST',
+                url: process.env.api_url + '/task',
+                params: {
+                    title: this.taskTitle,
+                    content: this.taskDesc,
+                    amount: this.taskAmount,
+                    user_level: this.userLevel,
+                    image: this.imageArr
+                },
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                let responseMessage = response.data.data
+                if (response.data.code == 200) {
+                    this.showMsg("任务发布成功！")
+                    window.location.href = window.location.href
+                    return false
+                } else {
+                    this.showMsg(responseMessage)
+                    return false
+                }
+            }).catch((ex) => {
+                this.showMsg(ex.response.data.message)
+            })
         }
 	}
 }
