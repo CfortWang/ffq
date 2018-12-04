@@ -48,12 +48,6 @@
 					</div>
 					<p class="option-name">用户帮助</p>
 				</div>
-				<!-- <div class="menu-option" v-on:click="jumpTo('/')">
-					<div class="option-icon">
-						<img src="/static/img/index/licai.png" alt="">
-					</div>
-					<p class="option-name">金融理财</p>
-				</div> -->
 				<div class="menu-option" v-on:click="showMsg('即将上线，敬请期待。')">
 					<div class="option-icon">
 						<img src="/static/img/index/shop.png" alt="">
@@ -62,26 +56,24 @@
 				</div>
 			</div>
 			<div class="menu-option-box">
-				<!-- <div class="menu-option" v-on:click="jumpTo('/')">
+				<div class="menu-option" v-on:click="showMsg('即将上线，敬请期待。')">
 					<div class="option-icon">
-						<img src="/static/img/index/shop.png" alt="">
+						<img src="/static/img/index/shop-service.png" alt="">
 					</div>
-					<p class="option-name">购物商场</p>
+					<p class="option-name">商家服务</p>
 				</div>
-				<div class="menu-option" v-on:click="jumpTo('/')">
+				<div class="menu-option" v-on:click="showMsg('即将上线，敬请期待。')">
 					<div class="option-icon">
-						<img src="/static/img/index/recharge.png" alt="">
+						<img src="/static/img/index/daili.png" alt="">
 					</div>
-					<p class="option-name">充值中心</p>
-				</div> -->
+					<p class="option-name">代理专区</p>
+				</div>
 				<div class="menu-option" v-on:click="showMsg('即将上线，敬请期待。')">
 					<div class="option-icon">
 						<img src="/static/img/index/city.png" alt="">
 					</div>
 					<p class="option-name">城市服务</p>
 				</div>
-				<div class="menu-option" style="border: none"></div>
-				<div class="menu-option" style="border: none"></div>
 			</div>
 		</div>
 

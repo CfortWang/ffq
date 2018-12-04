@@ -170,7 +170,9 @@ export default {
                 let responseMessage = response.data.data
                 if (response.data.code == 200) {
                     this.showMsg("任务发布成功！")
-                    window.location.href = window.location.href
+                    setTimeout(() => {
+                        window.location.href = window.location.href
+                    }, 2000);
                     return false
                 } else {
                     this.showMsg(responseMessage)

@@ -39,15 +39,15 @@
                         <tr id="mode-1">
                             <td align="left" style="border: 1px solid #eee;padding: 8px;">
                                 <div id="upload-image-body">
-                                    <a href="javascript:;" class="file">上传图片
+                                    <a href="javascript:;" id="upload-btn" class="file">上传图片
                                         <input type="file" class="" id="" name="file" v-on:change="uploadIamge($event)">
                                     </a>
-                                    <div class="upload-desc">点击图片可删除</div>
+                                    <div class="upload-desc">仅能上传一张图片，点击图片可删除</div>
                                 </div>
                             </td>
                         </tr>
 
-                        <tr v-if="taskStatus == 1 || taskStatus == 2">
+                        <tr v-if="taskStatus != 0">
                             <td align="left" style="border: 1px solid #eee;padding: 8px;">
                                 <div id="tips" style="font-size: 16px;padding: 4px;color: indianred;text-align: center;"></div>
                             </td>
@@ -79,6 +79,7 @@ export default {
             taskStatus: '',
             fileData: '',
             imageArr: [],
+            element: ''
 		}
 	},
 	created: function () {
@@ -101,6 +102,8 @@ export default {
                 document.getElementById('tips').innerText = "已完成"
             } else if (this.taskStatus == 2) {
                 document.getElementById('tips').innerText = "审核被拒"
+            } else if (this.taskStatus == 3) {
+                document.getElementById('tips').innerText = "审核中"
             }
         }).catch((ex) => {
             this.showMsg(ex.response.data.message)
@@ -111,6 +114,7 @@ export default {
             let file = event.target.files[0]
             this.fileData = new FormData()
             this.fileData.append('file', file)
+            this.element = event.currentTarget
             let config = {
                 headers:{'Content-Type':'multipart/form-data'}
             }
@@ -119,6 +123,7 @@ export default {
                     let imageUrl = response.data.data.url
                     this.imageArr.push(imageUrl)
                     this.showMsg("图片上传成功！")
+                    this.element.parentElement.style.display = 'none'
                 } else {
                     let responseMessage = response.data.message
                     this.showMsg(responseMessage)
@@ -133,6 +138,7 @@ export default {
             parent.removeChild(self)
             let index = self.getAttribute('data-index')
             delete this.imageArr[index]
+            document.getElementById('upload-btn').style.display= 'block'
         },
         uploadTask: function () {
             if (this.imageArr == '' || this.imageArr == null) {
@@ -144,7 +150,7 @@ export default {
                 url: process.env.api_url + '/task/done',
                 params: {
                     id: this.taskID,
-                    image: this.imageArr
+                    image: this.imageArr[0]
                 },
                 withCredentials: true,
                 headers: {"lang": 'zh'}
