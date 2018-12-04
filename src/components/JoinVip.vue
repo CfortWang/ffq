@@ -12,19 +12,24 @@
                 </div>
                 <div class="empty"></div>
                 <img src="/static/img/personal/avatar.png" class="user-avatar">
-                <div class="user-nickname" style="padding-top: 6px">cfort</div>
-                <div class="user-desc">已开通中级会员</div>
+                <div class="user-nickname" style="padding-top: 6px">{{nickname}}</div>
+                <div class="user-desc">
+                    <span v-if="userLevelID == 1">已开通普通会员</span>
+                    <span v-else-if="userLevelID == 2">已开通中级会员</span>
+                    <span v-else-if="userLevelID == 3">已开通高级会员</span>
+                    <span v-else>尚未开通会员</span>
+                </div>
                 <div style="overflow: hidden;text-decoration: line-through;margin: 0px 8px "></div>
             </div>
-            <div class="vip-list" data-index="1">
+            <div class="vip-list selected" v-on:click="chooseLevel">
                 <div class="desc">会员</div>
                 <div class="price">￥98</div>
             </div>
-            <div class="vip-list" data-index="2">
+            <div class="vip-list" v-on:click="chooseLevel">
                 <div class="desc">中级会员</div>
                 <div class="price">￥368</div>
             </div>
-            <div class="vip-list" data-index="3">
+            <div class="vip-list" v-on:click="chooseLevel">
                 <div class="desc">高级会员</div>
                 <div class="price">￥988</div>
             </div>
@@ -44,9 +49,12 @@
             </div>
         </div>
 
-        <div style="font-size: 13px;color:#111;text-align:left;margin-bottom:10px;padding-top:1rem;padding-left: 5%;opacity: 0.5 ">
-            <input type="checkbox" checked="" name="no">
-            开通即表示您同意<strong style="color:#111;">《用户协议》</strong>
+        <div class="protocol" style="font-size: 13px;color:#111;text-align:left;margin-bottom:10px;padding-top:1rem;padding-left: 5%;opacity: 0.5 ">
+            <span v-on:click="changeStatus">
+                <img class="selected-icon" src="/static/img/index/selected.png" v-if="isAgree" alt="">
+                <img class="unselect-icon" src="/static/img/index/unselect.png" v-else alt="">
+            </span>
+            <span>开通即表示您同意<span style="color:#111;font-weight:700;" v-on:click="jumpTo('/userProtocol')">《用户协议》</span></span>
         </div>
         <div style="font-size: 13px;text-align: left;padding: 8px 16px">加入会员（或中级会员）可领取会员任务大厅（或中级任务大厅）的任务，同时可投放广告,也可以领取自己发布的广告。</div>
         <div style="padding: 8px">
@@ -60,14 +68,33 @@ export default {
 	name: 'JoinVip',
   	data () {
 		return {
-			
+            nickname: '',
+            userLevelID: '',
+            isAgree: true
 		}
 	},
 	created: function () {
-		
+		axios({ // 获取个人信息
+			method: 'GET',
+			url: process.env.api_url + '/user/info',
+			withCredentials: true,
+			headers: {"lang": 'zh'}
+		}).then((response) => {
+			let responseData = response.data.data
+            this.nickname = responseData.name
+            this.userLevelID = responseData.user_level_id
+		}).catch((ex) => {
+            this.$route.push({name: 'Login'})
+		})
 	},
 	methods: {
-		
+		changeStatus: function () {
+            this.isAgree = !this.isAgree
+        },
+        chooseLevel: function (e) {
+            document.getElementsByClassName('selected')[0].classList.remove("selected")
+            e.currentTarget.classList.add("selected")
+        }
 	}
 }
 </script>
@@ -148,5 +175,11 @@ export default {
     color: white;
     background: #4C9CD6;
 }
-
+.protocol span{
+    vertical-align: bottom;
+}
+.unselect-icon, .selected-icon{
+    width: 16px;
+    vertical-align: middle;
+}
 </style>

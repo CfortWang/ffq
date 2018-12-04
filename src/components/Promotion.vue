@@ -57,7 +57,7 @@ export default {
 			let recommendCode = responseData.recommend_code
 			this.qrCodeUrl = "http://fafa.sumsia.com/register?recommendCode" + recommendCode
 		}).catch((ex) => {
-			console.log(ex.response.data.message)
+			this.$route.push({name: 'Login'})
 		})
 	},
 	methods: {

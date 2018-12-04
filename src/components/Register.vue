@@ -224,9 +224,7 @@ export default {
     width: 16px;
     vertical-align: middle;
 }
-.selected{
-    /* display: none; */
-}
+
 .reg-btn-box{
     margin-bottom: 20px;
 }

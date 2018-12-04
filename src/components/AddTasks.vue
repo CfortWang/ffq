@@ -25,8 +25,8 @@
             <div class="image-box">
                 <div class="image-title">图片：</div>
                 <div class="image">
-                    <div class="image-div">
-                        <img src="/static/img/tasks/task4.png" alt="">
+                    <div class="image-div" v-for="(item, index) in imageArr" v-bind:key="index" :data-index="index" v-on:click="deleteImage">
+                        <img v-bind:src="item" alt="">
                     </div>
                 </div>
                 <a href="javascript:;" class="file">请上传图片
@@ -65,8 +65,9 @@ export default {
 	name: 'AddTasks',
   	data () {
 		return {
-            file: '',
-            fd: ''
+            fileData: '',
+            imageArr: [],
+            newImageArr: []
 		}
 	},
 	created: function () {
@@ -74,41 +75,38 @@ export default {
 	},
 	methods: {
         uploadIamge: function (event) {
-            this.file = event.target.files[0]
-            this.fd = new FormData()
-            this.fd.append('file', this.file)
-            console.log(this.fd)
-            axios({
-                method: 'POST',
-                url: process.env.api_url + '/upload/image',
-                params: {
-                    file: this.fd
+            let file = event.target.files[0]
+            this.fileData = new FormData()
+            this.fileData.append('file', file)
+            let config = {
+                headers:{'Content-Type':'multipart/form-data'}
+            }
+            axios.post('http://47.99.75.151:8080/upload/image',this.fileData,config).then(response => {
+                if (response.data.code == 200) {
+                    let imageUrl = response.data.data.url
+                    this.imageArr.push(imageUrl)
+                    this.showMsg("图片上传成功！")
+                } else {
+                    let responseMessage = response.data.message
+                    this.showMsg(responseMessage)
                 }
-            }).then((response) => {
-                console.log(response)
-            }).catch((ex) => {
+            }).catch(ex => {
                 console.log(ex)
             })
         },
-        selectImage: function (e) {
-            // if (!file.files || !file.files[0]) {
-            //     return;
-            // }
-            // var reader = new FileReader();
-            // reader.onload = function (evt) {
-            //     image = evt.target.result;
-            // }
-            // reader.readAsDataURL(file.files[0]);
-            // var fd = new FormData()
-            // fd.append('file', file.files[0])
-            // upLoadImage(fd);
-            let file = e.target.files[0]
-            let param = new FormData()
-            param.append('file',file)
-            console.log(param.get('file'))
-            this.$http.post('http://47.99.75.151:8080/upload/image',param).then(response=>{
-                console.log(response.data);
-            })
+        deleteImage: function (e) {
+            let self = e.currentTarget
+            let parent = self.parentElement
+            parent.removeChild(self)
+            this.newImageArr = []
+            let index = self.getAttribute('data-index')
+            for (let i = 0, j = 0; i < this.imageArr.length; i++, j++) {
+                if (i != index) {
+                    this.newImageArr[j] = this.imageArr[i]
+                }
+            }
+            console.log(this.imageArr)
+            console.log(this.newImageArr)
         }
 	}
 }
@@ -174,15 +172,19 @@ export default {
 }
 .image{
     padding: 10px 0px;
-    text-align: justify;
+    /* text-align: justify; */
+    text-align: center;
 }
 .image > div{
     display: inline-block;
-    widows: 80px;
+    width: 80px;
     height: 80px;
+    margin-right: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #eee;
 }
-.image img{
-    widows: 100%;
+.image-div img{
+    width: 100%;
     height: 100%;
 }
 .upload-desc{
