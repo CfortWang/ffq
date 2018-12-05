@@ -7,5 +7,5 @@ module.exports = merge(prodEnv, {
   api_url: '"http://fafa.test"'
   // api_url: '"https://fafa.gxwhkj.cn"'
   // api_url: '"http://47.99.75.151:8080"'
-  // api_url: '"https://api.gcwhkj.cn"'
+  // api_url: '"https://api.gxwhkj.cn"'
 })
