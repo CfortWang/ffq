@@ -108,8 +108,11 @@
 		</div>
 
 		<!-- 退出登录 -->
-		<div class="log-out">
+		<div class="log-out" v-if="hasLogin">
 			<div class="log-out-btn" v-on:click="logOut">退出登录</div>
+		</div>
+		<div class="log-out" v-else>
+			<div class="log-out-btn" v-on:click="jumpTo('/login')">前往登录</div>
 		</div>
 
 		<!-- 底部 -->
@@ -149,7 +152,8 @@ export default {
 			recommendCount: '',
 			totalAmount: '',
 			isVerification: '',
-			recommenderID: ''
+			recommenderID: '',
+			hasLogin: false
 		}
 	},
 	created: function () {
@@ -160,7 +164,11 @@ export default {
 			headers: {"lang": 'zh'}
 		}).then((response) => {
 			let responseData = response.data.data
-			console.log(responseData)
+			if (response.data.code == 200) {
+				this.hasLogin = true
+			} else {
+				this.hasLogin = false
+			}
 			this.nickname = responseData.name
 			this.phoneNumber = responseData.phone_number
 			this.registerTime = responseData.created_at
@@ -171,8 +179,9 @@ export default {
 			this.isVerification = responseData.is_phone_verification
 			this.recommenderID = responseData.recommender_id
 		}).catch((ex) => {
+			this.hasLogin = false
 			console.log(ex.response.data.message)
-			this.$router.push({name: 'Login'})
+			// this.$router.push({name: 'Login'})
 		})
 	},
 	methods: {

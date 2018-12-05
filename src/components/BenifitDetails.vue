@@ -4,7 +4,7 @@
             <div class="left-btn" v-on:click="goBack()">
                 <img src="/static/img/index/go-back.png" alt="">
             </div>
-            <div class="header-title">用户帮助</div>
+            <div class="header-title">收益详情</div>
         </div>
         <div class="empty"></div>
         
@@ -78,8 +78,9 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                this.benifitList = response.data.data
-                // this.allPage = Math.ceil(responseData.all / this.pageSize)
+                let responseData = response.data.data
+                this.benifitList = responseData.data
+                this.allPage = Math.ceil(responseData.count / this.pageSize)
             }).catch((ex) => {
                 console.log(ex)
             })
