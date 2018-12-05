@@ -129,9 +129,10 @@ input:focus{
 	z-index: 100;
 	border-top: 1px solid #dddddd;
 	background-color: #ffffff;
+    font-size: 0px;
 }
 .footer > div{
-	width: 32%;
+	width: 33%;
 	display: inline-block;
 	/* font-size: 0px; */
 }
