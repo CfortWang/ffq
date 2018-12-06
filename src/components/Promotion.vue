@@ -7,8 +7,8 @@
 			</div>
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
 		</div>
-		<a class="save-img" v-on:click="save($event)" v-bind:href="imageUrl">
-			<img src="/static/img/personal/download.png" alt="">
+		<a class="save-img" v-on:click="save($event)" v-bind:href="imageUrl">保存二维码
+			<!-- <img src="/static/img/personal/download.png" alt=""> -->
 		</a>
 		
 		<!-- 底部 -->
@@ -75,7 +75,9 @@ export default {
 	},
 	methods: {
 		save: function (e) {
+			// console.log(e.target)
 			this.imageUrl = document.getElementsByTagName('canvas')[0].toDataURL("image/jpeg")
+			console.log(this.imageUrl)
 			e.target.download = this.imageUrl
 		}
 	}
@@ -100,6 +102,10 @@ export default {
 	position: absolute;
 	left: 21px;
 	top: 24px;
+	color: #fff;
+	background: #4C9CD6;
+	padding: 8px 16px;
+	border-radius: 5px;
 }
 .save-img img{
 	width: 40px;
