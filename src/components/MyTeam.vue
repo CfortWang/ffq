@@ -17,15 +17,15 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <div class="text-icon" v-on:click="getTeamList(userID, pageSize, pageNumber - 1, 'all')">{{allNumber}}</div>
+                                    <div class="text-icon selected" data-id="allNumber" v-on:click="getKindTeamList('all', $event)">{{allNumber}}</div>
                                     <div class="text">全部团队</div>
                                 </td>
                                 <td>
-                                    <div class="text-icon" v-on:click="getTeamList(userID, pageSize, pageNumber - 1, 'direct')">{{direct}}</div>
+                                    <div class="text-icon" data-id="direct" v-on:click="getKindTeamList('direct', $event)">{{direct}}</div>
                                     <div class="text">直接分享</div>
                                 </td>
                                 <td>
-                                    <div class="text-icon" v-on:click="getTeamList(userID, pageSize, pageNumber - 1, 'indirect')">{{inDirect}}</div>
+                                    <div class="text-icon" data-id="inDirect" v-on:click="getKindTeamList('indirect', $event)">{{inDirect}}</div>
                                     <div class="text">间接分享</div>
                                 </td>
                             </tr>
@@ -35,7 +35,7 @@
             </div>
             
             <div class="search-box">
-                <div class="button" id="search-button" v-on:click="getTeamList(userID, pageSize, pageNumber, type)"></div>
+                <div class="button" id="search-button" v-on:click="searchList(userID, 0, type)"></div>
                 <input type="text" class="input" name="q" v-model="userID" placeholder="搜索会员ID">
             </div>
 
@@ -69,7 +69,7 @@
             </div>
             
             <div id="page">
-                <div class="page"><a class="pre" v-on:click="getTeamList(userID, pageSize, pageNumber - 1, type)" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">{{pageNumber + 1}}/1</a><a class="next" v-on:click="getTeamList(userID, pageSize, pageNumber + 1, type)" hidefocus="true"><span>&gt;</span></a></div>
+                <div class="page"><a class="pre" v-on:click="getTeamList(userID, pageNumber - 1, type, 'down')" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">{{pageNumber + 1}}/{{allPages}}</a><a class="next" v-on:click="getTeamList(userID, pageNumber + 1, type, 'up')" hidefocus="true"><span>&gt;</span></a></div>
             </div>
         </div>
   	</div>
@@ -87,7 +87,8 @@ export default {
             pageSize: 10,
             pageNumber: 0,
             type: 'all',
-            teamList: []
+            teamList: [],
+            allPages: ''
 		}
 	},
 	created: function () {
@@ -101,22 +102,100 @@ export default {
             this.allNumber = responseData.all
             this.direct = responseData.direct
             this.inDirect = responseData.indirect
+            this.allPages = Math.ceil(this.allNumber / this.pageSize)
+            console.log(this.allPages)
         }).catch((ex) => {
             console.log(ex)
         })
 
-        this.getTeamList(this.userID, this.pageSize, this.pageNumber, this.type)
+        axios({
+            method: 'GET',
+            url: process.env.api_url + '/user/myTeamList',
+            params: {
+                id: '',
+                pageSize: this.pageSize,
+                pageNumber: this.pageNumber,
+                type: this.type
+            },
+            withCredentials: true,
+            headers: {"lang": 'zh'}
+        }).then((response) => {
+            this.teamList = response.data.data
+        }).catch((ex) => {
+            console.log(ex)
+        })
         
 	},
 	methods: {
-        getTeamList: function (id, pageSize, pageNumber, type) {
+        searchList: function (id) {
+            if (id == '' || id == null) {
+                this.showMsg("请输入会员ID！")
+                return false
+            }
+            this.pageNumber = 0
             axios({
                 method: 'GET',
                 url: process.env.api_url + '/user/myTeamList',
                 params: {
                     id: id,
-                    pageSize: pageSize,
-                    pageNumber: pageNumber,
+                    pageSize: this.pageSize,
+                    pageNumber: this.pageNumber,
+                    type: this.type
+                },
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                this.teamList = response.data.data
+                if (this.teamList.length == 0) {
+                    this.allPages = 1
+                    this.showMsg("会员ID不存在！")
+                    return false
+                }
+                this.allPages = Math.ceil(this.teamList.length / this.pageSize)
+            }).catch((ex) => {
+                console.log(ex)
+            })
+        },
+        getKindTeamList: function (type, e) {
+            document.getElementsByClassName('selected')[0].classList.remove('selected')
+            e.target.classList.add('selected')
+            let kind = e.target.getAttribute('data-id')
+            this.pageNumber = 0
+            this.allPages = Math.ceil(this[kind] / this.pageSize)
+            axios({
+                method: 'GET',
+                url: process.env.api_url + '/user/myTeamList',
+                params: {
+                    id: '',
+                    pageSize: this.pageSize,
+                    pageNumber: 0,
+                    type: type
+                },
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                this.teamList = response.data.data
+            }).catch((ex) => {
+                console.log(ex)
+            })
+        },
+        getTeamList: function (id, pageNumber, type, kind) {
+            if (this.pageNumber == 0 && kind == 'down') {
+                this.showMsg("当前已是第一页！")
+                return false
+            } 
+            if (this.pageNumber == this.allPages - 1 && kind == 'up') {
+                this.showMsg("当前已是最后一页！")
+                return false
+            }
+            this.pageNumber = pageNumber
+            axios({
+                method: 'GET',
+                url: process.env.api_url + '/user/myTeamList',
+                params: {
+                    id: id,
+                    pageSize: this.pageSize,
+                    pageNumber: this.pageNumber,
                     type: type
                 },
                 withCredentials: true,
@@ -174,6 +253,10 @@ export default {
 .user-center-desk .center-order-panel .box table tr td {
     width: 20%;
     padding-top: 5px;
+}
+.selected{
+    background: #4C9CD6!important;
+    color: #fff!important;
 }
 
 #center-contents .search-box {

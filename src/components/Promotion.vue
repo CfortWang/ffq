@@ -5,8 +5,11 @@
 			<div class="share-text">
 				<span>{{nickname}}邀您加入</span>
 			</div>
-			<qrcode :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
+			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
 		</div>
+		<a class="save-img" v-on:click="save($event)" v-bind:href="imageUrl">
+			<img src="/static/img/personal/download.png" alt="">
+		</a>
 		
 		<!-- 底部 -->
 		<div class="footer">
@@ -44,7 +47,8 @@ export default {
 		return {
 			nickname: '',
 			recommendCode: '',
-			qrCodeUrl: ''
+			qrCodeUrl: '',
+			imageUrl: ''
 		}
 	},
 	created: function () {
@@ -70,7 +74,10 @@ export default {
 		}
 	},
 	methods: {
-		
+		save: function (e) {
+			this.imageUrl = document.getElementsByTagName('canvas')[0].toDataURL("image/jpeg")
+			e.target.download = this.imageUrl
+		}
 	}
 }
 </script>
@@ -86,7 +93,15 @@ export default {
 	border-top: 1px solid #eee;
 }
 .share-text{
-	font-size: 12px;
+	font-size: 14px;
 	margin-top: 49vw;
+}
+.save-img{
+	position: absolute;
+	left: 21px;
+	top: 24px;
+}
+.save-img img{
+	width: 40px;
 }
 </style>
