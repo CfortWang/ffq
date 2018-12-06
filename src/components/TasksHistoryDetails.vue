@@ -15,7 +15,7 @@
                             <td align="left">{{taskTitle}}</td>
                         </tr>
                         <tr>
-                            <td style="border-bottom: 0px" id="content">{{taskDesc}}</td>
+                            <td style="border-bottom: 0px" id="content" v-html="taskDesc"></td>
                         </tr>
                         <tr>
                             <td>
@@ -40,7 +40,7 @@
                             <td align="left" style="border: 1px solid #eee;padding: 8px;">
                                 <div id="upload-image-body">
                                     <a href="javascript:;" id="upload-btn" class="file">上传图片
-                                        <input type="file" class="" id="" name="file" v-on:change="uploadIamge($event)">
+                                        <input type="file" class="" id="" name="file" v-on:change="selectImage($event)">
                                     </a>
                                     <div class="upload-desc">仅能上传一张图片，点击图片可删除</div>
                                 </div>
@@ -168,6 +168,21 @@ export default {
             }).catch((ex) => {
                 this.showMsg(ex.response.data.message)
             })
+        },
+        selectImage: function (file) {
+            if (!file.target.files || !file.target.files[0]) {
+                return false;
+            }
+            var reader = new FileReader();
+            var that = this
+            console.log(this.element.parentElement)
+            reader.onload = function (evt) {
+                let imageUrl = evt.target.result;
+                that.imageArr.push(imageUrl)
+                that.showMsg("图片上传成功！")
+                document.getElementById('upload-btn').style.display = 'none'
+            }
+            reader.readAsDataURL(file.target.files[0]);
         }
 	}
 }
@@ -240,8 +255,6 @@ export default {
     display: inline-block;
     width: 80px;
     height: 80px;
-    margin-right: 15px;
-    margin-bottom: 10px;
     border: 1px solid #eee;
 }
 .image-div img{
@@ -269,6 +282,7 @@ export default {
     line-height: 37px;
     font-size: 16px;
     font-weight: 300;
+    margin: 0 auto;
 }
 .file input {
     position: absolute;

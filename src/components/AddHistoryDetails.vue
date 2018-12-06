@@ -19,7 +19,7 @@
 							<td align="left">请将以下文案及图片发布到您的朋友圈（长按图片可保存图片到手机）</td>
 						</tr>
 						<tr>
-							<td align="left" style="border-bottom: 0px" id="content">{{taskDesc}}</td>
+							<td align="left" style="border-bottom: 0px" id="content" v-html="taskDesc"></td>
 						</tr>
 						<tr>
 							<td style="border-top: 0px" align="center">
@@ -39,7 +39,7 @@
 				<div class="common-theme-button" id="submit-button" v-on:click="getTask">立即领取</div>
 			</div>
 		</div>
-		<input id="taskDesc" type="text" v-model="taskDesc" readonly>
+		<input id="taskDescText" type="text" v-model="taskDescText" readonly>
   	</div>
 </template>
 
@@ -51,6 +51,7 @@ export default {
 			taskID: '',
             taskTitle: '',
             taskDesc: '',
+            taskDescText: '',
             taskPrice: '',
             taskImage: []
 		}
@@ -69,6 +70,7 @@ export default {
             let responseData = response.data.data
             this.taskTitle = responseData.title
             this.taskDesc = responseData.content
+            this.taskDescText = this.taskDesc.replace(/<\/?.+?\/?>/g, '')
             this.taskPrice = responseData.price
             this.taskImage = responseData.image
         }).catch((ex) => {
