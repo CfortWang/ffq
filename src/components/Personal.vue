@@ -172,7 +172,8 @@ export default {
 			this.nickname = responseData.name
 			this.phoneNumber = responseData.phone_number
 			this.registerTime = responseData.created_at
-			this.userID = responseData.recommend_code
+			// this.userID = responseData.recommend_code
+			this.userID = responseData.id
 			this.userLevel = responseData.user_level_name
 			this.recommendCount = responseData.recommend_count
 			this.totalAmount = responseData.total_amount

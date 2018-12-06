@@ -54,7 +54,8 @@ export default {
 		}).then((response) => {
 			let responseData = response.data.data
 			this.nickname = responseData.name
-			let recommendCode = responseData.recommend_code
+			// let recommendCode = responseData.recommend_code
+			let recommendCode = responseData.id
 			this.qrCodeUrl = "http://fafa.sumsia.com/register?recommendCode" + recommendCode
 		}).catch((ex) => {
 			this.$route.push({name: 'Login'})
