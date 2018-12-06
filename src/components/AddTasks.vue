@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import vueCookie from 'vue-cookie'
 export default {
 	name: 'AddTasks',
   	data () {
@@ -76,15 +77,9 @@ export default {
 		}
 	},
 	created: function () {
-        axios({ // 获取用户级别
-			method: 'GET',
-			url: process.env.api_url + '/user/info',
-			withCredentials: true,
-			headers: {"lang": 'zh'}
-		}).then((response) => {
-			let responseData = response.data.data
-            this.userLevel = responseData.user_level_id
-            
+        // 缓存获取用户等级
+        if (vueCookie.get('userLevelID')) {
+            this.userLevel = vueCookie.get('userLevelID')
             axios({ // 获取广告单价
                 method: 'GET',
                 url: process.env.api_url + '/task/hallList',
@@ -97,10 +92,33 @@ export default {
                 console.log(ex.response.data.message)
             })
 
-		}).catch((ex) => {
-			console.log(ex.response.data.message)
-			this.$router.push({name: 'Login'})
-        })
+        } else {// 接口获取用户等级
+            axios({ // 获取用户级别
+                method: 'GET',
+                url: process.env.api_url + '/user/info',
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                let responseData = response.data.data
+                this.userLevel = responseData.user_level_id
+                
+                axios({ // 获取广告单价
+                    method: 'GET',
+                    url: process.env.api_url + '/task/hallList',
+                    withCredentials: true,
+                    headers: {"lang": 'zh'}
+                }).then((response) => {
+                    let responseData = response.data.data
+                    this.taskPrice = responseData[this.userLevel].price
+                }).catch((ex) => {
+                    console.log(ex.response.data.message)
+                })
+    
+            }).catch((ex) => {
+                console.log(ex.response.data.message)
+                this.$router.push({name: 'Login'})
+            })
+        }
         this.taskTotalAmount = this.taskAmount * this.taskPrice
 	},
 	methods: {

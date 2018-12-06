@@ -34,6 +34,7 @@
 
 <script>
 import QRcode from '@xkeshi/vue-qrcode'
+import vueCookie from 'vue-cookie'
 export default {
 	name: 'Promotion',
 	components: {
@@ -42,24 +43,31 @@ export default {
   	data () {
 		return {
 			nickname: '',
+			recommendCode: '',
 			qrCodeUrl: ''
 		}
 	},
 	created: function () {
-		axios({ // 获取个人信息
-			method: 'GET',
-			url: process.env.api_url + '/user/info',
-			withCredentials: true,
-			headers: {"lang": 'zh'}
-		}).then((response) => {
-			let responseData = response.data.data
-			this.nickname = responseData.name
-			// let recommendCode = responseData.recommend_code
-			let recommendCode = responseData.id
-			this.qrCodeUrl = "http://fafa.sumsia.com/register?recommendCode" + recommendCode
-		}).catch((ex) => {
-			this.$route.push({name: 'Login'})
-		})
+		if (vueCookie.get('nickname')) {
+            this.recommendCode = vueCookie.get('userID')
+			this.nickname = vueCookie.get('nickname')
+			this.qrCodeUrl = "http://fafa.sumsia.com/register?recommendCode" + this.recommendCode
+        } else {
+			axios({ // 获取个人信息
+				method: 'GET',
+				url: process.env.api_url + '/user/info',
+				withCredentials: true,
+				headers: {"lang": 'zh'}
+			}).then((response) => {
+				let responseData = response.data.data
+				this.nickname = responseData.name
+				// let recommendCode = responseData.recommend_code
+				this.recommendCode = responseData.id
+				this.qrCodeUrl = "http://fafa.sumsia.com/register?recommendCode" + this.recommendCode
+			}).catch((ex) => {
+				this.$route.push({name: 'Login'})
+			})
+		}
 	},
 	methods: {
 		

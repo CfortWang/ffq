@@ -140,6 +140,8 @@
 </template>
 
 <script>
+import vueCookie from 'vue-cookie'
+
 export default {
 	name: 'Personal',
   	data () {
@@ -149,6 +151,7 @@ export default {
 			registerTime: '',
 			userID: '',
 			userLevel: '',
+			userLevelID: '',
 			recommendCount: '',
 			totalAmount: '',
 			isVerification: '',
@@ -157,33 +160,62 @@ export default {
 		}
 	},
 	created: function () {
-		axios({ // 获取个人信息
-			method: 'GET',
-			url: process.env.api_url + '/user/info',
-			withCredentials: true,
-			headers: {"lang": 'zh'}
-		}).then((response) => {
-			let responseData = response.data.data
-			if (response.data.code == 200) {
-				this.hasLogin = true
-			} else {
+		//判断缓存中是否有个人信息数据，有直接获取，没有请求接口
+		if (vueCookie.get('phoneNumber')) {
+			// 有缓存显示退出登录按钮
+			this.hasLogin = true
+			this.nickname = vueCookie.get('nickname')
+			this.phoneNumber = vueCookie.get('phoneNumber')
+			this.registerTime = vueCookie.get('registerTime')
+			this.userID = vueCookie.get('userID')
+			this.userLevel = vueCookie.get('userLevel')
+			this.userLevelID = vueCookie.get('userLevelID')
+			this.recommendCount = vueCookie.get('recommendCount')
+			this.totalAmount = vueCookie.get('totalAmount')
+			this.isVerification = vueCookie.get('isVerification')
+			this.recommenderID = vueCookie.get('recommenderID')
+		} else {
+			axios({ // 获取个人信息
+				method: 'GET',
+				url: process.env.api_url + '/user/info',
+				withCredentials: true,
+				headers: {"lang": 'zh'}
+			}).then((response) => {
+				let responseData = response.data.data
+				if (response.data.code == 200) {
+					this.hasLogin = true
+				} else {
+					this.hasLogin = false
+				}
+				this.nickname = responseData.name
+				this.phoneNumber = responseData.phone_number
+				this.registerTime = responseData.created_at
+				// this.userID = responseData.recommend_code
+				this.userID = responseData.id
+				this.userLevel = responseData.user_level_name
+				this.userLevelID = responseData.user_level_id
+				this.recommendCount = responseData.recommend_count
+				this.totalAmount = responseData.total_amount
+				this.isVerification = responseData.is_phone_verification
+				this.recommenderID = responseData.recommender_id
+	
+				// 将个人信息存入缓存
+				vueCookie.set('nickname', this.nickname, 1)
+				vueCookie.set('phoneNumber', this.phoneNumber, 1)
+				vueCookie.set('registerTime', this.registerTime, 1)
+				vueCookie.set('userID', this.userID, 1)
+				vueCookie.set('userLevel', this.userLevel, 1)
+				vueCookie.set('userLevelID', this.userLevelID, 1)
+				vueCookie.set('recommendCount', this.recommendCount, 1)
+				vueCookie.set('totalAmount', this.totalAmount, 1)
+				vueCookie.set('isVerification', this.isVerification, 1)
+				vueCookie.set('recommenderID', this.recommenderID, 1)
+			}).catch((ex) => {
 				this.hasLogin = false
-			}
-			this.nickname = responseData.name
-			this.phoneNumber = responseData.phone_number
-			this.registerTime = responseData.created_at
-			// this.userID = responseData.recommend_code
-			this.userID = responseData.id
-			this.userLevel = responseData.user_level_name
-			this.recommendCount = responseData.recommend_count
-			this.totalAmount = responseData.total_amount
-			this.isVerification = responseData.is_phone_verification
-			this.recommenderID = responseData.recommender_id
-		}).catch((ex) => {
-			this.hasLogin = false
-			console.log(ex.response.data.message)
-			// this.$router.push({name: 'Login'})
-		})
+				console.log(ex.response.data.message)
+				// this.$router.push({name: 'Login'})
+			})
+		}
 	},
 	methods: {
 		logOut: function () {

@@ -11,6 +11,13 @@
             <div class="password-box">
                 <input type="password" name="password" id="password" v-model="password" placeholder="登录密码"/>
             </div>
+            <div class="remember-pwd"  v-on:click="changeStatus">
+                <span>
+                    <img class="selected" src="/static/img/index/selected.png" v-if="isRemember" alt="">
+                    <img class="unselect" src="/static/img/index/unselect.png" v-else alt="">
+                </span>
+                <span style="font-size:16px;">记住密码</span>
+            </div>
             <div class="login-btn-box" v-on:click="doLogin">
                 <div class="login-btn">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</div>
             </div>
@@ -27,20 +34,31 @@
 </template>
 
 <script>
+import vueCookie from 'vue-cookie'
 export default {
 	name: 'Login',
   	data () {
 		return {
             phoneNumber: '',
-            password: ''
+            password: '',
+            isRemember: false
 		}
 	},
 	created: function () {
         if (this.$route.params.phoneNumber) {
             this.phoneNumber = this.$route.params.phoneNumber
+        } else {
+            this.phoneNumber = vueCookie.get('phoneNumber')
+        }
+        this.password = vueCookie.get('password')
+        if (this.password) {
+            this.isRemember = true
         }
 	},
 	methods: {
+        changeStatus: function () {
+            this.isRemember = !this.isRemember
+        },
         doLogin: function () {
             if (this.phoneNumber == '' || this.phoneNumber == null) {
                 this.showMsg("请输入手机号码！")
@@ -50,6 +68,7 @@ export default {
                 this.showMsg("请输入密码！")
                 return false
             }
+            this.showLoading()
             axios({ // 登录
                 method: 'POST',
                 url: process.env.api_url + '/login',
@@ -60,7 +79,13 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
+                this.hideLoading()
                 if (response.data.code == 200) {
+                    if (this.isRemember) {
+                        vueCookie.set('password', this.password, 1)
+                    } else {
+                        vueCookie.set('password', '', 1)
+                    }
                     this.$router.push({name: 'Personal'})
                 } else {
                     let responseMessage = response.data.message
@@ -101,6 +126,20 @@ export default {
     color: #ffffff;
     border-radius: 4px;
     margin: 0 auto;
+}
+
+.remember-pwd{
+    text-align: left;
+    font-size: 14px;
+    height: 20px;
+    padding-bottom: 10px;
+}
+.remember-pwd span{
+    vertical-align: top;
+}
+.unselect, .selected{
+    width: 16px;
+    vertical-align: top;
 }
 
 .bottom-desc{

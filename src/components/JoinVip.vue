@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import vueCookie from 'vue-cookie'
 export default {
 	name: 'JoinVip',
   	data () {
@@ -74,18 +75,25 @@ export default {
 		}
 	},
 	created: function () {
-		axios({ // 获取个人信息
-			method: 'GET',
-			url: process.env.api_url + '/user/info',
-			withCredentials: true,
-			headers: {"lang": 'zh'}
-		}).then((response) => {
-			let responseData = response.data.data
-            this.nickname = responseData.name
-            this.userLevelID = responseData.user_level_id
-		}).catch((ex) => {
-            this.$route.push({name: 'Login'})
-		})
+        // 缓存获取用户等级与用户昵称
+        if (vueCookie.get('userLevelID')) {
+            this.userLevel = vueCookie.get('userLevelID')
+            this.nickname = vueCookie.get('nickname')
+        } else {
+            // 接口获取用户等级与用户昵称
+            axios({ // 获取个人信息
+                method: 'GET',
+                url: process.env.api_url + '/user/info',
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                let responseData = response.data.data
+                this.nickname = responseData.name
+                this.userLevelID = responseData.user_level_id
+            }).catch((ex) => {
+                this.$route.push({name: 'Login'})
+            })
+        }
 	},
 	methods: {
 		changeStatus: function () {

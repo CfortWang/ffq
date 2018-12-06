@@ -7,8 +7,13 @@
         <div class="msg-buttons">
             <div class="ok-btn" id="msg-ok-btn" v-on:click="closeMsg">确认</div>
         </div>
-    </div> 
+    </div>
     <div id="cover" level="1"></div>
+    <div id="loader" class="loader loader-3">
+        <div class="dot dot1"></div>
+        <div class="dot dot2"></div>
+        <div class="dot dot3"></div>
+    </div>
   </div>
 </template>
 
@@ -164,7 +169,6 @@ input:focus{
     top: 0;
     width: 100%;
     height: 100%;
-    display: none;
 }
 #msg, #regMsg{
     border-radius: 6px;
@@ -203,6 +207,63 @@ input:focus{
     color: #fff;
 }
 
+.loader {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    z-index: 10000;
+    display: none;
+}
+.loader-3 .dot {
+    width: 10px;
+    height: 10px;
+    background: #4C9CD6;
+    border-radius: 50%;
+    position: absolute;
+    top: calc(50% - 5px);
+}
+.loader-3 .dot1 {
+    left: 0px;
+    -webkit-animation: dot-jump 0.5s cubic-bezier(0.77, 0.47, 0.64, 0.28) alternate infinite;
+    animation: dot-jump 0.5s cubic-bezier(0.77, 0.47, 0.64, 0.28) alternate infinite;
+}
+.loader-3 .dot2 {
+    left: 20px;
+    -webkit-animation: dot-jump 0.5s 0.2s cubic-bezier(0.77, 0.47, 0.64, 0.28) alternate infinite;
+    animation: dot-jump 0.5s 0.2s cubic-bezier(0.77, 0.47, 0.64, 0.28) alternate infinite;
+}
+.loader-3 .dot3 {
+    left: 40px;
+    -webkit-animation: dot-jump 0.5s 0.4s cubic-bezier(0.77, 0.47, 0.64, 0.28) alternate infinite;
+    animation: dot-jump 0.5s 0.4s cubic-bezier(0.77, 0.47, 0.64, 0.28) alternate infinite;
+}
+
+@-webkit-keyframes dot-jump {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+
+    100% {
+        -webkit-transform: translateY(-15px);
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes dot-jump {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+
+    100% {
+        -webkit-transform: translateY(-15px);
+        transform: translateY(-15px);
+    }
+}
 
 .addresses-not-found {
     padding-top: 40px;
