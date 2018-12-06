@@ -161,7 +161,7 @@ export default {
 	},
 	created: function () {
 		//判断缓存中是否有个人信息数据，有直接获取，没有请求接口
-		if (vueCookie.get('phoneNumber')) {
+		if (vueCookie.get('userID')) {
 			// 有缓存显示退出登录按钮
 			this.hasLogin = true
 			this.nickname = vueCookie.get('nickname')
