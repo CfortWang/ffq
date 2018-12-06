@@ -226,6 +226,16 @@ export default {
 				headers: {"lang": 'zh'}
 			}).then((response) => {
 				if (response.data.code == 200) {
+					// 清除缓存
+					vueCookie.set('nickname', '', 1)
+					vueCookie.set('registerTime', '', 1)
+					vueCookie.set('userID', '', 1)
+					vueCookie.set('userLevel', '', 1)
+					vueCookie.set('userLevelID', '', 1)
+					vueCookie.set('recommendCount', '', 1)
+					vueCookie.set('totalAmount', '', 1)
+					vueCookie.set('isVerification', '', 1)
+					vueCookie.set('recommenderID', '', 1)
 					this.$router.push({name: 'Login'})
 				}
 			}).catch((ex) => {
