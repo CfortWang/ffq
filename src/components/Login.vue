@@ -76,6 +76,7 @@ export default {
                     phoneNumber: this.phoneNumber,
                     password: this.password
                 },
+                timeout: 10000,
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
@@ -94,6 +95,11 @@ export default {
                 }
             }).catch((ex) => {
                 console.log(ex)
+                var str = ex + ''
+                if (str.search('timeout') !== -1) {
+                    this.hideLoading()
+                    this.showMsg("登录超时，请重试！")
+                }
             })
         }
 	}
