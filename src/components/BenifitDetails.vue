@@ -78,6 +78,7 @@ export default {
 		}
 	},
 	created: function () {
+        this.showLoading()
         var getParams = this.$route.params
         this.type = getParams.type
         this.startTime = getParams.startTime
@@ -94,11 +95,13 @@ export default {
             withCredentials: true,
             headers: {"lang": 'zh'}
         }).then((response) => {
+            this.showLoading()
             let responseData = response.data.data
             this.benifitList = responseData.data
             this.allPages = Math.ceil(responseData.count / this.pageSize)
         }).catch((ex) => {
-            console.log(ex)
+            this.showLoading()
+            this.showMsg(ex.response.data.message)
         })
 	},
 	methods: {
@@ -111,6 +114,7 @@ export default {
                 this.showMsg("当前已是最后一页！")
                 return false
             }
+            this.showLoading()
             this.pageNumber = pageNumber
             axios({
                 method: 'GET',
@@ -124,8 +128,10 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
+                this.showLoading()
                 this.benifitList = response.data.data.data
             }).catch((ex) => {
+                this.showLoading()
                 this.showMsg(ex.response.data.message)
             })
         }

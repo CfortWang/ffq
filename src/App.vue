@@ -247,7 +247,9 @@ input:focus{
 }
 
 .loader {
-    position: relative;
+    position: fixed;
+    left: 45%;
+    top: 45%;
     width: 60px;
     height: 60px;
     border-radius: 50%;

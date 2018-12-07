@@ -49,6 +49,7 @@ export default {
 		}
 	},
 	created: function () {
+        this.showLoading()
         axios({ // 获取任务数据
             method: 'GET',
             url: process.env.api_url + '/task/ownlist',
@@ -59,9 +60,11 @@ export default {
             withCredentials: true,
             headers: {"lang": 'zh'}
         }).then((response) => {
+            this.hideLoading()
             this.addList = response.data.data.data
             this.allPages = Math.ceil(response.data.data.count / this.pageSize)
         }).catch((ex) => {
+            this.hideLoading()
             this.showMsg(ex.response.data.message)
         })
 	},
@@ -76,6 +79,7 @@ export default {
                 return false
             }
             this.pageNumber = pageNumber
+            this.showLoading()
             axios({ // 获取任务数据
                 method: 'GET',
                 url: process.env.api_url + '/task/ownlist',
@@ -86,8 +90,10 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
+                this.hideLoading()
                 this.addList = response.data.data.data
             }).catch((ex) => {
+                this.hideLoading()
                 this.showMsg(ex.response.data.message)
             })
         }

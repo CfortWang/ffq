@@ -51,6 +51,8 @@ export default {
 	},
 	created: function () {
         this.taskStatus = this.$route.query.status
+        this.taskList = [1,1,1,1,1,1,1,1,1,1,1,1,1]
+        this.showLoading()
         axios({ // 获取任务列表
             method: 'GET',
             url: process.env.api_url + '/task/joinlist',
@@ -62,9 +64,12 @@ export default {
             withCredentials: true,
             headers: {"lang": 'zh'}
         }).then((response) => {
+            this.hideLoading()
             this.taskList = response.data.data.data
             this.allPages = Math.ceil(response.data.data.count / this.pageSize)
         }).catch((ex) => {
+            this.hideLoading()
+            this.showMsg(ex.response.data.message)
             console.log(ex)
         })
 	},
@@ -78,6 +83,7 @@ export default {
                 this.showMsg("当前已是最后一页！")
                 return false
             }
+            this.showLoading()
             this.pageNumber = pageNumber
             axios({ // 获取任务数据
                 method: 'GET',
@@ -90,8 +96,10 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                this.addList = response.data.data.data
+                this.hideLoading()
+                this.taskList = response.data.data.data
             }).catch((ex) => {
+                this.hideLoading()
                 this.showMsg(ex.response.data.message)
             })
         }

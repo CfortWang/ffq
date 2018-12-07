@@ -68,6 +68,7 @@ export default {
 		}
 	},
 	created: function () {
+        this.showLoading()
         axios({ // 获取收支明细
             method: 'GET',
             url: process.env.api_url + '/user/accountList',
@@ -78,11 +79,13 @@ export default {
             withCredentials: true,
             headers: {"lang": 'zh'}
         }).then((response) => {
+            this.hideLoading()
             let responseData = response.data.data
             this.amountList = responseData.data
             this.allPages = Math.ceil(responseData.count / this.pageSize)
         }).catch((ex) => {
-            console.log(ex)
+            this.hideLoading()
+            this.showMsg(ex.response.data.message)
         })
 	},
 	methods: {
@@ -95,6 +98,7 @@ export default {
                 this.showMsg("当前已是最后一页！")
                 return false
             }
+            this.showLoading()
             this.pageNumber = pageNumber
             axios({ // 获取收支明细
                 method: 'GET',
@@ -106,8 +110,11 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
+                this.hideLoading()
                 this.amountList = response.data.data.data
             }).catch((ex) => {
+                this.hideLoading()
+                this.showMsg(ex.response.data.message)
                 console.log(ex)
             })
         }
@@ -160,5 +167,7 @@ export default {
     color: #444;
     font-weight: bold;
 }
-
+#page {
+    margin-bottom: 70px;
+}
 </style>

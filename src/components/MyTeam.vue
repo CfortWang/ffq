@@ -92,6 +92,7 @@ export default {
 		}
 	},
 	created: function () {
+        this.showLoading()
         axios({
             method: 'GET',
             url: process.env.api_url + '/user/myTeam',
@@ -103,9 +104,8 @@ export default {
             this.direct = responseData.direct
             this.inDirect = responseData.indirect
             this.allPages = Math.ceil(this.allNumber / this.pageSize)
-            console.log(this.allPages)
         }).catch((ex) => {
-            console.log(ex)
+            this.showMsg(ex.response.data.message)
         })
 
         axios({
@@ -120,9 +120,11 @@ export default {
             withCredentials: true,
             headers: {"lang": 'zh'}
         }).then((response) => {
+            this.hideLoading()
             this.teamList = response.data.data.data
         }).catch((ex) => {
-            console.log(ex)
+            this.hideLoading()
+            this.showMsg(ex.response.data.message)
         })
         
 	},
@@ -132,6 +134,7 @@ export default {
                 this.showMsg("请输入会员ID！")
                 return false
             }
+            this.showLoading()
             this.pageNumber = 0
             axios({
                 method: 'GET',
@@ -145,6 +148,7 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
+                this.hideLoading()
                 this.teamList = response.data.data.data
                 if (this.teamList.length == 0) {
                     this.allPages = 1
@@ -153,7 +157,8 @@ export default {
                 }
                 this.allPages = Math.ceil(this.teamList.length / this.pageSize)
             }).catch((ex) => {
-                console.log(ex)
+                this.hideLoading()
+                this.showMsg(ex.response.data.message)
             })
         },
         getKindTeamList: function (type, e) {
@@ -162,6 +167,7 @@ export default {
             let kind = e.target.getAttribute('data-id')
             this.pageNumber = 0
             this.allPages = Math.ceil(this[kind] / this.pageSize)
+            this.showLoading()
             axios({
                 method: 'GET',
                 url: process.env.api_url + '/user/myTeamList',
@@ -174,9 +180,11 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
+                this.hideLoading()
                 this.teamList = response.data.data.data
             }).catch((ex) => {
-                console.log(ex)
+                this.hideLoading()
+                this.showMsg(ex.response.data.message)
             })
         },
         getTeamList: function (id, pageNumber, type, kind) {
@@ -188,6 +196,7 @@ export default {
                 this.showMsg("当前已是最后一页！")
                 return false
             }
+            this.showLoading()
             this.pageNumber = pageNumber
             axios({
                 method: 'GET',
@@ -201,9 +210,11 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
+                this.hideLoading()
                 this.teamList = response.data.data.data
             }).catch((ex) => {
-                console.log(ex)
+                this.hideLoading()
+                this.showMsg(ex.response.data.message)
             })
         }
 	}

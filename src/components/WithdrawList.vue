@@ -77,6 +77,7 @@ export default {
 		}
 	},
 	created: function () {
+        this.showLoading()
         axios({ // 获取提现记录
             method: 'GET',
             url: process.env.api_url + '/user/cashoutList',
@@ -87,10 +88,12 @@ export default {
             withCredentials: true,
             headers: {"lang": 'zh'}
         }).then((response) => {
+            this.hideLoading()
             this.withdrawList = response.data.data.data
             this.allPages = Math.ceil(response.data.data.count / this.pageSize)
         }).catch((ex) => {
-            console.log(ex)
+            this.hideLoading()
+            this.showMsg(ex.response.data.message)
         })
 	},
 	methods: {
@@ -112,6 +115,7 @@ export default {
                 this.showMsg("当前已是最后一页！")
                 return false
             }
+            this.showLoading()
             this.pageNumber = pageNumber
             axios({ // 获取任务数据
                 method: 'GET',
@@ -123,8 +127,10 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
+                this.hideLoading()
                 this.addList = response.data.data.data
             }).catch((ex) => {
+                this.hideLoading()
                 this.showMsg(ex.response.data.message)
             })
         }
