@@ -22,8 +22,12 @@
                 <img class="arrow" src="/static/img/personal/gray-right-arrow.png" img="">
             </div>
         </div>
+
+        <div id="page" v-if="addList.length">
+            <div class="page"><a class="pre" v-on:click="getAddList(pageNumber - 1, 'down')" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">{{pageNumber + 1}}/{{allPages}}</a><a class="next" v-on:click="getAddList(pageNumber + 1, 'up')" hidefocus="true"><span>&gt;</span></a></div>
+        </div>
         
-        <div class="addresses-not-found" v-if="!addList.length">
+        <div class="addresses-not-found" v-else>
             <div class="image">
                 <img src="/static/img/personal/wind.png" style="width:128px;">
             </div>
@@ -40,25 +44,49 @@ export default {
 		return {
             pageNumber: 0,
             pageSize: 10,
+            allPages: '',
             addList: []
 		}
 	},
 	created: function () {
-        this.getAddList(this.pageSize, this.pageNumber)
+        axios({ // 获取任务数据
+            method: 'GET',
+            url: process.env.api_url + '/task/ownlist',
+            params: {
+                pageSize: this.pageSize,
+                pageNumber: this.pageNumber
+            },
+            withCredentials: true,
+            headers: {"lang": 'zh'}
+        }).then((response) => {
+            this.addList = response.data.data.data
+            this.allPages = Math.ceil(response.data.data.count / this.pageSize)
+        }).catch((ex) => {
+            this.showMsg(ex.response.data.message)
+        })
 	},
 	methods: {
-        getAddList: function (pageSize, pageNumber) {
+        getAddList: function (pageNumber, kind) {
+            if (this.pageNumber == 0 && kind == 'down') {
+                this.showMsg("当前已是第一页！")
+                return false
+            } 
+            if (this.pageNumber == this.allPages - 1 && kind == 'up') {
+                this.showMsg("当前已是最后一页！")
+                return false
+            }
+            this.pageNumber = pageNumber
             axios({ // 获取任务数据
                 method: 'GET',
                 url: process.env.api_url + '/task/ownlist',
                 params: {
-                    pageSize: pageSize,
-                    pageNumber: pageNumber
+                    pageSize: this.pageSize,
+                    pageNumber: this.pageNumber
                 },
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                this.addList = response.data.data
+                this.addList = response.data.data.data
             }).catch((ex) => {
                 this.showMsg(ex.response.data.message)
             })

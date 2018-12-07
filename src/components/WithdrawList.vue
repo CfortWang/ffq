@@ -50,6 +50,17 @@
             </ul>
         </div>
 
+        <div id="page" v-if="withdrawList.length">
+            <div class="page"><a class="pre" v-on:click="getWithdrawList(pageNumber - 1, 'down')" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">{{pageNumber + 1}}/{{allPages}}</a><a class="next" v-on:click="getWithdrawList(pageNumber + 1, 'up')" hidefocus="true"><span>&gt;</span></a></div>
+        </div>
+        
+        <div class="addresses-not-found" v-else>
+            <div class="image">
+                <img src="/static/img/personal/wind.png" style="width:128px;">
+            </div>
+            <div class="text">暂无数据...</div>
+        </div>
+
   	</div>
 </template>
 
@@ -58,7 +69,10 @@ export default {
 	name: 'WithdrawList',
   	data () {
 		return {
-            withdrawList: '',
+            withdrawList: [],
+            allPages: '',
+            pageSize: 10,
+            pageNumber: 0,
             show: false
 		}
 	},
@@ -66,10 +80,15 @@ export default {
         axios({ // 获取提现记录
             method: 'GET',
             url: process.env.api_url + '/user/cashoutList',
+            params: {
+                pageSize: this.pageSize,
+                pageNumber: this.pageNumber
+            },
             withCredentials: true,
             headers: {"lang": 'zh'}
         }).then((response) => {
-            this.withdrawList = response.data.data
+            this.withdrawList = response.data.data.data
+            this.allPages = Math.ceil(response.data.data.count / this.pageSize)
         }).catch((ex) => {
             console.log(ex)
         })
@@ -83,7 +102,31 @@ export default {
             } else {
                 el.style.display = 'none'
             }
-            // console.log(el.style)
+        },
+        getWithdrawList: function (pageNumber, kind) {
+            if (this.pageNumber == 0 && kind == 'down') {
+                this.showMsg("当前已是第一页！")
+                return false
+            } 
+            if (this.pageNumber == this.allPages - 1 && kind == 'up') {
+                this.showMsg("当前已是最后一页！")
+                return false
+            }
+            this.pageNumber = pageNumber
+            axios({ // 获取任务数据
+                method: 'GET',
+                url: process.env.api_url + '/user/cashoutList',
+                params: {
+                    pageSize: this.pageSize,
+                    pageNumber: this.pageNumber
+                },
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                this.addList = response.data.data.data
+            }).catch((ex) => {
+                this.showMsg(ex.response.data.message)
+            })
         }
 	}
 }

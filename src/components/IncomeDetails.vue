@@ -21,10 +21,15 @@
             </li>
         </ul>
 
-        <div id="page">
-            <div class="page">
-                <a class="pre" v-on:click="getAmountList(pageSize, pageNumber-1)"><span>&lt;</span></a><a class="info" hidefocus="true">{{pageNumber+1}}/{{allPage}}</a><a class="next" v-on:click="getAmountList(pageSize, pageNumber+1)"><span>&gt;</span></a>
+        <div id="page" v-if="amountList.length">
+            <div class="page"><a class="pre" v-on:click="getAmountList(pageNumber - 1, 'down')" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">{{pageNumber + 1}}/{{allPages}}</a><a class="next" v-on:click="getAmountList(pageNumber + 1, 'up')" hidefocus="true"><span>&gt;</span></a></div>
+        </div>
+        
+        <div class="addresses-not-found" v-else>
+            <div class="image">
+                <img src="/static/img/personal/wind.png" style="width:128px;">
             </div>
+            <div class="text">暂无数据...</div>
         </div>
         
         <!-- 底部 -->
@@ -56,31 +61,52 @@ export default {
 	name: 'IncomeDetails',
   	data () {
 		return {
-            amountList: '',
-            allPage: '',
+            amountList: [],
+            allPages: '',
             pageSize: 10,
             pageNumber: 0
 		}
 	},
 	created: function () {
-        this.getAmountList(this.pageSize, this.pageNumber)
+        axios({ // 获取收支明细
+            method: 'GET',
+            url: process.env.api_url + '/user/accountList',
+            params: {
+                pageSize: this.pageSize,
+                pageNumber: this.pageNumber
+            },
+            withCredentials: true,
+            headers: {"lang": 'zh'}
+        }).then((response) => {
+            let responseData = response.data.data
+            this.amountList = responseData.data
+            this.allPages = Math.ceil(responseData.count / this.pageSize)
+        }).catch((ex) => {
+            console.log(ex)
+        })
 	},
 	methods: {
-        getAmountList: function (pageSize, nowPage) {
+        getAmountList: function (pageNumber, kind) {
+            if (this.pageNumber == 0 && kind == 'down') {
+                this.showMsg("当前已是第一页！")
+                return false
+            } 
+            if (this.pageNumber == this.allPages - 1 && kind == 'up') {
+                this.showMsg("当前已是最后一页！")
+                return false
+            }
+            this.pageNumber = pageNumber
             axios({ // 获取收支明细
                 method: 'GET',
                 url: process.env.api_url + '/user/accountList',
                 params: {
-                    pageSize: pageSize,
-                    pageNumber: nowPage
+                    pageSize: this.pageSize,
+                    pageNumber: this.pageNumber
                 },
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                let responseData = response.data.data
-                console.log(responseData)
-                this.amountList = responseData.data
-                this.allPage = Math.ceil(responseData.all / this.pageSize)
+                this.amountList = response.data.data.data
             }).catch((ex) => {
                 console.log(ex)
             })
@@ -134,42 +160,5 @@ export default {
     color: #444;
     font-weight: bold;
 }
-#page {
-    margin-top: 10px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-#page .page a.pre {
-    background: #fff;
-    display: inline-block;
-    line-height: 44px;
-    text-align: center;
-    border: 1px solid #eee;
-    color: #888;
-    width: 44px;
-    height: 44px;
-    border-radius: 3px 0 0 5px;
-}
-#page .page a.info {
-    background: #fff;
-    display: inline-block;
-    line-height: 44px;
-    text-align: center;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    color: #888;
-    padding: 0 20px;
-    height: 44px;
-}
-#page .page a.next {
-    background: #fff;
-    display: inline-block;
-    line-height: 44px;
-    text-align: center;
-    border: 1px solid #eee;
-    color: #888;
-    width: 44px;
-    height: 44px;
-    border-radius: 0 5px 5px 0;
-}
+
 </style>

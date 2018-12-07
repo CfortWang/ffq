@@ -318,42 +318,4 @@ export default {
     font-size: 13px;
 }
 
-#page {
-    margin-top: 10px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-#page .page a.pre {
-    background: #fff;
-    display: inline-block;
-    line-height: 44px;
-    text-align: center;
-    border: 1px solid #eee;
-    color: #888;
-    width: 44px;
-    height: 44px;
-    border-radius: 3px 0 0 5px;
-}
-#page .page a.info {
-    background: #fff;
-    display: inline-block;
-    line-height: 44px;
-    text-align: center;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    color: #888;
-    padding: 0 20px;
-    height: 44px;
-}
-#page .page a.next {
-    background: #fff;
-    display: inline-block;
-    line-height: 44px;
-    text-align: center;
-    border: 1px solid #eee;
-    color: #888;
-    width: 44px;
-    height: 44px;
-    border-radius: 0 5px 5px 0;
-}
 </style>

@@ -8,7 +8,7 @@
         </div>
         <div class="empty"></div>
         
-        <div class="task-list" v-for="item in tasksList" v-bind:key="item.index">
+        <div class="task-list" v-for="item in taskList" v-bind:key="item.index">
             <div class="task" v-on:click="jumpTo('/tasksDetails?id=' + item.code_url)" style="border-bottom:4px solid #eee;margin-top: 0px ">
                 <span class="name">{{item.title}}</span>
                 <span class="status"></span>
@@ -17,11 +17,18 @@
                 <img class="arrow" src="/static/img/personal/gray-right-arrow.png" img="">
             </div>
         </div>
-        <div id="page" v-if="tasksList.length">
-            <div class="page"><a class="pre" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">1/1</a><a class="next" hidefocus="true"><span>&gt;</span></a></div>
+        <div id="page" v-if="taskList.length">
+            <div class="page"><a class="pre" v-on:click="getTaskList(pageNumber - 1, 'down')" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">{{pageNumber + 1}}/{{allPages}}</a><a class="next" v-on:click="getTaskList(pageNumber + 1, 'up')" hidefocus="true"><span>&gt;</span></a></div>
+        </div>
+        
+        <div class="addresses-not-found" v-else>
+            <div class="image">
+                <img src="/static/img/personal/wind.png" style="width:128px;">
+            </div>
+            <div class="text">暂无数据...</div>
         </div>
 
-        <div style="text-align: left;padding: 8px 16px" class="rules">
+        <div style="text-align: left;padding: 8px 16px" class="rules" v-if="taskList.length">
             <table class="common_table" cellspacing="0" cellpadding="0" style="font-size:12px;">
                 <tbody>
                     <tr class="noborder tdtitle">
@@ -52,27 +59,52 @@ export default {
             type: '',
             pageNumber: 0,
             pageSize: 10,
-            tasksList: []
+            taskList: [],
+            allPages: ''
 		}
 	},
 	created: function () {
         this.type = this.$route.query.type
-        this.getTasksList(this.type, this.pageSize, this.pageNumber)
+        axios({ // 获取任务数据
+            method: 'GET',
+            url: process.env.api_url + '/task/list',
+            params: {
+                type: this.type,
+                pageSize: this.pageSize,
+                pageNumber: this.pageNumber
+            },
+            withCredentials: true,
+            headers: {"lang": 'zh'}
+        }).then((response) => {
+            this.taskList = response.data.data.data
+            this.allPages = Math.ceil(response.data.data.count / this.pageSize)
+        }).catch((ex) => {
+            this.showMsg(ex.response.data.message)
+        })
 	},
 	methods: {
-        getTasksList: function (type, pageSize, pageNumber) {
+        getTaskList: function (pageNumber, kind) {
+            if (this.pageNumber == 0 && kind == 'down') {
+                this.showMsg("当前已是第一页！")
+                return false
+            } 
+            if (this.pageNumber == this.allPages - 1 && kind == 'up') {
+                this.showMsg("当前已是最后一页！")
+                return false
+            }
+            this.pageNumber = pageNumber
             axios({ // 获取任务数据
                 method: 'GET',
                 url: process.env.api_url + '/task/list',
                 params: {
-                    type: type,
-                    pageSize: pageSize,
-                    pageNumber: pageNumber
+                    type: this.type,
+                    pageSize: this.pageSize,
+                    pageNumber: this.pageNumber
                 },
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                this.tasksList = response.data.data
+                this.taskList = response.data.data.data
             }).catch((ex) => {
                 this.showMsg(ex.response.data.message)
             })
@@ -123,44 +155,7 @@ export default {
     right: 14px;
     width: 8px;
 }
-#page {
-    margin-top: 10px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-#page .page a.pre {
-    background: #fff;
-    display: inline-block;
-    line-height: 44px;
-    text-align: center;
-    border: 1px solid #eee;
-    color: #888;
-    width: 44px;
-    height: 44px;
-    border-radius: 3px 0 0 5px;
-}
-#page .page a.info {
-    background: #fff;
-    display: inline-block;
-    line-height: 44px;
-    text-align: center;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    color: #888;
-    padding: 0 20px;
-    height: 44px;
-}
-#page .page a.next {
-    background: #fff;
-    display: inline-block;
-    line-height: 44px;
-    text-align: center;
-    border: 1px solid #eee;
-    color: #888;
-    width: 44px;
-    height: 44px;
-    border-radius: 0 5px 5px 0;
-}
+
 p img{
     width: 100%;
 }

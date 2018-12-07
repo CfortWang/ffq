@@ -10,7 +10,13 @@
         
         <div class="user-center-desk">
             <div class="group-sales-statistics">
-                <p>全部收益</p>
+                <p v-if="type == 1">全部收益</p>
+                <p v-else-if="type == 2">今日收益</p>
+                <p v-else-if="type == 3">昨日收益</p>
+                <p v-else-if="type == 4">本周收益</p>
+                <p v-else-if="type == 5">本月收益</p>
+                <p v-else-if="type == 6">上月收益</p>
+                <p v-else>自定义时段收益  {{startTime}}至{{endTime}}</p>
 			</div>
 			<div id="subusers-list">
 				<table class="" cellpadding="0" cellspacing="0">
@@ -42,11 +48,18 @@
                 </table>
             </div>
 
-            <div id="page">
-                <div class="page"><a class="pre" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">1/1</a><a class="next" hidefocus="true"><span>&gt;</span></a></div>
-            </div>			
         </div>
 
+        <div id="page" v-if="benifitList.length">
+            <div class="page"><a class="pre" v-on:click="getBenifitList(pageNumber - 1, 'down')" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">{{pageNumber + 1}}/{{allPages}}</a><a class="next" v-on:click="getBenifitList(pageNumber + 1, 'up')" hidefocus="true"><span>&gt;</span></a></div>
+        </div>
+        
+        <div class="addresses-not-found" v-else>
+            <div class="image">
+                <img src="/static/img/personal/wind.png" style="width:128px;">
+            </div>
+            <div class="text">暂无数据...</div>
+        </div>
   	</div>
 </template>
 
@@ -55,34 +68,65 @@ export default {
 	name: 'BenifitDetails',
   	data () {
 		return {
-			benifitList: '',
-            allPage: '',
+			benifitList: [],
+            allPages: '',
             pageSize: 10,
-            pageNumber: 0
+            pageNumber: 0,
+            type: '',
+            startTime: '',
+            endTime: ''
 		}
 	},
 	created: function () {
-        this.getBenifitList('', '', this.pageSize, this.pageNumber)
+        var getParams = this.$route.params
+        this.type = getParams.type
+        this.startTime = getParams.startTime
+        this.endTime = getParams.endTime
+        axios({
+            method: 'GET',
+            url: process.env.api_url + '/user/gainList',
+            params: {
+                start_at: this.startTime,
+                end_at: this.endTime,
+                pageSize: this.pageSize,
+                pageNumber: this.pageNumber
+            },
+            withCredentials: true,
+            headers: {"lang": 'zh'}
+        }).then((response) => {
+            let responseData = response.data.data
+            this.benifitList = responseData.data
+            this.allPages = Math.ceil(responseData.count / this.pageSize)
+        }).catch((ex) => {
+            console.log(ex)
+        })
 	},
 	methods: {
-        getBenifitList: function (start, end, pageSize, nowPage) {
+        getBenifitList: function (pageNumber, kind) {
+            if (this.pageNumber == 0 && kind == 'down') {
+                this.showMsg("当前已是第一页！")
+                return false
+            } 
+            if (this.pageNumber == this.allPages - 1 && kind == 'up') {
+                this.showMsg("当前已是最后一页！")
+                return false
+            }
+            this.pageNumber = pageNumber
             axios({
                 method: 'GET',
                 url: process.env.api_url + '/user/gainList',
                 params: {
-                    start_at: start,
-                    end_at: end,
-                    pageSize: pageSize,
-                    pageNumber: nowPage
+                    start_at: this.startTime,
+                    end_at: this.endTime,
+                    pageSize: this.pageSize,
+                    pageNumber: this.pageNumber
                 },
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                let responseData = response.data.data
-                this.benifitList = responseData.data
-                this.allPage = Math.ceil(responseData.count / this.pageSize)
+                this.benifitList = response.data.data.data
             }).catch((ex) => {
-                console.log(ex)
+                this.showMsg(ex.response.data.message)
             })
         }
 	}
@@ -151,44 +195,5 @@ export default {
 }
 p{
     font-size: 13px;
-}
-
-#page {
-    margin-top: 10px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-#page .page a.pre {
-    background: #fff;
-    display: inline-block;
-    line-height: 44px;
-    text-align: center;
-    border: 1px solid #eee;
-    color: #888;
-    width: 44px;
-    height: 44px;
-    border-radius: 3px 0 0 5px;
-}
-#page .page a.info {
-    background: #fff;
-    display: inline-block;
-    line-height: 44px;
-    text-align: center;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    color: #888;
-    padding: 0 20px;
-    height: 44px;
-}
-#page .page a.next {
-    background: #fff;
-    display: inline-block;
-    line-height: 44px;
-    text-align: center;
-    border: 1px solid #eee;
-    color: #888;
-    width: 44px;
-    height: 44px;
-    border-radius: 0 5px 5px 0;
 }
 </style>

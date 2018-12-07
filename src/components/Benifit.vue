@@ -13,13 +13,13 @@
                 <div class="center-bar" style="width: 340px;">
                     <div class="x-scrolling-bar-inner" style="width: 360px;">
                         <div class="x-scrolling-bar-inner-fixed" id="type-selector">
-                            <li class="current item" v-on:click="getBenifit('', '', $event)">全部</li>
-                            <li class="item" v-on:click="getBenifit(today, tomorrow, $event)">今日</li>
-                            <li class="item" v-on:click="getBenifit(yesterday, today, $event)">昨日</li>
-                            <li class="item" v-on:click="getBenifit(thisWeek[0], thisWeek[7], $event)">本周</li>
-                            <li class="item" v-on:click="getBenifit(thisMonthStart, thisMonthEnd, $event)">本月</li>
-                            <li class="item" v-on:click="getBenifit(lastMonthStart, lastMonthEnd, $event)">上月</li>
-                            <li class="item" v-on:click="changeStatus($event)">自定义</li>
+                            <li class="current item" data-type="1" start="" end="" v-on:click="getBenifit('', '', $event)">全部</li>
+                            <li class="item" data-type="2" v-bind:start="today" v-bind:end="tomorrow" v-on:click="getBenifit(today, tomorrow, $event)">今日</li>
+                            <li class="item" data-type="3" v-bind:start="yesterday" v-bind:end="today" v-on:click="getBenifit(yesterday, today, $event)">昨日</li>
+                            <li class="item" data-type="4" v-bind:start="thisWeek[0]" v-bind:end="thisWeek[7]" v-on:click="getBenifit(thisWeek[0], thisWeek[7], $event)">本周</li>
+                            <li class="item" data-type="5" v-bind:start="thisMonthStart" v-bind:end="thisMonthEnd" v-on:click="getBenifit(thisMonthStart, thisMonthEnd, $event)">本月</li>
+                            <li class="item" data-type="6" v-bind:start="lastMonthStart" v-bind:end="lastMonthEnd" v-on:click="getBenifit(lastMonthStart, lastMonthEnd, $event)">上月</li>
+                            <li class="item" data-type="0" v-bind:start="customizeStart" v-bind:end="customizeEnd" v-on:click="changeStatus($event)">自定义</li>
                         </div>
                     </div>
                 </div>
@@ -192,7 +192,7 @@
 				</tbody>
             </table>
             <ul class="common-list clearfix" id="sales-statistics">
-                <li class="onlyinfo clearfix" id="sales-details-total" v-on:click="jumpTo('/benifitDetails')">
+                <li class="onlyinfo clearfix" id="sales-details-total" v-on:click="toDetails">
                     <span class="title">总收益</span>
                     <span class="price" style="color:#ec2d2d;padding-right:30px;"><span id="group-profits-total">{{totalBenifit}}</span> </span>
                     <div class="view-more"><img src="/static/img/personal/gray-right-arrow.png"></div>
@@ -254,7 +254,9 @@ export default {
             lastMonthEnd: '',
             customizeStart: '',
             customizeEnd: '',
-            isCustomize: false
+            isCustomize: false,
+            startTime: '',
+            endTime: ''
 		}
 	},
 	created: function () {
@@ -293,6 +295,7 @@ export default {
             headers: {"lang": 'zh'}
         }).then((response) => {
             this.totalBenifit = response.data.data
+            this.type = 1
         }).catch((ex) => {
             console.log(ex)
         })
@@ -347,6 +350,20 @@ export default {
                 this.totalBenifit = response.data.data
             }).catch((ex) => {
                 console.log(ex)
+            })
+        },
+        toDetails: function () {
+            let current = document.getElementsByClassName('current')[0]
+            var startTime = current.getAttribute('start')
+            var endTime = current.getAttribute('end')
+            var type = current.getAttribute('data-type')
+            this.$router.push({
+                name: 'BenifitDetails',
+                params: {
+                    startTime: startTime,
+                    endTime: endTime,
+                    type: type
+                }
             })
         }
 	}

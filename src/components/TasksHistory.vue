@@ -23,7 +23,11 @@
             </div>
         </div>
 
-        <div class="addresses-not-found" v-if="noData">
+        <div id="page" v-if="taskList.length">
+            <div class="page"><a class="pre" v-on:click="getTaskList(pageNumber - 1, 'down')" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">{{pageNumber + 1}}/{{allPages}}</a><a class="next" v-on:click="getTaskList(pageNumber + 1, 'up')" hidefocus="true"><span>&gt;</span></a></div>
+        </div>
+
+        <div class="addresses-not-found" v-else>
             <div class="image">
                 <img src="/static/img/personal/wind.png" style="width:128px;">
             </div>
@@ -40,10 +44,9 @@ export default {
 		return {
             taskStatus: '',
             taskList: '',
-            allPage: '',
+            allPages: '',
             pageSize: 10,
-            pageNumber: 0,
-            noData: false
+            pageNumber: 0
 		}
 	},
 	created: function () {
@@ -59,18 +62,39 @@ export default {
             withCredentials: true,
             headers: {"lang": 'zh'}
         }).then((response) => {
-            this.taskList = response.data.data
-            console.log(this.taskList)
-            if (this.taskList.length == 0) {
-                this.noData = true
-            }
-            // this.allPage = Math.ceil(responseData.all / this.pageSize)
+            this.taskList = response.data.data.data
+            this.allPages = Math.ceil(response.data.data.count / this.pageSize)
         }).catch((ex) => {
             console.log(ex)
         })
 	},
 	methods: {
-
+        getTaskList: function (pageNumber, kind) {
+            if (this.pageNumber == 0 && kind == 'down') {
+                this.showMsg("当前已是第一页！")
+                return false
+            } 
+            if (this.pageNumber == this.allPages - 1 && kind == 'up') {
+                this.showMsg("当前已是最后一页！")
+                return false
+            }
+            this.pageNumber = pageNumber
+            axios({ // 获取任务数据
+                method: 'GET',
+                url: process.env.api_url + '/task/joinlist',
+                params: {
+                    status: this.taskStatus,
+                    pageSize: this.pageSize,
+                    pageNumber: this.pageNumber
+                },
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                this.addList = response.data.data.data
+            }).catch((ex) => {
+                this.showMsg(ex.response.data.message)
+            })
+        }
 	}
 }
 </script>
