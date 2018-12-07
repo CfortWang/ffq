@@ -69,7 +69,12 @@
             </div>
             
             <div id="page">
-                <div class="page"><a class="pre" v-on:click="getTeamList(userID, pageNumber - 1, type, 'down')" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">{{pageNumber + 1}}/{{allPages}}</a><a class="next" v-on:click="getTeamList(userID, pageNumber + 1, type, 'up')" hidefocus="true"><span>&gt;</span></a></div>
+                <div class="page">
+                    <a class="pre" v-on:click="getTeamList(userID, pageNumber - 1, type, 'down')" hidefocus="true"><span>&lt;</span></a>
+                    <a class="info" id="info" hidefocus="true" v-on:click="showInput">{{pageNumber - 0 + 1}}/{{allPages}}</a>
+                    <input type="number" id="pageInput" v-model="inputNumber" v-on:blur="inputBlur">
+                    <a class="next" v-on:click="getTeamList(userID, pageNumber + 1, type, 'up')" hidefocus="true"><span>&gt;</span></a>
+                </div>
             </div>
         </div>
   	</div>
@@ -86,6 +91,7 @@ export default {
             userID: '',
             pageSize: 10,
             pageNumber: 0,
+            inputNumber: 1,
             type: 'all',
             teamList: [],
             allPages: ''
@@ -210,6 +216,39 @@ export default {
                     pageSize: this.pageSize,
                     pageNumber: this.pageNumber,
                     type: type
+                },
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                this.hideLoading()
+                this.teamList = response.data.data.data
+            }).catch((ex) => {
+                this.hideLoading()
+                this.showMsg(ex.response.data.message)
+                console.log(ex)
+            })
+        },
+        inputBlur: function () {
+            if (this.inputNumber < 1) {
+                this.showMsg("请输入大于0的页数！")
+                return false
+            }
+            if (this.inputNumber > this.allPages) {
+                this.showMsg("跳转页数不得超过最大页数")
+                return false
+            }
+            this.showLoading()
+            this.pageNumber = this.inputNumber - 1
+            document.getElementById('info').style.display = 'inline-block'
+            document.getElementById('pageInput').style.display = 'none'
+            axios({
+                method: 'GET',
+                url: process.env.api_url + '/user/myTeamList',
+                params: {
+                    id: '',
+                    pageSize: this.pageSize,
+                    pageNumber: this.pageNumber,
+                    type: this.type
                 },
                 withCredentials: true,
                 headers: {"lang": 'zh'}

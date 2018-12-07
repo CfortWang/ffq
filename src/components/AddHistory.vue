@@ -24,7 +24,12 @@
         </div>
 
         <div id="page" v-if="addList.length">
-            <div class="page"><a class="pre" v-on:click="getAddList(pageNumber - 1, 'down')" hidefocus="true"><span>&lt;</span></a><a class="info" hidefocus="true">{{pageNumber + 1}}/{{allPages}}</a><a class="next" v-on:click="getAddList(pageNumber + 1, 'up')" hidefocus="true"><span>&gt;</span></a></div>
+            <div class="page">
+                <a class="pre" v-on:click="getAddList(pageNumber - 1, 'down')" hidefocus="true"><span>&lt;</span></a>
+                <a class="info" id="info" hidefocus="true" v-on:click="showInput">{{pageNumber - 0 + 1}}/{{allPages}}</a>
+                <input type="number" id="pageInput" v-model="inputNumber" v-on:blur="inputBlur">
+                <a class="next" v-on:click="getAddList(pageNumber + 1, 'up')" hidefocus="true"><span>&gt;</span></a>
+            </div>
         </div>
         
         <div class="addresses-not-found" v-else>
@@ -43,6 +48,7 @@ export default {
   	data () {
 		return {
             pageNumber: 0,
+            inputNumber: 1,
             pageSize: 10,
             allPages: '',
             addList: []
@@ -81,6 +87,37 @@ export default {
             }
             this.pageNumber = pageNumber
             this.showLoading()
+            axios({ // 获取任务数据
+                method: 'GET',
+                url: process.env.api_url + '/task/ownlist',
+                params: {
+                    pageSize: this.pageSize,
+                    pageNumber: this.pageNumber
+                },
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                this.hideLoading()
+                this.addList = response.data.data.data
+            }).catch((ex) => {
+                this.hideLoading()
+                this.showMsg(ex.response.data.message)
+                console.log(ex)
+            })
+        },
+        inputBlur: function () {
+            if (this.inputNumber < 1) {
+                this.showMsg("请输入大于0的页数！")
+                return false
+            }
+            if (this.inputNumber > this.allPages) {
+                this.showMsg("跳转页数不得超过最大页数")
+                return false
+            }
+            this.showLoading()
+            this.pageNumber = this.inputNumber - 1
+            document.getElementById('info').style.display = 'inline-block'
+            document.getElementById('pageInput').style.display = 'none'
             axios({ // 获取任务数据
                 method: 'GET',
                 url: process.env.api_url + '/task/ownlist',

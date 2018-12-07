@@ -22,7 +22,8 @@
                 <a class="pre" v-on:click="getTaskList(pageNumber - 1, 'down')" hidefocus="true"><span>&lt;</span></a>
                 <a class="info" id="info" hidefocus="true" v-on:click="showInput">{{pageNumber - 0 + 1}}/{{allPages}}</a>
                 <input type="number" id="pageInput" v-model="inputNumber" v-on:blur="inputBlur">
-                <a class="next" v-on:click="getTaskList(pageNumber + 1, 'up')" hidefocus="true"><span>&gt;</span></a></div>
+                <a class="next" v-on:click="getTaskList(pageNumber + 1, 'up')" hidefocus="true"><span>&gt;</span></a>
+            </div>
         </div>
         
         <div class="addresses-not-found" v-else>
@@ -127,7 +128,7 @@ export default {
                 this.showMsg("请输入大于0的页数！")
                 return false
             }
-            if (this.inputNumber > this.allPages - 1) {
+            if (this.inputNumber > this.allPages) {
                 this.showMsg("跳转页数不得超过最大页数")
                 return false
             }
