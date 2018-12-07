@@ -37,6 +37,14 @@ Vue.prototype.closeMsg = function () {
   ele1.style.display = 'none'
   ele2.style.display = 'none'
 }
+Vue.prototype.showInput = function () {
+  let ele1 = document.getElementById('info')
+  let ele2 = document.getElementById('pageInput')
+  ele1.style.display = 'none'
+  ele2.style.display = 'inline-block'
+  ele2.focus()
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

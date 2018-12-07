@@ -51,7 +51,6 @@ export default {
 	},
 	created: function () {
         this.taskStatus = this.$route.query.status
-        this.taskList = [1,1,1,1,1,1,1,1,1,1,1,1,1]
         this.showLoading()
         axios({ // 获取任务列表
             method: 'GET',

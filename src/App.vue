@@ -184,6 +184,18 @@ input:focus{
     padding: 0 20px;
     height: 44px;
 }
+#page .page input {
+    background: #fff;
+    display: none;
+    line-height: 44px;
+    text-align: left;
+    border: 1px solid #4C9CD6;
+    color: #888;
+    padding: 0 12px;
+    font-size: 14px;
+    height: 42px;
+    width: 30px;
+}
 #page .page a.next {
     background: #fff;
     display: inline-block;
