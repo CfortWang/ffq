@@ -95,12 +95,12 @@ export default {
             withCredentials: true,
             headers: {"lang": 'zh'}
         }).then((response) => {
-            this.showLoading()
+            this.hideLoading()
             let responseData = response.data.data
             this.benifitList = responseData.data
             this.allPages = Math.ceil(responseData.count / this.pageSize)
         }).catch((ex) => {
-            this.showLoading()
+            this.hideLoading()
             this.showMsg(ex.response.data.message)
             console.log(ex)
         })
@@ -129,10 +129,10 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                this.showLoading()
+                this.hideLoading()
                 this.benifitList = response.data.data.data
             }).catch((ex) => {
-                this.showLoading()
+                this.hideLoading()
                 this.showMsg(ex.response.data.message)
                 console.log(ex)
             })
