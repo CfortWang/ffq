@@ -83,6 +83,7 @@ export default {
         }).catch((ex) => {
             this.hideLoading()
             this.showMsg(ex.response.data.message)
+            console.log(ex)
         })
 	},
 	methods: {
@@ -113,6 +114,7 @@ export default {
             }).catch((ex) => {
                 this.hideLoading()
                 this.showMsg(ex.response.data.message)
+                console.log(ex)
             })
         }
 	}

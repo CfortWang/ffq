@@ -260,6 +260,7 @@ export default {
 		}
 	},
 	created: function () {
+        this.showLoading()
         var time = new Date()
         let today = time.setDate(time.getDate())
         let tomorrow = time.setDate(time.getDate() + 1)
@@ -294,9 +295,12 @@ export default {
             withCredentials: true,
             headers: {"lang": 'zh'}
         }).then((response) => {
+            this.hideLoading()
             this.totalBenifit = response.data.data
             this.type = 1
         }).catch((ex) => {
+            this.hideLoading()
+            this.showMsg(ex.response.data.message)
             console.log(ex)
         })
 	},
@@ -311,6 +315,7 @@ export default {
             e.target.previousElementSibling.innerHTML = e.target.value
         },
         getBenifit: function (start, end, e) {
+            this.showLoading()
             document.getElementsByClassName('current')[0].classList.remove("current")
             e.target.classList.add("current")
             axios({ // 获取收益
@@ -323,12 +328,16 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
+                this.hideLoading()
                 this.totalBenifit = response.data.data
             }).catch((ex) => {
+                this.hideLoading()
+                this.showMsg(ex.response.data.message)
                 console.log(ex)
             })
         },
         customize: function () {
+            this.showLoading()
             let startYear = document.getElementById("startYear").innerHTML
             let startMonth = document.getElementById("startMonth").innerHTML
             let startDay = document.getElementById("startDay").innerHTML
@@ -347,8 +356,11 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
+                this.hideLoading()
                 this.totalBenifit = response.data.data
             }).catch((ex) => {
+                this.hideLoading()
+                this.showMsg(ex.response.data.message)
                 console.log(ex)
             })
         },

@@ -106,6 +106,7 @@ export default {
             this.allPages = Math.ceil(this.allNumber / this.pageSize)
         }).catch((ex) => {
             this.showMsg(ex.response.data.message)
+            console.log(ex)
         })
 
         axios({
@@ -125,6 +126,7 @@ export default {
         }).catch((ex) => {
             this.hideLoading()
             this.showMsg(ex.response.data.message)
+            console.log(ex)
         })
         
 	},
@@ -159,6 +161,7 @@ export default {
             }).catch((ex) => {
                 this.hideLoading()
                 this.showMsg(ex.response.data.message)
+                console.log(ex)
             })
         },
         getKindTeamList: function (type, e) {
@@ -185,6 +188,7 @@ export default {
             }).catch((ex) => {
                 this.hideLoading()
                 this.showMsg(ex.response.data.message)
+                console.log(ex)
             })
         },
         getTeamList: function (id, pageNumber, type, kind) {
@@ -215,6 +219,7 @@ export default {
             }).catch((ex) => {
                 this.hideLoading()
                 this.showMsg(ex.response.data.message)
+                console.log(ex)
             })
         }
 	}
