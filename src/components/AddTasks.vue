@@ -187,14 +187,13 @@ export default {
             }).then((response) => {
                 let responseMessage = response.data.data
                 if (response.data.code == 200) {
+                    // this.$router.push({name: 'PayMethod'})
                     this.showMsg("任务发布成功！")
                     setTimeout(() => {
                         window.location.href = window.location.href
                     }, 2000);
-                    return false
                 } else {
                     this.showMsg(responseMessage)
-                    return false
                 }
             }).catch((ex) => {
                 this.showMsg(ex.response.data.message)
