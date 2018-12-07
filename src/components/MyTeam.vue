@@ -120,7 +120,7 @@ export default {
             withCredentials: true,
             headers: {"lang": 'zh'}
         }).then((response) => {
-            this.teamList = response.data.data
+            this.teamList = response.data.data.data
         }).catch((ex) => {
             console.log(ex)
         })
@@ -145,7 +145,7 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                this.teamList = response.data.data
+                this.teamList = response.data.data.data
                 if (this.teamList.length == 0) {
                     this.allPages = 1
                     this.showMsg("会员ID不存在！")
@@ -174,7 +174,7 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                this.teamList = response.data.data
+                this.teamList = response.data.data.data
             }).catch((ex) => {
                 console.log(ex)
             })
@@ -201,7 +201,7 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                this.teamList = response.data.data
+                this.teamList = response.data.data.data
             }).catch((ex) => {
                 console.log(ex)
             })

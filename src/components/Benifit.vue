@@ -14,9 +14,9 @@
                     <div class="x-scrolling-bar-inner" style="width: 360px;">
                         <div class="x-scrolling-bar-inner-fixed" id="type-selector">
                             <li class="current item" v-on:click="getBenifit('', '', $event)">全部</li>
-                            <li class="item" v-on:click="getBenifit(today, today, $event)">今日</li>
+                            <li class="item" v-on:click="getBenifit(today, tomorrow, $event)">今日</li>
                             <li class="item" v-on:click="getBenifit(yesterday, today, $event)">昨日</li>
-                            <li class="item" v-on:click="getBenifit(thisWeek[0], thisWeek[6], $event)">本周</li>
+                            <li class="item" v-on:click="getBenifit(thisWeek[0], thisWeek[7], $event)">本周</li>
                             <li class="item" v-on:click="getBenifit(thisMonthStart, thisMonthEnd, $event)">本月</li>
                             <li class="item" v-on:click="getBenifit(lastMonthStart, lastMonthEnd, $event)">上月</li>
                             <li class="item" v-on:click="changeStatus($event)">自定义</li>
@@ -225,9 +225,9 @@ function getWeekDay(dateString) {
 
     if (dateString.match(dateStringReg)) {
         let presentDate = new Date(dateString),
-            today = presentDate.getDay() !== 0 ? presentDate.getDay() : 7;
+            today = presentDate.getDay() !== 0 ? presentDate.getDay() : 8;
 
-        return Array.from(new Array(7), function(val, index) {
+        return Array.from(new Array(8), function(val, index) {
             return formatDate(new Date(presentDate.getTime() - (today - index-1) * 24 * 60 * 60 * 1000));
         });
 
@@ -245,6 +245,7 @@ export default {
 		return {
             totalBenifit: '',
             today: '',
+            tomorrow: '',
             yesterday: '',
             thisWeek: [],
             thisMonthStart: '',
@@ -259,14 +260,27 @@ export default {
 	created: function () {
         var time = new Date()
         let today = time.setDate(time.getDate())
+        let tomorrow = time.setDate(time.getDate() + 1)
         let yesterday = time.setDate(time.getDate() - 1)
         this.today = format(today)
+        this.tomorrow = format(tomorrow)
         this.yesterday = format(yesterday)
         this.thisWeek = getWeekDay(this.today)
+        console.log(this.thisWeek)
         this.thisMonthStart = this.today.slice(0, 8) + '01'
-        this.thisMonthEnd = this.today.slice(0, 8) + '30'
+        console.log(time.getMonth())
+        if (time.getMonth() == 11) {
+            this.thisMonthEnd = parseInt(time.getFullYear() + 1) + '-' + '01' + '-01'
+        } else {
+            this.thisMonthEnd = time.getFullYear() + '-' + parseInt(time.getMonth() + 2) + '-01'
+        }
+        if (time.getMonth() == 0) {
+            this.lastMonthStart = parseInt(time.getFullYear() - 1) + '-' + '01' + '-01'
+        } else {
+            this.lastMonthStart = time.getFullYear() + '-' + parseInt(time.getMonth() + 1) + '-01'
+        }
         this.lastMonthStart = time.getFullYear() + '-' + time.getMonth() + '-01'
-        this.lastMonthEnd = time.getFullYear() + '-' + time.getMonth() + '-30'
+        this.lastMonthEnd = this.today.slice(0, 8) + '01'
         
         axios({ // 获取收益
             method: 'GET',
