@@ -17,7 +17,7 @@
                 <img class="arrow" src="/static/img/personal/gray-right-arrow.png" img="">
             </div>
         </div>
-        <div id="page" v-if="!taskList.length">
+        <div id="page" v-if="taskList.length">
             <div class="page">
                 <a class="pre" v-on:click="getTaskList(pageNumber - 1, 'down')" hidefocus="true"><span>&lt;</span></a>
                 <a class="info" id="info" hidefocus="true" v-on:click="showInput">{{pageNumber - 0 + 1}}/{{allPages}}</a>
