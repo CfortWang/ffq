@@ -53,6 +53,7 @@ function download(type) {
 		var r = type.match(/png|jpeg|bmp|gif/)[0];
 		return 'image/' + r;
 	}
+	console.log(fixtype(type))
 	imgdata = imgdata.replace(fixtype(type), 'image/octet-stream')
 	//将图片保存到本地
 	var saveFile = function (data, filename) {
@@ -64,6 +65,7 @@ function download(type) {
 		link.dispatchEvent(event);
 	}
 	var filename = new Date().toLocaleDateString() + '.' + type;
+	alert(type + '===' +filename)
 	saveFile(imgdata, filename);
 }
 

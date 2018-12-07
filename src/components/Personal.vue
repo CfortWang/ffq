@@ -219,12 +219,14 @@ export default {
 	},
 	methods: {
 		logOut: function () {
+			this.showLoading()
 			axios({ // 退出登录
 				method: 'POST',
 				url: process.env.api_url + '/login/logout',
 				withCredentials: true,
 				headers: {"lang": 'zh'}
 			}).then((response) => {
+				this.hideLoading()
 				if (response.data.code == 200) {
 					// 清除缓存
 					vueCookie.set('nickname', '', 1)
@@ -237,8 +239,11 @@ export default {
 					vueCookie.set('isVerification', '', 1)
 					vueCookie.set('recommenderID', '', 1)
 					this.$router.push({name: 'Login'})
+				} else {
+					this.showMsg(response.date.message)
 				}
 			}).catch((ex) => {
+				this.hideLoading()
 				console.log(ex)
 			})
 		},

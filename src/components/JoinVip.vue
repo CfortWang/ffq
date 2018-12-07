@@ -35,17 +35,28 @@
             </div>
             <div class="clearfix"></div>
         </div>
-
-        <div style="text-align: left;margin: 4px 20px;border: 1px solid #EEE;font-size: 16px;display: none">
-            <div style="padding: 8px 0px">
-                <input type="radio" checked="" name="payment" value="WEIXINPAY">
-                <span>微信支付</span>
-                <img align="right" style="padding-right:16px;width: 24px;line-height: 16px;vertical-align: middle;text-align: right" src="/static/img/personal/wxpay.png">
+<!-- <label for="continue-time1" class="label-radio">
+    <input type="radio" checked hidden id="continue-time1" name="continued_time" value="48">
+    <label for="continue-time1" class="pay-method"></label>
+    <span>48小时</span>
+</label> -->
+        <div align="left" style="padding: 0px 24px;font-size: 16px;margin-top: 10px">支付方式</div>
+        <div style="text-align: left;margin: 4px 20px;border: 1px solid #EEE;font-size: 16px;">
+            <div style="padding: 8px 0px;">
+                <label for="pay-method1" class="label-radio">
+                    <input type="radio" checked hidden id="pay-method1" name="payment" value="WEIXINPAY">
+                    <label for="pay-method1" class="pay-method"></label>
+                    <span>微信支付</span>
+                    <img align="right" style="padding-right:16px;width: 24px;line-height: 16px;vertical-align: middle;text-align: right" src="/static/img/personal/wxpay.png">
+                </label>
             </div>
-            <div style="padding: 8px 0px;border-top: 1px solid #EEE;display: ">
-                <input type="radio" name="payment" value="ALIPAY">
-                <span>支付宝支付</span>
-                <img align="right" style="padding-right:16px;width: 24px;line-height: 16px;vertical-align: middle;text-align: right" src="/static/img/personal/alipay.png">
+            <div style="padding: 8px 0px;border-top: 1px solid #EEE;">
+                <label for="pay-method2" class="label-radio">
+                    <input type="radio" hidden id="pay-method2" name="payment" value="ALIPAY">
+                    <label for="pay-method2" class="pay-method"></label>
+                    <span>支付宝支付</span>
+                    <img align="right" style="padding-right:16px;width: 24px;line-height: 16px;vertical-align: middle;text-align: right" src="/static/img/personal/alipay.png">
+                </label>
             </div>
         </div>
 
@@ -189,5 +200,23 @@ export default {
 .unselect-icon, .selected-icon{
     width: 16px;
     vertical-align: middle;
+}
+.label-radio{
+    padding-left: 16px;
+}
+.label-radio span{
+    vertical-align: middle;
+}
+.pay-method{
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    background: url('/static/img/personal/radio-unselect.png') no-repeat center;
+    vertical-align: middle;
+    margin: 0px;
+    margin-bottom: 1px;
+}
+input[type="radio"]:checked + .pay-method{
+    background: url('/static/img/personal/radio-selected.png');
 }
 </style>
