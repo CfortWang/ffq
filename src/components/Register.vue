@@ -25,7 +25,7 @@
             </div>
             <div class="verification-code">
                 <input type="text" name="verificationCode" id="verificationCode" v-model="verificationCode" placeholder="验证码"/>
-                <div class="verification-btn" v-on:click="getVerificationCode">发送验证码</div>
+                <button class="verification-btn" v-on:click="getVerificationCode">发送验证码</button>
             </div>
             <div class="user-protocol">
                 <span v-on:click="changeStatus">
@@ -65,7 +65,9 @@ export default {
             repreatPassword: '',
             recommendCode: '',
             verificationCode: '',
-            isAgree: false
+            isAgree: false,
+            countDown: '',
+            clearTimer: ''
 		}
 	},
 	created: function () {
@@ -85,11 +87,18 @@ export default {
             ele2.style.display = 'none'
             this.$router.push({name: 'Login', params:{phoneNumber: this.phoneNumber}})
         },
+        timer: function (event) {
+			var seconds = parseInt(event % 60) < 10 ? '0' + parseInt(event % 60) : parseInt(event % 60)
+			var minutes = parseInt((event / 60) % 60) < 10 ? '0' + parseInt((event / 60) % 60) : parseInt((event / 60) % 60)
+			var leftDate = minutes + ':' + seconds + '后重新获取'
+            document.getElementsByClassName('verification-btn')[0].innerHTML = leftDate
+		},
         getVerificationCode: function () {
             if (this.phoneNumber == '' || this.phoneNumber == null) {
                 this.showMsg("请输入手机号码！")
                 return false
             }
+            this.countDown = 60
             axios({ // 获取验证码
                 method: 'POST',
                 url: process.env.api_url + '/login/msg',
@@ -100,7 +109,23 @@ export default {
             }).then((response) => {
                 if (response.data.code == 200) {
                     this.showMsg("验证码发送成功！")
-                    return false
+                    document.getElementsByClassName('verification-btn')[0].style.backgroundColor = 'grey'
+                    document.getElementsByClassName('verification-btn')[0].disabled = true
+                    var timeLeft = this.countDown
+                    this.timer(this.countDown)
+                    var that = this;
+                    (function (timeLeft) {
+                        that.clearTimer = setInterval(() => {
+                            that.timer(that.countDown)
+                            that.countDown--
+                            if (that.countDown < 0) {
+                                document.getElementsByClassName('verification-btn')[0].style.backgroundColor = '#4C9CD6'
+                                document.getElementsByClassName('verification-btn')[0].disabled = false
+                                document.getElementsByClassName('verification-btn')[0].innerHTML = '重新获取'
+                                clearInterval(that.clearTimer)
+                            }
+                        }, 1000)
+                    })(timeLeft)
                 } else {
                     let responseMessage = response.data.message
                     this.showMsg(responseMessage)
@@ -210,6 +235,7 @@ export default {
     font-size: 16px;
     color: #fff;
     border-radius: 4px;
+    border: none;
 }
 .reg-box > .user-protocol{
     text-align: left;

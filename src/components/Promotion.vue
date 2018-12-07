@@ -7,9 +7,9 @@
 			</div>
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
 		</div>
-		<a class="save-img" v-on:click="save($event)" v-bind:href="imageUrl">保存二维码
+		<p class="save-img" v-on:click="save($event)" v-bind:href="imageUrl">保存二维码
 			<!-- <img src="/static/img/personal/download.png" alt=""> -->
-		</a>
+		</p>
 		
 		<!-- 底部 -->
 		<div class="footer">
@@ -38,6 +38,35 @@
 <script>
 import QRcode from '@xkeshi/vue-qrcode'
 import vueCookie from 'vue-cookie'
+
+//图片下载操作,指定图片类型
+function download(type) {
+	var canvas = document.getElementsByTagName('canvas')[0]
+	var imgdata = canvas.toDataURL(type);
+	var img = new Image()
+	img.src = imgdata
+	var ctx = canvas.getContext('2d');
+	ctx.drawImage(img, 0, 0, img.width, img.height);
+	//将mime-type改为image/octet-stream,强制让浏览器下载
+	var fixtype = function (type) {
+		type = type.toLocaleLowerCase().replace(/jpg/i, 'jpeg');
+		var r = type.match(/png|jpeg|bmp|gif/)[0];
+		return 'image/' + r;
+	}
+	imgdata = imgdata.replace(fixtype(type), 'image/octet-stream')
+	//将图片保存到本地
+	var saveFile = function (data, filename) {
+		var link = document.createElement('a');
+		link.href = data;
+		link.download = filename;
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+		link.dispatchEvent(event);
+	}
+	var filename = new Date().toLocaleDateString() + '.' + type;
+	saveFile(imgdata, filename);
+}
+
 export default {
 	name: 'Promotion',
 	components: {
@@ -75,10 +104,7 @@ export default {
 	},
 	methods: {
 		save: function (e) {
-			// console.log(e.target)
-			this.imageUrl = document.getElementsByTagName('canvas')[0].toDataURL("image/jpeg")
-			console.log(this.imageUrl)
-			e.target.download = this.imageUrl
+			download('jpg')
 		}
 	}
 }
