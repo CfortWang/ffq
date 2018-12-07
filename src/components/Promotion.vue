@@ -64,8 +64,7 @@ function download(type) {
 		event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 		link.dispatchEvent(event);
 	}
-	var filename = new Date().toLocaleDateString() + '.' + type;
-	alert(type + '===' +filename)
+	var filename = 'qrcode' + '.' + type;
 	saveFile(imgdata, filename);
 }
 
