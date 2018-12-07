@@ -94,10 +94,10 @@ export default {
                     return false
                 }
             }).catch((ex) => {
+                this.hideLoading()
                 console.log(ex)
                 var str = ex + ''
                 if (str.search('timeout') !== -1) {
-                    this.hideLoading()
                     this.showMsg("登录超时，请重试！")
                 }
             })
