@@ -8,7 +8,7 @@
         </div>
         <div class="empty"></div>
         <div>
-            <div class="wechat-pay justified" data-way="wechat" v-on:click="changePay($event)">
+            <!-- <div class="wechat-pay justified" data-way="wechat" v-on:click="changePay($event)">
                 <div class="wechat-icon">
                     <img src="/static/img/personal/wechat-pay.png"/>
                     <span>微信支付</span>
@@ -16,8 +16,8 @@
                 <div class="pay-choose">
                     <img src="/static/img/personal/pay-choose.png"/>
                 </div>
-            </div>
-            <div class="alipay justified" data-way="alipay" v-on:click="changePay($event)">
+            </div> -->
+            <div class="alipay justified" data-way="alipay">
                 <div class="alipay-icon">
                     <img src="/static/img/personal/ali-pay.png"/>
                     <span>支付宝支付</span>
@@ -37,7 +37,7 @@ export default {
 	name: 'PayMethod',
   	data () {
 		return {
-            payWay: 'wechat',
+            payWay: 'alipay',
             payReturnUrl: '',
             payType: '',
             payID: ''
@@ -59,7 +59,7 @@ export default {
         goToPay: function () {
             this.showLoading()
             if (this.payWay == 'alipay') {
-                this.payReturnUrl = 'http://localhost:8080/paySuccess'
+                this.payReturnUrl = 'https://fafa.gxwhkj.cn/paySuccess'
                 axios({
                     method: 'POST',
                     url: process.env.api_url + '/pay/ali',
@@ -127,7 +127,7 @@ export default {
 	display: none;
 	height: 20px;
 }
-.wechat-pay .pay-choose{
+.alipay .pay-choose{
 	display: block;
 }
 .pay-choose img{
