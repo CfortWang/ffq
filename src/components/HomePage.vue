@@ -77,6 +77,14 @@
 			</div>
 		</div>
 
+		<div class="notice-box">
+			<div class="close-button" v-on:click="closeNotice($event)">
+				<img src="/static/img/index/close.png" alt="">
+			</div>
+			<div class="notice-title">系统公告</div>
+			<div class="notice-content" id="notice-content" align="left"></div>
+		</div>
+
 		<!-- 底部 -->
 		<div class="footer">
 			<div class="homepage"  v-on:click="jumpTo('/')">
@@ -140,7 +148,9 @@ export default {
 		})
 	},
 	methods: {
-		
+		closeNotice: function (e) {
+			e.currentTarget.parentElement.style.display = 'none'
+		}
 	}
 }
 </script>
@@ -194,5 +204,44 @@ export default {
 .menu-option img{
 	width: 28%;
 }
+
+.notice-box {
+    position: fixed;
+    left: 5%;
+    top: 5%;
+    width: 90%;
+    height: 85%;
+    z-index: 1000;
+    border-radius: 16px;
+    background-color: #f67969;
+    overflow: scroll;
+	display: none;
+}
+
+.notice-box .close-button {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    right: 0;
+    top: 0;
+    margin-top: 0px;
+    margin-right: 0px;
+    cursor: pointer;
+}
+
+.notice-box .notice-title{
+	padding-top: 16px;
+	font-size: 32px;
+	color: white
+}
+
+.notice-box .notice-content{
+	margin-top: 20px;
+    padding: 16px;
+    color: white;
+    font-size: 14px;
+	text-align: left;
+}
+
 
 </style>

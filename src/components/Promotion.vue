@@ -53,12 +53,22 @@ function download(type) {
 		var r = type.match(/png|jpeg|bmp|gif/)[0];
 		return 'image/' + r;
 	}
-	console.log(fixtype(type))
-	imgdata = imgdata.replace(fixtype(type), 'image/octet-stream')
+	// imgdata = imgdata.replace(fixtype(type), 'image/octet-stream')
 	//将图片保存到本地
+	var dataURLtoBlob = function(dataurl) {
+		var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+		bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+		while(n--){
+			u8arr[n] = bstr.charCodeAt(n);
+		}
+		return new Blob([u8arr], {type:mime});
+	}
 	var saveFile = function (data, filename) {
 		var link = document.createElement('a');
-		link.href = data;
+		var strDataURI = data.substr(22, data.length);
+		var blob = dataURLtoBlob(data);
+		var objurl = URL.createObjectURL(blob);
+		link.href = objurl;
 		link.download = filename;
 		var event = document.createEvent('MouseEvents');
 		event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
@@ -105,7 +115,7 @@ export default {
 	},
 	methods: {
 		save: function (e) {
-			download('jpg')
+			download('png')
 		}
 	}
 }
