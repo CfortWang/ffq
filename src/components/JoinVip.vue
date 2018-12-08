@@ -35,12 +35,7 @@
             </div>
             <div class="clearfix"></div>
         </div>
-<!-- <label for="continue-time1" class="label-radio">
-    <input type="radio" checked hidden id="continue-time1" name="continued_time" value="48">
-    <label for="continue-time1" class="pay-method"></label>
-    <span>48小时</span>
-</label> -->
-        <div align="left" style="padding: 0px 24px;font-size: 16px;margin-top: 10px">支付方式</div>
+        <!-- <div align="left" style="padding: 0px 24px;font-size: 16px;margin-top: 10px">支付方式</div>
         <div style="text-align: left;margin: 4px 20px;border: 1px solid #EEE;font-size: 16px;">
             <div style="padding: 8px 0px;">
                 <label for="pay-method1" class="label-radio">
@@ -58,7 +53,7 @@
                     <img align="right" style="padding-right:16px;width: 24px;line-height: 16px;vertical-align: middle;text-align: right" src="/static/img/personal/alipay.png">
                 </label>
             </div>
-        </div>
+        </div> -->
 
         <div class="protocol" style="font-size: 13px;color:#111;text-align:left;margin-bottom:10px;padding-top:1rem;padding-left: 5%;opacity: 0.5 ">
             <span v-on:click="changeStatus">

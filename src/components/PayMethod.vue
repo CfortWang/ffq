@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import $ from 'jquery'
 export default {
 	name: 'PayMethod',
   	data () {
@@ -71,14 +72,9 @@ export default {
                     headers: {'lang': 'zh', 'Content-Type': 'application/x-www-form-urlencoded'}
                 }).then((response) => {
                     this.hideLoading()
-                    console.log(response)
                     if (response.status == 200) {
-                        console.log("===")
-                        let div = document.createElement("div")
-                        div.innerHTML = response.data
-                        document.body.appendChild(div)
-                        // document.getElementsByTagName('form')[0].setAttribute("target") = '_blank';
-                        console.log(document.getElementsByTagName('form')[0])
+                        $('body').append(response.data)
+						$("form").attr("target", "_blank")
                     } else {
                         console.log('error~')
                     }
@@ -149,5 +145,8 @@ export default {
 }
 .sure-pay-btn span{
 	line-height: 25px;
+}
+form{
+    min-height: 100px;
 }
 </style>
