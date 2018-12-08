@@ -42,18 +42,18 @@
                                     <a href="javascript:;" id="upload-btn" class="file">上传图片
                                         <input type="file" class="" id="" name="file" v-on:change="selectImage($event)">
                                     </a>
-                                    <div class="upload-desc">仅能上传一张图片，点击图片可删除</div>
+                                    <!-- <div class="upload-desc">仅能上传一张图片，点击图片可删除</div> -->
                                 </div>
                             </td>
                         </tr>
 
-                        <tr v-if="taskStatus != 0">
+                        <tr v-show="taskStatus">
                             <td align="left" style="border: 1px solid #eee;padding: 8px;">
                                 <div id="tips" style="font-size: 16px;padding: 4px;color: indianred;text-align: center;"></div>
                             </td>
                         </tr>
 
-                        <tr v-if="taskStatus == 0">
+                        <tr v-show="!taskStatus">
                             <td align="left" style="border: 1px solid #eee;padding: 8px;">
                                 <div>
                                     <div class="common-theme-button" id="submit-button" v-on:click="uploadTask">提交任务</div>
@@ -84,6 +84,7 @@ export default {
 	},
 	created: function () {
         this.taskID = this.$route.query.id
+        this.showLoading()
         axios({ // 获取任务详情
             method: 'GET',
             url: process.env.api_url + '/task/detail',
@@ -93,11 +94,13 @@ export default {
             withCredentials: true,
             headers: {"lang": 'zh'}
         }).then((response) => {
+            this.hideLoading()
             let task = response.data.data.task
             this.taskTitle = task.title
             this.taskDesc = task.content
-            this.taskImage = task.image
+            this.taskImage = task.images
             this.taskStatus = response.data.data.status
+            console.log(document.getElementById('tips'))
             if (this.taskStatus == 1) {
                 document.getElementById('tips').innerText = "已完成"
             } else if (this.taskStatus == 2) {
@@ -106,7 +109,10 @@ export default {
                 document.getElementById('tips').innerText = "审核中"
             }
         }).catch((ex) => {
-            this.showMsg(ex.response.data.message)
+            this.hideLoading()
+            console.log(ex)
+            // this.showMsg(ex.response.data.message)
+            con
         })
 	},
 	methods: {
@@ -123,7 +129,7 @@ export default {
                     let imageUrl = response.data.data.url
                     this.imageArr.push(imageUrl)
                     this.showMsg("图片上传成功！")
-                    this.element.parentElement.style.display = 'none'
+                    // this.element.parentElement.style.display = 'none'
                 } else {
                     let responseMessage = response.data.message
                     this.showMsg(responseMessage)
@@ -138,7 +144,7 @@ export default {
             parent.removeChild(self)
             let index = self.getAttribute('data-index')
             delete this.imageArr[index]
-            document.getElementById('upload-btn').style.display= 'block'
+            // document.getElementById('upload-btn').style.display= 'block'
         },
         uploadTask: function () {
             if (this.imageArr == '' || this.imageArr == null) {
@@ -194,7 +200,6 @@ export default {
                 let imageUrl = evt.target.result;
                 that.imageArr.push(imageUrl)
                 that.showMsg("图片上传成功！")
-                document.getElementById('upload-btn').style.display = 'none'
             }
             reader.readAsDataURL(file.target.files[0]);
         }
@@ -269,6 +274,8 @@ export default {
     display: inline-block;
     width: 80px;
     height: 80px;
+    margin-right: 3px;
+    margin-bottom: 10px;
     border: 1px solid #eee;
 }
 .image-div img{
