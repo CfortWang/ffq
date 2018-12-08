@@ -93,7 +93,7 @@ export default {
 		if (vueCookie.get('nickname')) {
             this.recommendCode = vueCookie.get('userID')
 			this.nickname = vueCookie.get('nickname')
-			this.qrCodeUrl = "http://fafa.sumsia.com/register?recommendCode" + this.recommendCode
+			this.qrCodeUrl = "https://fafa.gxwhkj.cn/register?recommendCode" + this.recommendCode
         } else {
 			axios({ // 获取个人信息
 				method: 'GET',
@@ -105,7 +105,7 @@ export default {
 				this.nickname = responseData.name
 				// let recommendCode = responseData.recommend_code
 				this.recommendCode = responseData.id
-				this.qrCodeUrl = "http://fafa.sumsia.com/register?recommendCode" + this.recommendCode
+				this.qrCodeUrl = "https://fafa.gxwhkj.cn/register?recommendCode" + this.recommendCode
 			}).catch((ex) => {
 				this.$route.push({name: 'Login'})
 			})
