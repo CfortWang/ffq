@@ -76,8 +76,9 @@ export default {
                         console.log("===")
                         let div = document.createElement("div")
                         div.innerHTML = response.data
-                        document.body.appendChild(div);
-                        // document.getElementsByTagName('form')[0].setAttribute("target") = '_blank'
+                        document.body.appendChild(div)
+                        // document.getElementsByTagName('form')[0].setAttribute("target") = '_blank';
+                        console.log(document.getElementsByTagName('form')[0])
                     } else {
                         console.log('error~')
                     }
