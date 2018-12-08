@@ -76,7 +76,7 @@ export default {
                     phoneNumber: this.phoneNumber,
                     password: this.password
                 },
-                timeout: 10000,
+                timeout: 100000,
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {

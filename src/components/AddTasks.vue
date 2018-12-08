@@ -82,7 +82,9 @@ export default {
             taskAmount: '',
             taskTotalAmount: '',
             userLevel: '',
-            progress: '0%'
+            progress: '0%',
+            payID: '',
+            payType: 'task'
 		}
 	},
 	created: function () {
@@ -194,6 +196,7 @@ export default {
                 this.showMsg("任务数量不得小于2000！")
                 return false
             }
+            this.showLoading()
             axios({ // 发布任务
                 method: 'POST',
                 url: process.env.api_url + '/task',
@@ -207,17 +210,26 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                let responseMessage = response.data.data
+                this.hideLoading()
+                let responseMessage = response.data.message
+                this.payID = response.data.data.id
                 if (response.data.code == 200) {
                     // this.$router.push({name: 'PayMethod'})
                     this.showMsg("任务发布成功！")
                     setTimeout(() => {
-                        window.location.href = window.location.href
+                        this.$router.push({
+                            name: 'PayMethod',
+                            params: {
+                                payID: this.payID,
+                                payType: this.payType
+                            }
+                        })
                     }, 2000);
                 } else {
                     this.showMsg(responseMessage)
                 }
             }).catch((ex) => {
+                this.hideLoading()
                 this.showMsg(ex.response.data.message)
             })
         }

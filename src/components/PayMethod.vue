@@ -36,11 +36,17 @@ export default {
 	name: 'PayMethod',
   	data () {
 		return {
-			payWay: 'wechat'
+            payWay: 'wechat',
+            payReturnUrl: '',
+            payType: '',
+            payID: ''
 		}
 	},
 	created: function () {
-
+        var getParams = this.$route.params
+        this.payID = getParams.payID
+        this.payType = getParams.payType
+        
 	},
 	methods: {
         changePay: function (e) {
@@ -48,7 +54,39 @@ export default {
             document.getElementsByClassName('pay-choose')[0].style.display = 'none'
             document.getElementsByClassName('pay-choose')[1].style.display = 'none'
             e.currentTarget.children[1].style.display = 'block'
-		}
+        },
+        goToPay: function () {
+            this.showLoading()
+            if (this.payWay == 'alipay') {
+                this.payReturnUrl = 'http://localhost:8080/paySuccess'
+                axios({
+                    method: 'POST',
+                    url: process.env.api_url + '/pay/ali',
+                    params: {
+                        type: this.payType,
+                        id: this.payID,
+                        return_url: this.payReturnUrl
+                    },
+                    withCredentials: true,
+                    headers: {'lang': 'zh', 'Content-Type': 'application/x-www-form-urlencoded'}
+                }).then((response) => {
+                    this.hideLoading()
+                    console.log(response)
+                    if (response.status == 200) {
+                        console.log("===")
+                        let div = document.createElement("div")
+                        div.innerHTML = response.data
+                        document.body.appendChild(div);
+                        // document.getElementsByTagName('form')[0].setAttribute("target") = '_blank'
+                    } else {
+                        console.log('error~')
+                    }
+                }).catch((ex) => {
+                    this.hideLoading()
+                    console.log(ex)
+                })
+            }
+        }
 	}
 }
 </script>

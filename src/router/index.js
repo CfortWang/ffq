@@ -165,6 +165,11 @@ export default new VueRouter({
       path: '/payMethod',
       name: 'PayMethod',
       component: (resolve) => require(['@/components/PayMethod'], resolve)
+    },
+    {
+      path: '/paySuccess',
+      name: 'PaySuccess',
+      component: (resolve) => require(['@/components/PaySuccess'], resolve)
     }
   ]
 })

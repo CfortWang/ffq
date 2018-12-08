@@ -12,8 +12,9 @@
             <ul class="common-list clearfix">
                 <li class="maininfo clearfix" v-on:click="showDetails">
                     <span class="title">
-                        <span v-if="item.status">提现成功</span>
-                        <span v-else>审核失败</span>
+                        <span v-if="item.status == 0">已申请</span>
+                        <span v-else-if="item.status == 1">提现成功</span>
+                        <span v-else>提现失败</span>
                     </span>
                     <span class="price">{{item.amount}}</span>
                     <div class="view-details common-noswap">
@@ -26,11 +27,11 @@
                         <span class="title">申请时间</span>
                         <span class="info">{{item.created_at}}</span>
                     </div>
-                    <div class="clearfix">
+                    <div class="clearfix" v-if="item.status">
                         <span class="title">审核时间</span>
                         <span class="info">{{item.updated_at}}</span>
                     </div>
-                    <div class="clearfix" v-if="item.status">
+                    <div class="clearfix" v-if="item.status == 1">
                         <span class="title">提现时间</span>
                         <span class="info">{{item.paid_at}}</span>
                     </div>
@@ -42,7 +43,7 @@
                         <span class="title">已提现</span>
                         <span class="info">{{item.cashout_amount}}</span>
                     </div>
-                    <div class="clearfix" v-if="!item.status">
+                    <div class="clearfix" v-if="item.status == 2">
                         <span class="title">原因</span>
                         <span class="info">{{item.refuse_reason}}</span>
                     </div>
