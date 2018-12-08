@@ -102,6 +102,9 @@ export default {
             }
             selection.addRange(range)
             document.execCommand('copy')
+            if (document.execCommand("copy")) {
+                this.showMsg("复制成功")
+            }
         },
         getTask: function () {
             axios({ // 领取任务
