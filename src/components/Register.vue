@@ -50,7 +50,7 @@
             <div class="msg-buttons">
                 <div class="ok-btn" id="msg-ok-btn" v-on:click="goToLogin">前往登录</div>
             </div>
-        </div> 
+        </div>
   	</div>
 </template>
 

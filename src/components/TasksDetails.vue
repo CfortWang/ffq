@@ -58,6 +58,13 @@ export default {
 	},
 	created: function () {
         this.taskID = this.$route.query.id
+        // 阻止选中
+        document.body.onselectstart = function () { 
+            return false
+        }
+        document.body.onmousedown = function () { 
+            return false
+        }
         axios({ // 获取任务详情
             method: 'GET',
             url: process.env.api_url + '/task/info',
@@ -110,6 +117,7 @@ export default {
 <style scoped>
 .contain{
     background: #fff;
+    min-height: calc(100vh - 70px);
 }
 .task-details {
     padding: 8px 16px;

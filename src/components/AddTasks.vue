@@ -33,6 +33,7 @@
                     <input type="file" class="" id="" name="file" v-on:change="uploadIamge($event)">
                 </a>
                 <div class="upload-desc">点击图片可删除</div>
+                <!-- <div class="progress" @click="uploadIamge($event)" :style="{backgroundImage:'linear-gradient(to right,#C0C7CB 0%,#C0C7CB '+progress+',#E1E6E9 '+progress+',#E1E6E9 100%)'}"></div> -->
             </div>
         </div>
 
@@ -57,6 +58,13 @@
             <div class="publish-btn" v-on:click="publish">发布任务</div>
             <div class="publish-desc">注：发布需求超过1000的客户请直接联系客服，查询广告发布套餐价</div>
         </div>
+        <div id="regMsg">
+            <div class="msg-title">系统提示</div>
+            <div class="reg-msg-contents">图片上传中：{{progress}}</div>
+            <div class="msg-buttons">
+                <div class="ok-btn" id="msg-ok-btn" v-on:click="closeProgress">确认</div>
+            </div>
+        </div> 
   	</div>
 </template>
 
@@ -73,7 +81,8 @@ export default {
             taskPrice: '',
             taskAmount: '',
             taskTotalAmount: '',
-            userLevel: ''
+            userLevel: '',
+            progress: '0%'
 		}
 	},
 	created: function () {
@@ -123,17 +132,24 @@ export default {
 	},
 	methods: {
         uploadIamge: function (event) {
+            // 显示进度条
+            document.getElementById('regMsg').style.display = 'block'
+            document.getElementById('cover').style.display = 'block'
             let file = event.target.files[0]
             this.fileData = new FormData()
             this.fileData.append('file', file)
             let config = {
-                headers:{'Content-Type':'multipart/form-data'}
+                headers:{'Content-Type':'multipart/form-data'},
+                onUploadProgress: progressEvent => {
+                    var complete = (progressEvent.loaded / progressEvent.total * 100 | 0) + '%'
+                    this.progress = complete
+                }
             }
-            axios.post('http://47.99.75.151:8080/upload/image',this.fileData,config).then(response => {
+            axios.post('https://api.gxwhkj.cn' + '/upload/image',this.fileData,config).then(response => {
                 if (response.data.code == 200) {
                     let imageUrl = response.data.data.url
                     this.imageArr.push(imageUrl)
-                    this.showMsg("图片上传成功！")
+                    document.getElementsByClassName('reg-msg-contents')[0].innerHTML = "图片上传成功！"
                 } else {
                     let responseMessage = response.data.message
                     this.showMsg(responseMessage)
@@ -151,6 +167,12 @@ export default {
         },
         getTotal: function () {
             this.taskTotalAmount = this.taskPrice * this.taskAmount
+        },
+        closeProgress: function () {
+            if (parseInt(this.progress) == 100) {
+                document.getElementById('regMsg').style.display = 'none'
+                document.getElementById('cover').style.display = 'none'
+            }
         },
         publish: function () {
             if (this.taskTitle == '' || this.taskTitle == null) {
@@ -380,6 +402,14 @@ export default {
 .login{
     float: left;
 }
-
+.progress{
+    height: 10px;
+    position: fixed;
+    top: 50%;
+    left: 5%;
+    width: 90%;
+    display: none;
+    z-index: 10000;
+}
 
 </style>
