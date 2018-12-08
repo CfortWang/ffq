@@ -26,7 +26,7 @@ export default {
 		return {
 			newsList: '',
             allPage: '',
-            pageSize: 10,
+            pageSize: 1000,
             pageNumber: 0
 		}
 	},

@@ -7,9 +7,7 @@
 			</div>
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
 		</div>
-		<p class="save-img" v-on:click="save($event)">保存二维码
-			<!-- <img src="/static/img/personal/download.png" alt=""> -->
-		</p>
+		<!-- <p class="save-img" v-on:click="save($event)">保存二维码</p> -->
 		
 		<!-- 底部 -->
 		<div class="footer">
