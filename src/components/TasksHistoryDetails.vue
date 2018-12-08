@@ -36,7 +36,7 @@
                             </td>
                         </tr>
 
-                        <tr id="mode-1" v-show="!taskStatus">
+                        <tr id="mode-1" v-if="!taskStatus">
                             <td align="left" style="border: 1px solid #eee;padding: 8px;">
                                 <div id="upload-image-body">
                                     <a href="javascript:;" id="upload-btn" class="file">上传图片
@@ -49,11 +49,11 @@
 
                         <tr v-show="taskStatus">
                             <td align="left" style="border: 1px solid #eee;padding: 8px;">
-                                <div id="tips" style="font-size: 16px;padding: 4px;color: indianred;text-align: center;"></div>
+                                <div id="tips" v-html="taskInfo" style="font-size: 16px;padding: 4px;color: indianred;text-align: center;"></div>
                             </td>
                         </tr>
 
-                        <tr v-show="!taskStatus">
+                        <tr v-if="!taskStatus">
                             <td align="left" style="border: 1px solid #eee;padding: 8px;">
                                 <div>
                                     <div class="common-theme-button" id="submit-button" v-on:click="uploadTask">提交任务</div>
@@ -79,7 +79,8 @@ export default {
             taskStatus: '',
             fileData: '',
             imageArr: [],
-            element: ''
+            element: '',
+            taskInfo: ''
 		}
 	},
 	created: function () {
@@ -99,14 +100,13 @@ export default {
             this.taskTitle = task.title
             this.taskDesc = task.content
             this.taskImage = task.images
-            this.taskStatus = response.data.data.status
-            console.log(document.getElementById('tips'))
+            this.taskStatus = parseInt(response.data.data.status)
             if (this.taskStatus == 1) {
-                document.getElementById('tips').innerText = "已完成"
+                this.taskInfo = "已完成"
             } else if (this.taskStatus == 2) {
-                document.getElementById('tips').innerText = "审核被拒"
+                this.taskInfo = "审核被拒"
             } else if (this.taskStatus == 3) {
-                document.getElementById('tips').innerText = "审核中"
+                this.taskInfo = "审核中"
             }
         }).catch((ex) => {
             this.hideLoading()
