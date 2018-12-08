@@ -145,7 +145,7 @@ export default {
                     this.progress = complete
                 }
             }
-            axios.post('https://api.gxwhkj.cn' + '/upload/image',this.fileData,config).then(response => {
+            axios.post(process.env.api_url + '/upload/image',this.fileData,config).then(response => {
                 if (response.data.code == 200) {
                     let imageUrl = response.data.data.url
                     this.imageArr.push(imageUrl)
