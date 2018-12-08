@@ -86,13 +86,22 @@ export default {
 	},
 	methods: {
 		copyText: function () {
-            document.designMode = 'on'
-            let b = document.getElementById("taskDesc")
-            b.select()
-            document.execCommand("copy")
-            if (document.execCommand("copy")) {
-                this.showMsg("复制成功")
+            // document.designMode = 'on'
+            // let b = document.getElementById("taskDesc")
+            // b.select()
+            // document.execCommand("copy")
+            // if (document.execCommand("copy")) {
+            //     this.showMsg("复制成功")
+            // }
+
+            const range = document.createRange()
+            range.selectNode(document.getElementById('taskDesc'))
+            const selection = window.getSelection()
+            if (selection.rangeCount > 0) {
+                selection.removeAllRanges()
             }
+            selection.addRange(range)
+            document.execCommand('copy')
         },
         getTask: function () {
             axios({ // 领取任务
