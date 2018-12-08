@@ -1,7 +1,7 @@
 <template>
 	<div class="content">
 		<div class="header">
-            <div class="left-btn" v-on:click="goBack()">
+            <div class="left-btn" v-on:click="jumpTo('/addHistory')">
                 <img src="/static/img/index/go-back.png" alt="">
             </div>
             <div class="header-title">支付结果</div>
