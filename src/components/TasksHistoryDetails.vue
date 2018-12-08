@@ -36,7 +36,7 @@
                             </td>
                         </tr>
 
-                        <tr id="mode-1">
+                        <tr id="mode-1" v-show="!taskStatus">
                             <td align="left" style="border: 1px solid #eee;padding: 8px;">
                                 <div id="upload-image-body">
                                     <a href="javascript:;" id="upload-btn" class="file">上传图片
