@@ -53,7 +53,7 @@ mui.init({
     }
 });
 
-// mui.previewImage();
+mui.previewImage();
 
 mui.plusReady(function() {
     document.addEventListener('longtap', function(e) {
