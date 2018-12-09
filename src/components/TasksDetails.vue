@@ -44,9 +44,6 @@
 </template>
 
 <script>
-// import mui from '../../static/js/mui.min.js'
-// require('../../static/js/mui.zoom.js')
-// require('../../static/js/mui.previewimage.js')
 
 function savePic(target) {
     mui.alert("执行步骤1")
