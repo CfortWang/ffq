@@ -166,12 +166,15 @@ export default {
                 if(mui.os.ios){
                     //ios
                     var UIPasteboard = plus.ios.importClass("UIPasteboard");
+                    mui.alert('1')
                     var generalPasteboard = UIPasteboard.generalPasteboard();
+                    mui.alert('2')
                     //设置/获取文本内容:
                     generalPasteboard.plusCallMethod({
                         setValue:copy,
                         forPasteboardType: "public.utf8-plain-text"
                     });
+                    mui.alert('3')
                     generalPasteboard.plusCallMethod({
                         valueForPasteboardType: "public.utf8-plain-text"
                     });
@@ -179,8 +182,11 @@ export default {
                 }else{
                     //安卓
                     var context = plus.android.importClass("android.content.Context");
+                    mui.alert('a')
                     var main = plus.android.runtimeMainActivity();
+                    mui.alert('b')
                     var clip = main.getSystemService(context.CLIPBOARD_SERVICE);
+                    mui.alert('c')
                     plus.android.invoke(clip,"setText",copy);
                     mui.toast("已成功复制到剪贴板");
                 }

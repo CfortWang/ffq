@@ -2,13 +2,12 @@
 	<div class="content">
 
 		<div class="contain">
-			<!-- <div class="share-text">
-				<span>{{nickname}}邀您加入</span>
-			</div> -->
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
-			<canvas id="myCanvas" width="400vw" height="564vw"></canvas>
+			<canvas id="myCanvas" width="400vw" height="564vw" v-if="!qrImg"></canvas>
+			<img v-bind:src="qrImg" alt="" data-preview-src="" data-preview-group="1" v-else>
+			<div class="desc">长按保存二维码</div>
 		</div>
-		<a class="save-img" v-on:click="save($event)" download="二维码.jpg">保存二维码</a>
+		<!-- <a class="save-img" v-on:click="save($event)" download="二维码.jpg">保存二维码</a> -->
 		
 		<!-- 底部 -->
 		<div class="footer">
@@ -38,50 +37,122 @@
 import QRcode from '@xkeshi/vue-qrcode'
 import vueCookie from 'vue-cookie'
 
-//图片下载操作,指定图片类型
-function download(type) {
-	var canvas = document.getElementsByTagName('canvas')[0]
-	var imgdata = canvas.toDataURL(type);
-	var img = new Image()
-	img.src = imgdata
-	var ctx = canvas.getContext('2d');
-	ctx.drawImage(img, 0, 0, img.width, img.height);
-	//将mime-type改为image/octet-stream,强制让浏览器下载
-	var fixtype = function (type) {
-		type = type.toLocaleLowerCase().replace(/jpg/i, 'jpeg');
-		var r = type.match(/png|jpeg|bmp|gif/)[0];
-		return 'image/' + r;
-	}
-	// imgdata = imgdata.replace(fixtype(type), 'image/octet-stream')
-	//将图片保存到本地
-	var dataURLtoBlob = function(dataurl) {
-		var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-		bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-		while(n--){
-			u8arr[n] = bstr.charCodeAt(n);
-		}
-		return new Blob([u8arr], {type:mime});
-	}
-	var saveFile = function (data, filename) {
-		var link = document.createElement('a');
-		var strDataURI = data.substr(22, data.length);
-		var blob = dataURLtoBlob(data);
-		var objurl = URL.createObjectURL(blob);
-		link.href = objurl;
-		link.download = filename;
-		var event = document.createEvent('MouseEvents');
-		event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-		link.dispatchEvent(event);
-	}
-	var filename = 'qrcode' + '.' + type;
-	saveFile(imgdata, filename);
+mui.init({
+    gestureConfig: {
+        longtap: true
+    }
+})
+
+mui.previewImage()
+
+mui.plusReady(function() {
+    document.addEventListener('longtap', function(e) {
+        var target = e.target
+        savePic(target)
+    })
+})
+function savePic(target) {
+    // mui.alert(target.classList.contains('mui-zoom'))
+    if(target.tagName == 'IMG' && target.currentSrc.length > 0) { //确保图片链接不为空
+        var imgUrl = target.src;
+        console.log('图片地址：' + imgUrl);
+        var suffix = cutImageSuffix(imgUrl);
+        mui.confirm("是否保存此图片", "", ["保存", "取消"], function(event) {
+            var index = event.index;
+            if(index == 0) {
+                /**
+                 * 创建下载任务
+                 * http://www.html5plus.org/doc/zh_cn/downloader.html#plus.downloader.createDownload
+                 */
+                var downLoader = plus.downloader.createDownload(imgUrl, {
+                    method: 'GET',
+                    filename: '_downloads/image' + suffix
+                }, function(download, status) {
+                    var fileName = download.filename;
+                    console.log('文件名:' + fileName);
+                    console.log('下载状态：' + status);
+                    /**
+                     * 保存至本地相册
+                     */
+                    plus.gallery.save(fileName, function() {
+                        /**
+                         * 保存后，弹出对话框是否查看；
+                         */
+                        mui.confirm("打开相册查看", "", ["打开", "取消"], function(event) {
+                            var gindex = event.index;
+                            if(gindex == 0) {
+                                /**
+                                 * 选择图片
+                                 */
+                                plus.gallery.pick(function(file) {
+                                    mui.toast("你选择了图片：" + file);
+                                }, function(error) {
+                                    console.log(JSON.stringify(error));
+                                }, {
+
+                                });
+                            }
+                        });
+                    });
+                });
+                /**
+                 * 开始下载任务
+                 */
+                downLoader.start();
+            }
+        });
+    }
+}
+// 截取图片后缀用于重命名图片，防止%E5%85%89%E6%98%8E%E8%A1%8C编码的文件不被系统相册识别；
+function cutImageSuffix(imageUrl) {
+    var index = imageUrl.lastIndexOf('.');
+    return imageUrl.substring(index);
 }
 
-function convertCanvasToImage(canvas) {
-	var image = new Image();
-	image.src = canvas.toDataURL("image/png");
-	return image;
-}
+// //图片下载操作,指定图片类型
+// function download(type) {
+// 	var canvas = document.getElementsByTagName('canvas')[0]
+// 	var imgdata = canvas.toDataURL(type);
+// 	var img = new Image()
+// 	img.src = imgdata
+// 	var ctx = canvas.getContext('2d');
+// 	ctx.drawImage(img, 0, 0, img.width, img.height);
+// 	//将mime-type改为image/octet-stream,强制让浏览器下载
+// 	var fixtype = function (type) {
+// 		type = type.toLocaleLowerCase().replace(/jpg/i, 'jpeg');
+// 		var r = type.match(/png|jpeg|bmp|gif/)[0];
+// 		return 'image/' + r;
+// 	}
+// 	// imgdata = imgdata.replace(fixtype(type), 'image/octet-stream')
+// 	//将图片保存到本地
+// 	var dataURLtoBlob = function(dataurl) {
+// 		var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+// 		bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+// 		while(n--){
+// 			u8arr[n] = bstr.charCodeAt(n);
+// 		}
+// 		return new Blob([u8arr], {type:mime});
+// 	}
+// 	var saveFile = function (data, filename) {
+// 		var link = document.createElement('a');
+// 		var strDataURI = data.substr(22, data.length);
+// 		var blob = dataURLtoBlob(data);
+// 		var objurl = URL.createObjectURL(blob);
+// 		link.href = objurl;
+// 		link.download = filename;
+// 		var event = document.createEvent('MouseEvents');
+// 		event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+// 		link.dispatchEvent(event);
+// 	}
+// 	var filename = 'qrcode' + '.' + type;
+// 	saveFile(imgdata, filename);
+// }
+
+// function convertCanvasToImage(canvas) {
+// 	var image = new Image();
+// 	image.src = canvas.toDataURL("image/png");
+// 	return image;
+// }
 
 
 export default {
@@ -94,13 +165,14 @@ export default {
 			nickname: '',
 			recommendCode: '',
 			qrCodeUrl: '',
-			imageUrl: ''
+			imageUrl: '',
+			qrImg: ''
 		}
 	},
 	created: function () {
 		if (vueCookie.get('nickname')) {
             this.recommendCode = vueCookie.get('userID')
-			this.nickname = vueCookie.get('nickname') + 'hasdhashd邀您加入'
+			this.nickname = vueCookie.get('nickname') + '邀您加入'
 			this.qrCodeUrl = "https://fafa.gxwhkj.cn/register?recommendCode" + this.recommendCode
         } else {
 			axios({ // 获取个人信息
@@ -139,16 +211,21 @@ export default {
 			cas2.drawImage(img1, 142, 226, 120, 120)
 		}
 
-		var img =  convertCanvasToImage(canvas2)
-		var arr = img.src.split(',')
-		var mime = arr[0].match(/:(.*?);/)[1]
-		var bstr =  atob(arr[1])
-		var n = bstr.length
-		var u8arr = new Uint8Array(n);
-		while (n--) {
-			u8arr[n] = bstr.charCodeAt(n);
-		}
-		var blob = new Blob([u8arr],{type:mime})
+		setTimeout(() => {
+			this.qrImg = canvas2.toDataURL('jpg')
+			console.log(this.qrImg)
+		}, 2000);
+
+		// var img =  convertCanvasToImage(canvas2)
+		// var arr = img.src.split(',')
+		// var mime = arr[0].match(/:(.*?);/)[1]
+		// var bstr =  atob(arr[1])
+		// var n = bstr.length
+		// var u8arr = new Uint8Array(n);
+		// while (n--) {
+		// 	u8arr[n] = bstr.charCodeAt(n);
+		// }
+		// var blob = new Blob([u8arr],{type:mime})
 	},
 	methods: {
 		save: function (e) {
@@ -191,8 +268,16 @@ canvas{
 	display: none;
 }
 canvas#myCanvas{
-	display: inline-block;
+	display: block;
 	width: 100vw;
 	height: 141vw;
+}
+.contain img{
+	width: 100%;
+}
+.desc{
+	font-size: 16px;
+	margin-top: 10px;
+	text-align: center;
 }
 </style>
