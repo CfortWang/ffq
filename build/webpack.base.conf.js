@@ -4,7 +4,7 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
-const webpack = require('webpack')
+// const webpack = require('webpack')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -28,21 +28,22 @@ module.exports = {
     'vue': 'Vue',
     'vue-router': 'VueRouter',
     'axios': 'axios',
+    'mui': 'mui'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-      'mui': resolve('../static/js/mui.min.js'),
+      // 'mui': resolve('../static/js/mui.min.js'),
     }
   },
-  plugins: [
-    new webpack.ProvidePlugin({
-        mui: "mui",
-        "window.mui": "mui"
-    })
-  ],
+  // plugins: [
+  //   new webpack.ProvidePlugin({
+  //       mui: "mui",
+  //       "window.mui": "mui"
+  //   })
+  // ],
   module: {
     rules: [
       {

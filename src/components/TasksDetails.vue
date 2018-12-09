@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import mui from '../../static/js/mui.min.js'
+// import mui from '../../static/js/mui.min.js'
 // require('../../static/js/mui.zoom.js')
 // require('../../static/js/mui.previewimage.js')
 mui.init({
