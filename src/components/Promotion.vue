@@ -6,6 +6,7 @@
 				<span>{{nickname}}邀您加入</span>
 			</div>
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
+			<!-- <canvas id="myCanvas" width="100vw" height="141vw"></canvas> -->
 		</div>
 		<!-- <p class="save-img" v-on:click="save($event)">保存二维码</p> -->
 		
@@ -110,7 +111,22 @@ export default {
 				this.$route.push({name: 'Login'})
 			})
 		}
+
 	},
+	// mounted () {
+	// 	let canvas1 = document.getElementsByTagName('canvas')[0]
+	// 	let canvas2 = document.getElementById('myCanvas')
+	// 	let cas1 = canvas1.getContext('2d')
+	// 	let cas2 = canvas2.getContext('2d')
+	// 	let img1 = new Image()
+	// 	let img2 = new Image()
+	// 	img1.src = canvas1.toDataURL('jpg')
+	// 	img2.src = '../../static/img/personal/qrCode.jpg'
+	// 	img2.onload = function(){
+	// 		cas2.drawImage(img2, 0, 0, 100, 141)
+	// 		cas2.drawImage(img1, 35.6, 56.5, 30, 30)
+	// 	}
+	// },
 	methods: {
 		save: function (e) {
 			download('png')
@@ -145,4 +161,12 @@ export default {
 .save-img img{
 	width: 40px;
 }
+/* canvas{
+	display: none;
+}
+canvas#myCanvas{
+	display: inline-block;
+	width: 100vw;
+	height: 141vw;
+} */
 </style>

@@ -23,7 +23,7 @@
                         </tr>
                         <tr>
                             <td style="border-top: 0px" align="center">
-                                <div id="copy-btn" class="common-small-button" v-on:click="copyText">复制</div>
+                                <div id="copy-btn" class="common-small-button" v-on:click="copyText(taskDescText)">复制</div>
                             </td>
                         </tr>
                     </tbody>
@@ -160,25 +160,33 @@ export default {
         })
 	},
 	methods: {
-        copyText: function () {
-            // document.designMode = 'on'
-            // let b = document.getElementById("taskDesc")
-            // b.select()
-            // document.execCommand("copy")
-            // if (document.execCommand("copy")) {
-            //     this.showMsg("复制成功")
-            // }
-            const range = document.createRange()
-            range.selectNode(document.getElementById('taskDesc'))
-            const selection = window.getSelection()
-            if (selection.rangeCount > 0) {
-                selection.removeAllRanges()
-            }
-            selection.addRange(range)
-            document.execCommand('copy')
-            if (document.execCommand("copy")) {
-                this.showMsg("复制成功")
-            }
+        copyText: function (copy) {
+            mui.plusReady(function(){
+                //判断是安卓还是ios
+                if(mui.os.ios){
+                    //ios
+                    mui.alert(mui.os.ios);
+                    var UIPasteboard = plus.ios.importClass("UIPasteboard");
+                    var generalPasteboard = UIPasteboard.generalPasteboard();
+                    //设置/获取文本内容:
+                    generalPasteboard.plusCallMethod({
+                        setValue:copy,
+                        forPasteboardType: "public.utf8-plain-text"
+                    });
+                    generalPasteboard.plusCallMethod({
+                        valueForPasteboardType: "public.utf8-plain-text"
+                    });
+                    mui.toast("已成功复制到剪贴板");
+                }else{
+                    //安卓
+                    mui.toast("1");
+                    var context = plus.android.importClass("android.content.Context");
+                    var main = plus.android.runtimeMainActivity();
+                    var clip = main.getSystemService(context.CLIPBOARD_SERVICE);
+                    plus.android.invoke(clip,"setText",copy);
+                    mui.toast("已成功复制到剪贴板");
+                }
+            });
         },
         getTask: function () {
             axios({ // 领取任务
