@@ -158,24 +158,24 @@ export default {
 	},
 	methods: {
 		copyText: function () {
-            // document.designMode = 'on'
-            // let b = document.getElementById("taskDesc")
-            // b.select()
-            // document.execCommand("copy")
-            // if (document.execCommand("copy")) {
-            //     this.showMsg("复制成功")
-            // }
-
-            const range = document.createRange()
-            range.selectNode(document.getElementById('taskDesc'))
-            const selection = window.getSelection()
-            if (selection.rangeCount > 0) {
-                selection.removeAllRanges()
-            }
-            selection.addRange(range)
-            document.execCommand('copy')
-            if (document.execCommand("copy")) {
-                this.showMsg("复制成功")
+            if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) {
+                const range = document.createRange()
+                range.selectNode(document.getElementById('taskDesc'))
+                const selection = window.getSelection()
+                if (selection.rangeCount > 0) {
+                    selection.removeAllRanges()
+                }
+                selection.addRange(range)
+                document.execCommand('copy')
+                if (document.execCommand("copy")) {
+                    this.showMsg("复制成功")
+                }
+            } else {
+                document.getElementById('taskDesc').select()
+                if (document.execCommand("copy")) {
+                    document.execCommand("copy")
+                    this.showMsg("复制成功")
+                }
             }
         },
         getTask: function () {
@@ -199,6 +199,10 @@ export default {
 </script>
 
 <style scoped>
+*{
+    webkit-user-select: auto!important;
+    user-select: auto!important;
+}
 .contain{
 	background: #fff;
     min-height: calc(100vh - 70px);

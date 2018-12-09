@@ -23,7 +23,7 @@
                         </tr>
                         <tr>
                             <td style="border-top: 0px" align="center">
-                                <div id="copy-btn" class="common-small-button" v-on:click="copyText(taskDescText)">复制</div>
+                                <div id="copy-btn" class="common-small-button" v-on:click="copyText">复制</div>
                             </td>
                         </tr>
                     </tbody>
@@ -117,20 +117,20 @@ export default {
 	created: function () {
         this.taskID = this.$route.query.id
 
-        mui.init({
-            gestureConfig: {
-                longtap: true
-            }
-        });
+        // mui.init({
+        //     gestureConfig: {
+        //         longtap: true
+        //     }
+        // });
 
-        mui.previewImage();
+        // mui.previewImage();
 
-        mui.plusReady(function() {
-            document.addEventListener('longtap', function(e) {
-                var target = e.target;
-                savePic(target);
-            });
-        });
+        // mui.plusReady(function() {
+        //     document.addEventListener('longtap', function(e) {
+        //         var target = e.target;
+        //         savePic(target);
+        //     });
+        // });
 
 
         // 阻止选中
@@ -160,37 +160,26 @@ export default {
         })
 	},
 	methods: {
-        copyText: function (copy) {
-            mui.plusReady(function(){
-                //判断是安卓还是ios
-                if(mui.os.ios){
-                    //ios
-                    var UIPasteboard = plus.ios.importClass("UIPasteboard");
-                    mui.alert('1')
-                    var generalPasteboard = UIPasteboard.generalPasteboard();
-                    mui.alert('2')
-                    //设置/获取文本内容:
-                    generalPasteboard.plusCallMethod({
-                        setValue:copy,
-                        forPasteboardType: "public.utf8-plain-text"
-                    });
-                    mui.alert('3')
-                    generalPasteboard.plusCallMethod({
-                        valueForPasteboardType: "public.utf8-plain-text"
-                    });
-                    mui.toast("已成功复制到剪贴板");
-                }else{
-                    //安卓
-                    var context = plus.android.importClass("android.content.Context");
-                    mui.alert('a')
-                    var main = plus.android.runtimeMainActivity();
-                    mui.alert('b')
-                    var clip = main.getSystemService(context.CLIPBOARD_SERVICE);
-                    mui.alert('c')
-                    plus.android.invoke(clip,"setText",copy);
-                    mui.toast("已成功复制到剪贴板");
+        copyText: function () {
+            if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) {
+                const range = document.createRange()
+                range.selectNode(document.getElementById('taskDesc'))
+                const selection = window.getSelection()
+                if (selection.rangeCount > 0) {
+                    selection.removeAllRanges()
                 }
-            });
+                selection.addRange(range)
+                document.execCommand('copy')
+                if (document.execCommand("copy")) {
+                    this.showMsg("复制成功")
+                }
+            } else {
+                document.getElementById('taskDesc').select()
+                if (document.execCommand("copy")) {
+                    document.execCommand("copy")
+                    this.showMsg("复制成功")
+                }
+            }
         },
         getTask: function () {
             axios({ // 领取任务
@@ -213,6 +202,10 @@ export default {
 </script>
 
 <style scoped>
+*{
+    webkit-user-select: auto!important;
+    user-select: auto!important;
+}
 .contain{
     background: #fff;
     min-height: calc(100vh - 70px);
