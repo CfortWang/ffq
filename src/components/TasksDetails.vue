@@ -165,7 +165,6 @@ export default {
                 //判断是安卓还是ios
                 if(mui.os.ios){
                     //ios
-                    mui.alert(mui.os.ios);
                     var UIPasteboard = plus.ios.importClass("UIPasteboard");
                     var generalPasteboard = UIPasteboard.generalPasteboard();
                     //设置/获取文本内容:
@@ -179,7 +178,6 @@ export default {
                     mui.toast("已成功复制到剪贴板");
                 }else{
                     //安卓
-                    mui.toast("1");
                     var context = plus.android.importClass("android.content.Context");
                     var main = plus.android.runtimeMainActivity();
                     var clip = main.getSystemService(context.CLIPBOARD_SERVICE);

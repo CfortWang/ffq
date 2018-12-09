@@ -5,7 +5,7 @@
             <div class="left-btn" v-on:click="goBack()">
                 <img src="/static/img/index/go-back.png" alt="">
             </div>
-            <div class="wallet-amount">
+            <div class="wallet">
                 <p class="wallet-title">我的总资产</p>
                 <p class="wallet-amount">{{totalAmount}}</p>
             </div>
@@ -66,9 +66,12 @@ export default {
 
 <style scoped>
 .my-assets{
-    height: 95px;
+    /* height: 95px; */
     padding: 40px 0;
     background: -webkit-linear-gradient(180deg,#4C9CD6,#2d9cec);
+}
+.wallet{
+    padding-bottom: 20px;
 }
 .wallet-title{
     font-size: 13px;
@@ -80,6 +83,7 @@ export default {
     font-weight: bold;
     color: #ffffff;
     padding-top: 10px;
+    line-height: 50px;
 }
 .details, .withdraw{
     background: #ffffff;
