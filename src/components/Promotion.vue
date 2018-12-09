@@ -2,13 +2,13 @@
 	<div class="content">
 
 		<div class="contain">
-			<div class="share-text">
+			<!-- <div class="share-text">
 				<span>{{nickname}}邀您加入</span>
-			</div>
+			</div> -->
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
-			<!-- <canvas id="myCanvas" width="100vw" height="141vw"></canvas> -->
+			<canvas id="myCanvas" width="400vw" height="564vw"></canvas>
 		</div>
-		<!-- <p class="save-img" v-on:click="save($event)">保存二维码</p> -->
+		<!-- <a class="save-img" v-on:click="save($event)" download="二维码.jpg">保存二维码</a> -->
 		
 		<!-- 底部 -->
 		<div class="footer">
@@ -77,6 +77,13 @@ function download(type) {
 	saveFile(imgdata, filename);
 }
 
+function convertCanvasToImage(canvas) {
+	var image = new Image();
+	image.src = canvas.toDataURL("image/png");
+	return image;
+}
+
+
 export default {
 	name: 'Promotion',
 	components: {
@@ -93,7 +100,7 @@ export default {
 	created: function () {
 		if (vueCookie.get('nickname')) {
             this.recommendCode = vueCookie.get('userID')
-			this.nickname = vueCookie.get('nickname')
+			this.nickname = vueCookie.get('nickname') + 'hasdhashd邀您加入'
 			this.qrCodeUrl = "https://fafa.gxwhkj.cn/register?recommendCode" + this.recommendCode
         } else {
 			axios({ // 获取个人信息
@@ -113,23 +120,41 @@ export default {
 		}
 
 	},
-	// mounted () {
-	// 	let canvas1 = document.getElementsByTagName('canvas')[0]
-	// 	let canvas2 = document.getElementById('myCanvas')
-	// 	let cas1 = canvas1.getContext('2d')
-	// 	let cas2 = canvas2.getContext('2d')
-	// 	let img1 = new Image()
-	// 	let img2 = new Image()
-	// 	img1.src = canvas1.toDataURL('jpg')
-	// 	img2.src = '../../static/img/personal/qrCode.jpg'
-	// 	img2.onload = function(){
-	// 		cas2.drawImage(img2, 0, 0, 100, 141)
-	// 		cas2.drawImage(img1, 35.6, 56.5, 30, 30)
-	// 	}
-	// },
+	mounted () {
+		let canvas1 = document.getElementsByTagName('canvas')[0]
+		let canvas2 = document.getElementById('myCanvas')
+		let cas1 = canvas1.getContext('2d')
+		let cas2 = canvas2.getContext('2d')
+		
+		let img1 = new Image()
+		let img2 = new Image()
+		img1.src = canvas1.toDataURL('jpg')
+		img2.src = '../../static/img/personal/qrCode.jpg'
+		var that = this
+		img2.onload = function(){
+			cas2.drawImage(img2, 0, 0, 400, 564)
+			cas2.font = '14px Georgia'
+			cas2.fillText(that.nickname, '', 210);
+			cas2.drawImage(img1, 142, 226, 120, 120)
+		}
+
+		var img =  convertCanvasToImage(canvas2)
+		var arr = img.src.split(',')
+		var mime = arr[0].match(/:(.*?);/)[1]
+		var bstr =  atob(arr[1])
+		var n = bstr.length
+		var u8arr = new Uint8Array(n);
+		while (n--) {
+			u8arr[n] = bstr.charCodeAt(n);
+		}
+		var blob = new Blob([u8arr],{type:mime})
+	},
 	methods: {
 		save: function (e) {
-			download('png')
+			// download('png')
+			let canvas2 = document.getElementById('myCanvas')
+			var img =  convertCanvasToImage(canvas2)
+        	e.target.href = img.src
 		}
 	}
 }
@@ -137,11 +162,11 @@ export default {
 
 <style scoped>
 .contain{
-	width: 100vw;
-	height: 141vw;
+	/* width: 100vw;
+	height: 141vw; */
 	padding: 0px;
-	background: url('/static/img/personal/qrCode.jpg') no-repeat center;
-	background-size: 100% 100%;
+	/* background: url('/static/img/personal/qrCode.jpg') no-repeat center;
+	background-size: 100% 100%; */
 	text-align: center;
 	border-top: 1px solid #eee;
 }
@@ -161,12 +186,12 @@ export default {
 .save-img img{
 	width: 40px;
 }
-/* canvas{
+canvas{
 	display: none;
 }
 canvas#myCanvas{
 	display: inline-block;
 	width: 100vw;
 	height: 141vw;
-} */
+}
 </style>
