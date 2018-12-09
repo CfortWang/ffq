@@ -8,7 +8,7 @@
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
 			<canvas id="myCanvas" width="400vw" height="564vw"></canvas>
 		</div>
-		<!-- <a class="save-img" v-on:click="save($event)" download="二维码.jpg">保存二维码</a> -->
+		<a class="save-img" v-on:click="save($event)" download="二维码.jpg">保存二维码</a>
 		
 		<!-- 底部 -->
 		<div class="footer">
