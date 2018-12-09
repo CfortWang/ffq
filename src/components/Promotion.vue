@@ -134,7 +134,8 @@ export default {
 		img2.onload = function(){
 			cas2.drawImage(img2, 0, 0, 400, 564)
 			cas2.font = '14px Georgia'
-			cas2.fillText(that.nickname, '', 210);
+			cas2.textAlign = 'center'
+			cas2.fillText(that.nickname, 200, 210);
 			cas2.drawImage(img1, 142, 226, 120, 120)
 		}
 
