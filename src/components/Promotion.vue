@@ -5,7 +5,7 @@
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
 			<canvas id="myCanvas" width="400vw" height="564vw" v-if="!qrImg"></canvas>
 			<img v-bind:src="qrImg" alt="" data-preview-src="" data-preview-group="1" v-else>
-			<div class="desc">长按保存二维码</div>
+			<!-- <div class="desc">长按保存二维码</div> -->
 		</div>
 		<!-- <a class="save-img" v-on:click="save($event)" download="二维码.jpg">保存二维码</a> -->
 		
