@@ -47,6 +47,9 @@
 
 function savePic(target) {
     mui.alert("执行步骤1")
+    mui.alert(target.tagName == 'IMG')
+    mui.alert(target.currentSrc.length > 0)
+    mui.alert(target.classList.contains('mui-zoom'))
     if(target.tagName == 'IMG' && target.currentSrc.length > 0 && target.classList.contains('mui-zoom')) { //确保图片链接不为空
         mui.alert("执行步骤2")
         var imgUrl = target.src;
