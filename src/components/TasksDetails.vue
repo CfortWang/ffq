@@ -47,32 +47,17 @@
 // import mui from '../../static/js/mui.min.js'
 // require('../../static/js/mui.zoom.js')
 // require('../../static/js/mui.previewimage.js')
-mui.init({
-    gestureConfig: {
-        longtap: true
-    }
-});
 
-mui.previewImage();
-
-mui.plusReady(function() {
-    document.addEventListener('longtap', function(e) {
-        var target = e.target;
-        savePic(target);
-    });
-});
-
-/**
- * 长按保存图片
- * 1. 获取图片链接
- * 2. 创建下载并下载图片
- * 3. 保存至相册
- */
 function savePic(target) {
+    mui.alert("执行步骤1")
     if(target.tagName == 'IMG' && target.currentSrc.length > 0 && target.classList.contains('mui-zoom')) { //确保图片链接不为空
+        mui.alert("执行步骤2")
         var imgUrl = target.src;
+        mui.alert("执行步骤3")
         console.log('图片地址：' + imgUrl);
+        mui.alert("执行步骤4")
         var suffix = cutImageSuffix(imgUrl);
+        mui.alert("执行步骤5")
         mui.confirm("是否保存此图片", "", ["保存", "取消"], function(event) {
             var index = event.index;
             if(index == 0) {
@@ -138,6 +123,23 @@ export default {
 	},
 	created: function () {
         this.taskID = this.$route.query.id
+
+        mui.init({
+            gestureConfig: {
+                longtap: true
+            }
+        });
+
+        mui.previewImage();
+
+        mui.plusReady(function() {
+            document.addEventListener('longtap', function(e) {
+                var target = e.target;
+                savePic(target);
+            });
+        });
+
+
         // 阻止选中
         document.body.onselectstart = function () { 
             return false
