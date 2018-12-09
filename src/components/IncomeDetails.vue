@@ -13,7 +13,11 @@
                 <span class="title">{{item.from_type}}</span>
                 <span class="amount ">余额: {{item.total_amount}}</span>
                 <span class="time">{{item.created_at}}</span>
-                <span class="amount-change ">{{item.amout}}</span>
+                <span class="amount-change ">
+                    <span v-if="item.callout_type">-</span>
+                    <span v-else>+</span>
+                    <span>{{item.amout}}</span>
+                </span>
             </li>
         </ul>
 

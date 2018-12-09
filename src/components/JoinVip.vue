@@ -135,7 +135,6 @@ export default {
                     headers: {"lang": 'zh'}
                 }).then((response) => {
                     this.hideLoading()
-                    console.log(response)
                     if (response.data.code == 200) {
                         this.payID = response.data.data.id
                         this.$router.push({

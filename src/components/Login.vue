@@ -26,7 +26,7 @@
                 <div class="dividing-line"></div>
                 <div class="bottom-btn clearfix">
                     <div class="find-pwd" v-on:click="jumpTo('/findPassword')">找回密码?</div>
-                    <!-- <div class="register" v-on:click="jumpTo('/register')">免费注册</div> -->
+                    <div class="register" v-on:click="jumpTo('/register')">免费注册</div>
                 </div>
             </div>
         </div>
