@@ -47,7 +47,7 @@ export default {
         var getParams = this.$route.params
         this.payID = getParams.payID
         this.payType = getParams.payType
-        
+        this.payReturnUrl = getParams.payReturnUrl
 	},
 	methods: {
         changePay: function (e) {
@@ -59,7 +59,7 @@ export default {
         goToPay: function () {
             this.showLoading()
             if (this.payWay == 'alipay') {
-                this.payReturnUrl = 'https://fafa.gxwhkj.cn/paySuccess'
+                
                 axios({
                     method: 'POST',
                     url: process.env.api_url + '/pay/ali',

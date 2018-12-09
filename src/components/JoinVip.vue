@@ -21,15 +21,15 @@
                 </div>
                 <div style="overflow: hidden;text-decoration: line-through;margin: 0px 8px "></div>
             </div>
-            <div class="vip-list selected" v-on:click="chooseLevel">
+            <div class="vip-list selected" v-on:click="chooseLevel" data-level="1">
                 <div class="desc">会员</div>
                 <div class="price">￥98</div>
             </div>
-            <div class="vip-list" v-on:click="chooseLevel">
+            <div class="vip-list" v-on:click="chooseLevel" data-level="2">
                 <div class="desc">中级会员</div>
                 <div class="price">￥368</div>
             </div>
-            <div class="vip-list" v-on:click="chooseLevel">
+            <div class="vip-list" v-on:click="chooseLevel" data-level="3">
                 <div class="desc">高级会员</div>
                 <div class="price">￥988</div>
             </div>
@@ -64,7 +64,7 @@
         </div>
         <div style="font-size: 13px;text-align: left;padding: 8px 16px">加入会员（或中级会员）可领取会员任务大厅（或中级任务大厅）的任务，同时可投放广告,也可以领取自己发布的广告。</div>
         <div style="padding: 8px">
-            <div class="common-theme-button">立即开通</div>
+            <div class="common-theme-button" v-on:click="joinVip">立即开通</div>
         </div>
   	</div>
 </template>
@@ -77,13 +77,15 @@ export default {
 		return {
             nickname: '',
             userLevelID: '',
-            isAgree: true
+            isAgree: true,
+            payID: '',
+            payType: 'user'
 		}
 	},
 	created: function () {
         // 缓存获取用户等级与用户昵称
         if (vueCookie.get('userLevelID')) {
-            this.userLevel = vueCookie.get('userLevelID')
+            this.userLevelID = vueCookie.get('userLevelID')
             this.nickname = vueCookie.get('nickname')
         } else {
             // 接口获取用户等级与用户昵称
@@ -108,6 +110,51 @@ export default {
         chooseLevel: function (e) {
             document.getElementsByClassName('selected')[0].classList.remove("selected")
             e.currentTarget.classList.add("selected")
+        },
+        joinVip: function () {
+            var vipLevel = document.getElementsByClassName('selected')[0].getAttribute('data-level')
+            if (this.userLevelID == 3) {
+                this.showMsg("您已开通最高等级会员！")
+                return false
+            } else if (this.userLevelID == vipLevel) {
+                this.showMsg("您已开通该等级会员！")
+                return false
+            } else if (this.userLevelID > vipLevel) {
+                this.showMsg("您已开通更高等级会员！")
+                return false
+            } else if (!this.isAgree) {
+                this.showMsg("请同意用户协议！")
+                return false
+            } else {
+                this.showLoading()
+                axios({ // 获取个人信息
+                    method: 'POST',
+                    url: process.env.api_url + '/user/levelUp',
+                    params: {level_id: vipLevel},
+                    withCredentials: true,
+                    headers: {"lang": 'zh'}
+                }).then((response) => {
+                    this.hideLoading()
+                    console.log(response)
+                    if (response.data.code == 200) {
+                        this.payID = response.data.data.id
+                        this.$router.push({
+                            name: 'PayMethod',
+                            params: {
+                                payID: this.payID,
+                                payType: this.payType,
+                                payReturnUrl: 'https://fafa.gxwhkj.cn/paySuccess?type=0&level=' + vipLevel
+                                // payReturnUrl: 'http://localhost:8080/paySuccess?type=0&level=' + vipLevel
+                            }
+                        })
+                    } else {
+                        this.showMsg(response.data.message)
+                    }
+                }).catch((ex) => {
+                    this.hideLoading()
+                    console.log(ex)
+                })
+            }
         }
 	}
 }

@@ -151,43 +151,45 @@ export default {
                 this.showMsg("请上传图片！")
                 return false
             }
-            this.fileData.append('id', this.taskID)
-            axios.post(process.env.api_url + '/task/done', this.fileData, config).then(response => {
+            // this.fileData.append('id', this.taskID)
+            // axios.post(process.env.api_url + '/task/done', this.fileData, config).then(response => {
+            //     if (response.data.code == 200) {
+            //         this.showMsg("任务提交成功！")
+            //         window.location.href = window.location.href
+            //         return false
+            //     } else {
+            //         let responseMessage = response.data.message
+            //         this.showMsg(responseMessage)
+            //         return false
+            //     }
+            // }).catch(ex => {
+            //     this.showMsg(ex.response.data.message)
+            // })
+            this.showLoading()
+            axios({ // 提交任务
+                method: 'POST',
+                url: process.env.api_url + '/task/done',
+                params: {
+                    id: this.taskID
+                },
+                withCredentials: true,
+                headers: {"lang": 'zh'}
+            }).then((response) => {
+                this.hideLoading()
                 if (response.data.code == 200) {
                     this.showMsg("任务提交成功！")
-                    window.location.href = window.location.href
-                    return false
+                    setTimeout(() => {
+                        window.location.href = window.location.href
+                    }, 1000);
                 } else {
                     let responseMessage = response.data.message
                     this.showMsg(responseMessage)
-                    return false
                 }
-            }).catch(ex => {
+            }).catch((ex) => {
+                this.hideLoading()
+                console.log(ex)
                 this.showMsg(ex.response.data.message)
             })
-            // axios({ // 提交任务
-            //     method: 'POST',
-            //     url: process.env.api_url + '/task/done',
-            //     params: {
-            //         id: this.taskID,
-            //         image: this.imageArr[0]
-            //     },
-            //     withCredentials: true,
-            //     headers: {"lang": 'zh'}
-            // }).then((response) => {
-            //     console.log(response)
-                // if (response.data.code == 200) {
-                //     this.showMsg("任务提交成功！")
-                //     window.location.href = window.location.href
-                //     return false
-                // } else {
-                //     let responseMessage = response.data.message
-                //     this.showMsg(responseMessage)
-                //     return false
-                // }
-            // }).catch((ex) => {
-            //     this.showMsg(ex.response.data.message)
-            // })
         },
         selectImage: function (file) {
             if (!file.target.files || !file.target.files[0]) {

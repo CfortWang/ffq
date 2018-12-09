@@ -221,7 +221,8 @@ export default {
                             name: 'PayMethod',
                             params: {
                                 payID: this.payID,
-                                payType: this.payType
+                                payType: this.payType,
+                                payReturnUrl: 'https://fafa.gxwhkj.cn/paySuccess?type=1'
                             }
                         })
                     }, 2000);
