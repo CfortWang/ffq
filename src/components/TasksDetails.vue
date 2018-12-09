@@ -46,18 +46,11 @@
 <script>
 
 function savePic(target) {
-    mui.alert("执行步骤1")
-    mui.alert(target.tagName == 'IMG')
-    mui.alert(target.currentSrc.length > 0)
-    mui.alert(target.classList.contains('mui-zoom'))
+    // mui.alert(target.classList.contains('mui-zoom'))
     if(target.tagName == 'IMG' && target.currentSrc.length > 0) { //确保图片链接不为空
-        mui.alert("执行步骤2")
         var imgUrl = target.src;
-        mui.alert("执行步骤3")
         console.log('图片地址：' + imgUrl);
-        mui.alert("执行步骤4")
         var suffix = cutImageSuffix(imgUrl);
-        mui.alert("执行步骤5")
         mui.confirm("是否保存此图片", "", ["保存", "取消"], function(event) {
             var index = event.index;
             if(index == 0) {
