@@ -212,8 +212,8 @@ export default {
 		}
 
 		setTimeout(() => {
-			this.qrImg = canvas2.toDataURL('jpg')
-			console.log(this.qrImg)
+			this.qrImg = canvas2.toDataURL('image/jpeg', 0.3)
+			// console.log(this.qrImg)
 		}, 2000);
 
 		// var img =  convertCanvasToImage(canvas2)
