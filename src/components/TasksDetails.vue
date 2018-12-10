@@ -31,7 +31,7 @@
             </div>
             <div style="padding: 0px 16px" v-for="item in taskImage" v-bind:key="item.index">
                 <div>
-                    <img style="width: 100%;height: 100%" data-preview-src="" data-preview-group="1" v-bind:src="item">
+                    <img class="taskImg" style="width: 100%;height: 100%" data-preview-src="" data-preview-group="1" v-bind:src="item">
                 </div>
             </div>
             <div style="padding: 16px">
@@ -206,6 +206,11 @@ export default {
     webkit-user-select: auto!important;
     user-select: auto!important;
 }
+.taskImg{
+    webkit-user-select: none!important;
+    user-select: none!important;
+}
+
 .contain{
     background: #fff;
     min-height: calc(100vh - 70px);
