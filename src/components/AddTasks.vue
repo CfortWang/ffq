@@ -215,17 +215,15 @@ export default {
                 this.payID = response.data.data.id
                 if (response.data.code == 200) {
                     // this.$router.push({name: 'PayMethod'})
-                    this.showMsg("任务发布成功！")
-                    setTimeout(() => {
-                        this.$router.push({
-                            name: 'PayMethod',
-                            params: {
-                                payID: this.payID,
-                                payType: this.payType,
-                                payReturnUrl: 'https://fafa.gxwhkj.cn/paySuccess?type=1'
-                            }
-                        })
-                    }, 2000);
+                    // this.showMsg("任务发布成功！")
+                    this.$router.push({
+                        name: 'PayMethod',
+                        params: {
+                            payID: this.payID,
+                            payType: this.payType,
+                            payReturnUrl: 'https://fafa.gxwhkj.cn/paySuccess?type=1'
+                        }
+                    })
                 } else {
                     this.showMsg(responseMessage)
                 }

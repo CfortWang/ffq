@@ -117,20 +117,20 @@ export default {
 	created: function () {
         this.taskID = this.$route.query.id
 
-        // mui.init({
-        //     gestureConfig: {
-        //         longtap: true
-        //     }
-        // });
+        mui.init({
+            gestureConfig: {
+                longtap: true
+            }
+        });
 
-        // mui.previewImage();
+        mui.previewImage();
 
-        // mui.plusReady(function() {
-        //     document.addEventListener('longtap', function(e) {
-        //         var target = e.target;
-        //         savePic(target);
-        //     });
-        // });
+        mui.plusReady(function() {
+            document.addEventListener('longtap', function(e) {
+                var target = e.target;
+                savePic(target);
+            });
+        });
 
 
         // 阻止选中

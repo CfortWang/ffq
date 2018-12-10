@@ -24,6 +24,7 @@ export default {
 	},
 	created: function () {
 		this.type = this.$route.query.type
+		
 		this.level = this.$route.query.level
 		if (this.level == 1)  {
 			this.levelName = '会员'
@@ -31,6 +32,13 @@ export default {
 			this.levelName = '中级会员'
 		} else if (this.level == 3) {
 			this.levelName = '高级会员'
+		}
+
+		if (this.type == 1) {
+			this.showMsg("任务发布成功！")
+		}
+		if (this.type == 0) {
+			this.showMsg("您已成功开通" + this.levelName)
 		}
 	},
 	methods: {
