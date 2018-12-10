@@ -7,7 +7,7 @@
 			<img v-bind:src="qrImg" alt="" data-preview-src="" data-preview-group="1" v-else>
 			<!-- <div class="desc">长按保存二维码</div> -->
 		</div>
-		<!-- <a class="save-img" v-on:click="save($event)" download="二维码.jpg">保存二维码</a> -->
+		<p class="save-img" v-on:click="save()">保存二维码</p>
 		
 		<!-- 底部 -->
 		<div class="footer">
@@ -109,7 +109,7 @@ function cutImageSuffix(imageUrl) {
     return imageUrl.substring(index);
 }
 
-// //图片下载操作,指定图片类型
+//图片下载操作,指定图片类型
 // function download(type) {
 // 	var canvas = document.getElementsByTagName('canvas')[0]
 // 	var imgdata = canvas.toDataURL(type);
@@ -153,6 +153,46 @@ function cutImageSuffix(imageUrl) {
 // 	image.src = canvas.toDataURL("image/png");
 // 	return image;
 // }
+
+function bb(){
+	var oCanvas = document.getElementById("myCanvas");
+
+	/* 参考
+	Canvas2Image.saveAsPNG(oCanvas);  // 这将会提示用户保存PNG图片
+	Canvas2Image.saveAsJPEG(oCanvas); // 这将会提示用户保存JPG图片
+	Canvas2Image.saveAsBMP(oCanvas);  // 这将会提示用户保存BMP图片
+	// 返回一个包含PNG图片的<img>元素
+	var oImgPNG = Canvas2Image.saveAsPNG(oCanvas, true);   
+	// 返回一个包含JPG图片的<img>元素
+	var oImgJPEG = Canvas2Image.saveAsJPEG(oCanvas, true); 
+	                                                       
+	// 返回一个包含BMP图片的<img>元素
+	var oImgBMP = Canvas2Image.saveAsBMP(oCanvas, true); 
+	 
+	// 这些函数都可以接受高度和宽度的参数
+	// 可以用来调整图片大小
+	// 把画布保存成100x100的png格式
+	Canvas2Image.saveAsPNG(oCanvas, false, 100, 100);
+	*/
+
+
+	/*自动保存为png*/
+	// 获取图片资源
+	var img_data1 = Canvas2Image.saveAsPNG(oCanvas, true).getAttribute('src');
+	saveFile(img_data1, 'qrcode.png');
+}
+
+
+// 保存文件函数
+var saveFile = function(data, filename){
+    var save_link = document.createElement('a')
+    save_link.href = data;
+    save_link.download = filename;
+   
+    var event = document.createEvent('MouseEvents');
+    event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    save_link.dispatchEvent(event);
+};
 
 
 export default {
@@ -230,9 +270,10 @@ export default {
 	methods: {
 		save: function (e) {
 			// download('png')
-			let canvas2 = document.getElementById('myCanvas')
-			var img =  convertCanvasToImage(canvas2)
-        	e.target.href = img.src
+			// let canvas2 = document.getElementById('myCanvas')
+			// var img =  convertCanvasToImage(canvas2)
+			// e.target.href = img.src
+			bb()
 		}
 	}
 }

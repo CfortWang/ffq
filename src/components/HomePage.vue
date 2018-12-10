@@ -111,6 +111,7 @@
 
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+// import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'HomePage',
   	components: {
@@ -146,6 +147,14 @@ export default {
 		}).catch((ex) => {
 			console.log(ex)
 		})
+		// request({
+		// 	method: "get",
+		// 	url: "/home"
+		// }).then(function (response) {
+		// 	console.log(response)
+		// }).catch(function (ex) {
+		// 	sonsole.log(ex)
+		// })
 	},
 	methods: {
 		closeNotice: function (e) {
