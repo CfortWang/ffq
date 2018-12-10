@@ -218,7 +218,7 @@ export default {
                 this.hideLoading()
                 if (response.data.code == 200) {
                     var that = this
-                    mui.confirm("注册成功，前往下载发发圈App", "", ["确定", "取消"], function(event) {
+                    mui.confirm("注册成功，前往下载发发圈App", "", ["确定", "已下载"], function(event) {
                         console.log(event)
                         if (event.index == 0) {
                             window.location.href = "https://fafa.gxwhkj.cn/app/download.html"
