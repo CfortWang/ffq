@@ -89,7 +89,8 @@ export default {
                 params: {
                     phoneNumber: this.phoneNumber,
                     type: 'reset_password'
-                }
+                },
+                timeout: 20000
             }).then((response) => {
                 this.hideLoading()
                 if (response.data.code == 200) {
@@ -118,6 +119,10 @@ export default {
             }).catch((ex) => {
                 this.hideLoading()
                 console.log(ex)
+                var str = ex + ''
+                if (str.search('timeout') !== -1) {
+                    this.showMsg("验证码发送超时，请重试！")
+                }
             })
         },
         findPasswoed: function () {

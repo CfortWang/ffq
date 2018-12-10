@@ -98,6 +98,7 @@ export default {
                 this.showMsg("请输入手机号码！")
                 return false
             }
+            this.showLoading()
             this.countDown = 60
             axios({ // 获取验证码
                 method: 'POST',
@@ -105,8 +106,10 @@ export default {
                 params: {
                     phoneNumber: this.phoneNumber,
                     type: 'register'
-                }
+                },
+                timeout: 20000
             }).then((response) => {
+                this.hideLoading()
                 if (response.data.code == 200) {
                     this.showMsg("验证码发送成功！")
                     document.getElementsByClassName('verification-btn')[0].style.backgroundColor = 'grey'
@@ -131,7 +134,12 @@ export default {
                     this.showMsg(responseMessage)
                 }
             }).catch((ex) => {
+                this.hideLoading()
                 console.log(ex)
+                var str = ex + ''
+                if (str.search('timeout') !== -1) {
+                    this.showMsg("验证码发送超时，请重试！")
+                }
             })
         },
         changeStatus: function () {
