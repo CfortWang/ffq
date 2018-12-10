@@ -203,11 +203,11 @@ export default {
 
 <style scoped>
 *{
-    webkit-user-select: auto!important;
+    -webkit-user-select: auto!important;
     user-select: auto!important;
 }
 .taskImg{
-    webkit-user-select: none!important;
+    -webkit-user-select: none!important;
     user-select: none!important;
 }
 

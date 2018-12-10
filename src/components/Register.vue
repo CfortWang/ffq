@@ -217,12 +217,18 @@ export default {
             }).then((response) => {
                 this.hideLoading()
                 if (response.data.code == 200) {
-                    this.showRegMsg()
-                    return false
+                    var that = this
+                    mui.confirm("注册成功，前往下载发发圈App", "", ["确定", "取消"], function(event) {
+                        console.log(event)
+                        if (event.index == 0) {
+                            window.location.href = "https://fafa.gxwhkj.cn/app/download.html"
+                        } else {
+                            that.$router.push({name: 'Login', params:{phoneNumber: that.phoneNumber}})
+                        }
+                    });
                 } else {
                     let responseMessage = response.data.message
                     this.showMsg(responseMessage)
-                    return false
                 }
             }).catch((ex) => {
                 this.hideLoading()
