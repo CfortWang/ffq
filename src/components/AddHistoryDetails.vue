@@ -1,7 +1,7 @@
 <template>
 	<div class="content">
 		<div class="header">
-            <div class="left-btn" v-on:click="goBack()">
+            <div class="left-btn" v-on:click="jumpTo('/')">
                 <img src="/static/img/index/go-back.png" alt="">
             </div>
             <div class="header-title">发布任务详情</div>

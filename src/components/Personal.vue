@@ -72,7 +72,7 @@
 					</div>
 					<p class="option-name">联系客服</p>
 				</div>
-				<div class="menu-option"  v-on:click="jumpTo('/superior')">
+				<div class="menu-option"  v-on:click="jumpTo('/superior?recommenderID=' + recommenderID)">
 					<div class="option-icon">
 						<img src="/static/img/personal/superior.png" alt="">
 					</div>

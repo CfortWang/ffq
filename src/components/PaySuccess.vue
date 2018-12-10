@@ -38,6 +38,8 @@ export default {
 			this.showMsg("任务发布成功！")
 		}
 		if (this.type == 0) {
+			vueCookie.set('userLevelID', this.level, 1)
+			vueCookie.set('userLevel', this.levelName, 1)
 			this.showMsg("您已成功开通" + this.levelName)
 		}
 	},
