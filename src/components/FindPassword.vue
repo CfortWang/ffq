@@ -81,6 +81,7 @@ export default {
                 this.showMsg("请输入手机号码！")
                 return false
             }
+            this.showLoading()
             this.countDown = 60
             axios({ // 获取验证码
                 method: 'POST',
@@ -90,6 +91,7 @@ export default {
                     type: 'reset_password'
                 }
             }).then((response) => {
+                this.hideLoading()
                 if (response.data.code == 200) {
                     this.showMsg("验证码发送成功！")
                     document.getElementsByClassName('verification-btn')[0].style.backgroundColor = 'grey'
@@ -114,6 +116,7 @@ export default {
                     this.showMsg(responseMessage)
                 }
             }).catch((ex) => {
+                this.hideLoading()
                 console.log(ex)
             })
         },
