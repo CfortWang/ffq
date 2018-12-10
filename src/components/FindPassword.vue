@@ -270,7 +270,7 @@ export default {
                     for (var i = 1; i <= 4; i++) {
                         var txt = txtArr[randomNum(0, txtArr.length)];
                         this.options.code += txt;
-                        ctx.font = '20px SimHei';
+                        ctx.font = '30px SimHei';
                         //ctx.font = randomNum(this.options.height/2, this.options.height) + 'px SimHei'; //随机生成字体大小
                         ctx.fillStyle = randomColor(50, 160); //随机生成字体颜色
                         /* ctx.shadowOffsetX = randomNum(-3, 3);
