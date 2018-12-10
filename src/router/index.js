@@ -164,12 +164,26 @@ export default new VueRouter({
     {
       path: '/payMethod',
       name: 'PayMethod',
-      component: (resolve) => require(['@/components/PayMethod'], resolve)
+      component: (resolve) => require(['@/components/PayMethod'], resolve),
+      beforeEnter: (to, from, next) => {
+        if (from.path.startsWith('/joinVip') || from.path.startsWith('/addTasks')) {
+          next()
+        } else {
+          next('/')
+        }
+      }
     },
     {
       path: '/paySuccess',
       name: 'PaySuccess',
-      component: (resolve) => require(['@/components/PaySuccess'], resolve)
+      component: (resolve) => require(['@/components/PaySuccess'], resolve),
+      beforeEnter: (to, from, next) => {
+        if (from.path.startsWith('/payMethod')) {
+          next()
+        } else {
+          next('/')
+        }
+      }
     }
   ]
 })
