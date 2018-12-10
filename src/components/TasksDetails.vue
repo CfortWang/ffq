@@ -182,6 +182,7 @@ export default {
             }
         },
         getTask: function () {
+            this.showLoading()
             axios({ // 领取任务
                 method: 'POST',
                 url: process.env.api_url + '/task/join',
@@ -191,10 +192,13 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
+                this.hideLoading()
                 let responseMessage = response.data.message
                 this.showMsg(responseMessage)
             }).catch((ex) => {
-                this.showMsg(ex.response.data.message)
+                this.hideLoading()
+                console.log(ex)
+                this.showMsg("出错了！")
             })
         }
 	}
