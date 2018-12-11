@@ -3,7 +3,7 @@
 
 		<div class="contain">
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
-			<canvas id="myCanvas" width="400vw" height="564vw" v-if="!qrImg"></canvas>
+			<canvas id="myCanvas" width="200vw" height="282vw" v-if="!qrImg"></canvas>
 			<img v-bind:src="qrImg" alt="" data-preview-src="" data-preview-group="1" v-else>
 			<!-- <div class="desc">长按保存二维码</div> -->
 		</div>
@@ -112,9 +112,10 @@ function cutImageSuffix(imageUrl) {
 // 图片下载操作,指定图片类型
 function download() {
 	var canvas = document.getElementById("myCanvas")
-	var imgdata = canvas.toDataURL('image/png', 0.3);
+	var imgdata = canvas.toDataURL('image/png', 0);
 	var img = new Image()
 	img.src = imgdata
+	img.crossorigin = 'anonymous'
 	var ctx = canvas.getContext('2d');
 	ctx.drawImage(img, 0, 0, img.width, img.height);
 	//将mime-type改为image/octet-stream,强制让浏览器下载
@@ -139,10 +140,11 @@ function download() {
 	var saveFile = function (data, filename) {
 		var link = document.createElement('a');
 		var strDataURI = data.substr(22, data.length);
-		var blob = dataURLtoBlob(data);
-		var objurl = URL.createObjectURL(blob);
-		link.href = objurl;
+		// var blob = dataURLtoBlob(data);
+		// var objurl = URL.createObjectURL(blob);
+		link.href = data;
 		link.download = filename;
+		// console.log(objurl)
 		var event = document.createEvent('MouseEvents');
 		event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 		link.dispatchEvent(event);
@@ -200,11 +202,11 @@ export default {
 		img2.src = '../../static/img/personal/qrCode.jpg'
 		var that = this
 		img2.onload = function(){
-			cas2.drawImage(img2, 0, 0, 400, 564)
-			cas2.font = '14px Georgia'
+			cas2.drawImage(img2, 0, 0, 200, 282)
+			cas2.font = '8px Georgia'
 			cas2.textAlign = 'center'
-			cas2.fillText(that.nickname, 200, 210);
-			cas2.drawImage(img1, 142, 226, 120, 120)
+			cas2.fillText(that.nickname, 100, 105);
+			cas2.drawImage(img1, 71, 113, 60, 60)
 		}
 
 		// setTimeout(() => {
