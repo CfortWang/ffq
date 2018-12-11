@@ -216,16 +216,7 @@ export default {
 	},
 	methods: {
 		save: function (e) {
-			// download()
-			window.canvas2ImagePlugin.saveImageDataToLibrary(
-				function(msg){
-					console.log(msg);
-				},
-				function(err){
-					console.log(err);
-				},
-				document.getElementById('myCanvas')
-			);
+			download()
 		}
 	}
 }
