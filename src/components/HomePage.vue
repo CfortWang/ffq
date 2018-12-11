@@ -83,7 +83,13 @@
 			</div>
 			<div class="notice-title">系统公告</div>
 			<div class="notice-content" id="notice-content" align="left">
-				App正常维护，请到网页版操作版操作http://adv.lzttkf.com
+				通 知：<br/>
+1.  由于APP急于上线没测试好，导致用户使用期间系统频繁出现各种问题，无法正常使用。为解决好当前系统出错问题，现决定停止用户APP访问，待APP测试稳定后再开放。<br/>
+2.  为保证发发圈正常运作，当前暂时开启网页版使用，网页版数据为2018年12月2日当日数据（账号钱包金额不会有变）。<br/>
+3.  这两天大家在APP的任务佣金经系统审核、删选后不会少，会补上。等APP测试好上线，开通实名认证功能后恢复游客向上级返佣，恢复100元提现。<br/>
+4.  回网页版的制度不变仍为游客不返佣，满300提现。<br/>
+由此给大家带来不便敬请谅解。感谢发发圈的会员们长期以来对平台的支持与热爱。<br/>
+网页版地址：http://adv.lzttkf.com
 			</div>
 		</div>
 
@@ -137,7 +143,6 @@ export default {
 		}
 	},
 	created: function () {
-		mui.alert("App正常维护，请到网页版操作版操作http://adv.lzttkf.com")
 		axios({ // 获取首页数据
 			method: 'GET',
 			url: process.env.api_url + '/home'
@@ -227,7 +232,7 @@ export default {
     border-radius: 16px;
     background-color: #4C9CD6;
     overflow: scroll;
-	display: none;
+	/* display: none; */
 }
 
 .notice-box .close-button {
@@ -248,7 +253,7 @@ export default {
 }
 
 .notice-box .notice-content{
-	margin-top: 20px;
+	/* margin-top: 20px; */
     padding: 16px;
     color: white;
     font-size: 14px;
