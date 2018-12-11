@@ -1,10 +1,11 @@
 <template>
 	<div class="content">
 
-		<div class="contain">
+		<div class="contain" id="contain" ref="imageWrapper">
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
 			<canvas id="myCanvas" width="400vw" height="564vw" v-if="!qrImg"></canvas>
-			<img v-bind:src="qrImg" alt="" data-preview-src="" data-preview-group="1" v-else>
+			<!-- <img v-bind:src="qrImg" alt="" data-preview-src="" data-preview-group="1" v-else> -->
+			<img class="real_pic" :src="dataURL" style="display: none"/>
 			<!-- <div class="desc">长按保存二维码</div> -->
 		</div>
 		<p class="save-img" v-on:click="save()">保存二维码</p>
@@ -154,9 +155,11 @@ function cutImageSuffix(imageUrl) {
 // 	return image;
 // }
 
-function bb(){
-	var oCanvas = document.getElementById("myCanvas");
-	var img_data1 = Canvas2Image.saveAsPNG(oCanvas, true).getAttribute('src');
+function bb(img_data1){
+	// var oCanvas = document.getElementById("thecanvas");
+	// console.log(Canvas2Image.saveAsPNG(oCanvas, true))
+	// var img_data1 = Canvas2Image.saveAsPNG(oCanvas, 400, 564).getAttribute('src');
+	// console.log(img_data1)
 	saveFile(img_data1, 'qrcode.png');
 }
 
@@ -172,6 +175,7 @@ var saveFile = function(data, filename){
     save_link.dispatchEvent(event);
 };
 
+import html2canvas from 'html2canvas'
 
 export default {
 	name: 'Promotion',
@@ -184,7 +188,8 @@ export default {
 			recommendCode: '',
 			qrCodeUrl: '',
 			imageUrl: '',
-			qrImg: ''
+			qrImg: '',
+			dataURL: ''
 		}
 	},
 	created: function () {
@@ -229,10 +234,10 @@ export default {
 			cas2.drawImage(img1, 142, 226, 120, 120)
 		}
 
-		setTimeout(() => {
-			this.qrImg = canvas2.toDataURL('image/jpeg', 0.3)
-			// console.log(this.qrImg)
-		}, 2000);
+		// setTimeout(() => {
+		// 	this.qrImg = canvas2.toDataURL('image/jpeg', 0.3)
+		// 	// console.log(this.qrImg)
+		// }, 2000);
 
 		// var img =  convertCanvasToImage(canvas2)
 		// var arr = img.src.split(',')
@@ -251,7 +256,13 @@ export default {
 			// let canvas2 = document.getElementById('myCanvas')
 			// var img =  convertCanvasToImage(canvas2)
 			// e.target.href = img.src
-			bb()
+			html2canvas(this.$refs.imageWrapper,{
+				backgroundColor: null
+			}).then((canvas) => {
+				let dataURL = canvas.toDataURL("image/png");
+				this.dataURL = dataURL;
+			});
+			bb(this.dataURL)
 		}
 	}
 }

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@xkeshi/vue-qrcode": "github:xkeshi/vue-qrcode",
+    "html2canvas": "^1.0.0-alpha.12",
     "jquery": "^3.3.1",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
