@@ -1,11 +1,10 @@
 <template>
 	<div class="content">
 
-		<div class="contain" id="contain" ref="imageWrapper">
+		<div class="contain">
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
 			<canvas id="myCanvas" width="400vw" height="564vw" v-if="!qrImg"></canvas>
-			<!-- <img v-bind:src="qrImg" alt="" data-preview-src="" data-preview-group="1" v-else> -->
-			<img class="real_pic" :src="dataURL" style="display: none"/>
+			<img v-bind:src="qrImg" alt="" data-preview-src="" data-preview-group="1" v-else>
 			<!-- <div class="desc">长按保存二维码</div> -->
 		</div>
 		<p class="save-img" v-on:click="save()">保存二维码</p>
@@ -110,72 +109,47 @@ function cutImageSuffix(imageUrl) {
     return imageUrl.substring(index);
 }
 
-//图片下载操作,指定图片类型
-// function download(type) {
-// 	var canvas = document.getElementsByTagName('canvas')[0]
-// 	var imgdata = canvas.toDataURL(type);
-// 	var img = new Image()
-// 	img.src = imgdata
-// 	var ctx = canvas.getContext('2d');
-// 	ctx.drawImage(img, 0, 0, img.width, img.height);
-// 	//将mime-type改为image/octet-stream,强制让浏览器下载
-// 	var fixtype = function (type) {
-// 		type = type.toLocaleLowerCase().replace(/jpg/i, 'jpeg');
-// 		var r = type.match(/png|jpeg|bmp|gif/)[0];
-// 		return 'image/' + r;
-// 	}
-// 	// imgdata = imgdata.replace(fixtype(type), 'image/octet-stream')
-// 	//将图片保存到本地
-// 	var dataURLtoBlob = function(dataurl) {
-// 		var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-// 		bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-// 		while(n--){
-// 			u8arr[n] = bstr.charCodeAt(n);
-// 		}
-// 		return new Blob([u8arr], {type:mime});
-// 	}
-// 	var saveFile = function (data, filename) {
-// 		var link = document.createElement('a');
-// 		var strDataURI = data.substr(22, data.length);
-// 		var blob = dataURLtoBlob(data);
-// 		var objurl = URL.createObjectURL(blob);
-// 		link.href = objurl;
-// 		link.download = filename;
-// 		var event = document.createEvent('MouseEvents');
-// 		event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-// 		link.dispatchEvent(event);
-// 	}
-// 	var filename = 'qrcode' + '.' + type;
-// 	saveFile(imgdata, filename);
-// }
-
-// function convertCanvasToImage(canvas) {
-// 	var image = new Image();
-// 	image.src = canvas.toDataURL("image/png");
-// 	return image;
-// }
-
-function bb(img_data1){
-	// var oCanvas = document.getElementById("thecanvas");
-	// console.log(Canvas2Image.saveAsPNG(oCanvas, true))
-	// var img_data1 = Canvas2Image.saveAsPNG(oCanvas, 400, 564).getAttribute('src');
-	// console.log(img_data1)
-	saveFile(img_data1, 'qrcode.png');
+// 图片下载操作,指定图片类型
+function download() {
+	var canvas = document.getElementById("myCanvas")
+	var imgdata = canvas.toDataURL('image/png', 0.3);
+	var img = new Image()
+	img.src = imgdata
+	var ctx = canvas.getContext('2d');
+	ctx.drawImage(img, 0, 0, img.width, img.height);
+	//将mime-type改为image/octet-stream,强制让浏览器下载
+	// var fixtype = function (type) {
+	// 	type = type.toLocaleLowerCase().replace(/jpg/i, 'jpeg');
+	// 	var r = type.match(/png|jpeg|bmp|gif/)[0];
+	// 	return 'image/' + r;
+	// }
+	// imgdata = imgdata.replace(fixtype(type), 'image/octet-stream')
+	//将图片保存到本地
+	var dataURLtoBlob = function(dataurl) {
+		var arr = dataurl.split(',')
+		var mime = arr[0].match(/:(.*?);/)[1]
+		var bstr = atob(arr[1])
+		var n = bstr.length
+		var u8arr = new Uint8Array(n)
+		while(n--){
+			u8arr[n] = bstr.charCodeAt(n);
+		}
+		return new Blob([u8arr], {type:mime});
+	}
+	var saveFile = function (data, filename) {
+		var link = document.createElement('a');
+		var strDataURI = data.substr(22, data.length);
+		var blob = dataURLtoBlob(data);
+		var objurl = URL.createObjectURL(blob);
+		link.href = objurl;
+		link.download = filename;
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+		link.dispatchEvent(event);
+	}
+	var filename = 'qrcode.png'
+	saveFile(imgdata, filename);
 }
-
-
-// 保存文件函数
-var saveFile = function(data, filename){
-    var save_link = document.createElement('a')
-    save_link.href = data;
-    save_link.download = filename;
-   
-    var event = document.createEvent('MouseEvents');
-    event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    save_link.dispatchEvent(event);
-};
-
-import html2canvas from 'html2canvas'
 
 export default {
 	name: 'Promotion',
@@ -188,8 +162,7 @@ export default {
 			recommendCode: '',
 			qrCodeUrl: '',
 			imageUrl: '',
-			qrImg: '',
-			dataURL: ''
+			qrImg: ''
 		}
 	},
 	created: function () {
@@ -239,30 +212,10 @@ export default {
 		// 	// console.log(this.qrImg)
 		// }, 2000);
 
-		// var img =  convertCanvasToImage(canvas2)
-		// var arr = img.src.split(',')
-		// var mime = arr[0].match(/:(.*?);/)[1]
-		// var bstr =  atob(arr[1])
-		// var n = bstr.length
-		// var u8arr = new Uint8Array(n);
-		// while (n--) {
-		// 	u8arr[n] = bstr.charCodeAt(n);
-		// }
-		// var blob = new Blob([u8arr],{type:mime})
 	},
 	methods: {
 		save: function (e) {
-			// download('png')
-			// let canvas2 = document.getElementById('myCanvas')
-			// var img =  convertCanvasToImage(canvas2)
-			// e.target.href = img.src
-			html2canvas(this.$refs.imageWrapper,{
-				backgroundColor: null
-			}).then((canvas) => {
-				let dataURL = canvas.toDataURL("image/png");
-				this.dataURL = dataURL;
-			});
-			bb(this.dataURL)
+			download()
 		}
 	}
 }
