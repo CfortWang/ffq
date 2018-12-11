@@ -19,18 +19,23 @@ axios.interceptors.request.use(
 // http response 拦截器
 axios.interceptors.response.use(
     (response) => {
+        // 判断是否存在alert属性
+        if (response.data.data.alert || response.data.data.data.alert) {
+            response.data.data.has = 1
+        }
         return response;
     },
     (error) => {
-        if(error.response) {
-            switch (error.response.status) {
-                case 401:
-                router.replace({
-                    path: '/login',
-                    query: {redirect: router.currentRoute.fullPath}
-                });
-            }
-        }
-        return Promise.reject(error.response.data);
+        // if(error.response) {
+        //     switch (error.response.status) {
+        //         case 401:
+        //         router.replace({
+        //             path: '/login',
+        //             query: {redirect: router.currentRoute.fullPath}
+        //         });
+        //     }
+        // }
+        return response
+        // return Promise.reject(error.response.data);
     }
 );
