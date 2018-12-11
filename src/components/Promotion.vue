@@ -7,7 +7,7 @@
 			<img v-bind:src="qrImg" alt="" data-preview-src="" data-preview-group="1" v-else>
 			<!-- <div class="desc">长按保存二维码</div> -->
 		</div>
-		<!-- <p class="save-img" v-on:click="save()">保存二维码</p> -->
+		<p class="save-img" v-on:click="save()">保存二维码</p>
 		
 		<!-- 底部 -->
 		<div class="footer">
@@ -184,7 +184,7 @@ export default {
 				this.recommendCode = responseData.id
 				this.qrCodeUrl = "https://fafa.gxwhkj.cn/register?recommendCode=" + this.recommendCode
 			}).catch((ex) => {
-				this.$route.push({name: 'Login'})
+				this.$router.push({name: 'Login'})
 			})
 		}
 
@@ -226,16 +226,18 @@ export default {
 			}
 			return new Blob([u8arr], {type:mime});
 		}
-		setTimeout(() => {
-			var imgUrl = canvas2.toDataURL('image/jpeg', 1)
-			var blob = dataURLtoBlob(imgUrl);
-			this.qrImg = URL.createObjectURL(blob);
-		}, 1500);
+		// setTimeout(() => {
+		// 	var imgUrl = canvas2.toDataURL('image/jpeg', 1)
+		// 	var blob = dataURLtoBlob(imgUrl);
+		// 	this.qrImg = URL.createObjectURL(blob);
+		// }, 1500);
 
 	},
 	methods: {
 		save: function (e) {
-			download()
+			// download()
+			var canvasObj = document.getElementById("myCanvas")
+			Canvas2Image.saveAsPNG(canvasObj, 100, 200)
 		}
 	}
 }
