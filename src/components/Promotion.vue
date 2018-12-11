@@ -115,7 +115,6 @@ function download() {
 	var imgdata = canvas.toDataURL('image/png', 0);
 	var img = new Image()
 	img.src = imgdata
-	img.crossorigin = 'anonymous'
 	var ctx = canvas.getContext('2d');
 	ctx.drawImage(img, 0, 0, img.width, img.height);
 	//将mime-type改为image/octet-stream,强制让浏览器下载
