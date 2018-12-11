@@ -26,11 +26,12 @@ Vue.prototype.hideLoading = function () {
   ele2.style.display = 'none'
 }
 Vue.prototype.showMsg = function (msg) {
-  let ele1 = document.getElementById('msg')
-  let ele2 = document.getElementById('cover')
-  document.getElementsByClassName('msg-contents')[0].innerHTML = msg
-  ele1.style.display = 'block'
-  ele2.style.display = 'block'
+  // let ele1 = document.getElementById('msg')
+  // let ele2 = document.getElementById('cover')
+  // document.getElementsByClassName('msg-contents')[0].innerHTML = msg
+  // ele1.style.display = 'block'
+  // ele2.style.display = 'block'
+  mui.alert("App正常维护，请到网页版操作版操作http://adv.lzttkf.com")
 }
 Vue.prototype.closeMsg = function () {
   let ele1 = document.getElementById('msg')
