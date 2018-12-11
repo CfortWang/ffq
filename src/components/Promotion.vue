@@ -7,7 +7,7 @@
 			<img v-bind:src="qrImg" alt="" data-preview-src="" data-preview-group="1" v-else>
 			<!-- <div class="desc">长按保存二维码</div> -->
 		</div>
-		<p class="save-img" v-on:click="save()">保存二维码</p>
+		<!-- <p class="save-img" v-on:click="save()">保存二维码</p> -->
 		
 		<!-- 底部 -->
 		<div class="footer">
@@ -138,7 +138,7 @@ function download() {
 	}
 	var saveFile = function (data, filename) {
 		var link = document.createElement('a');
-		var strDataURI = data.substr(22, data.length);
+		// var strDataURI = data.substr(22, data.length);
 		// var blob = dataURLtoBlob(data);
 		// var objurl = URL.createObjectURL(blob);
 		link.href = data;
