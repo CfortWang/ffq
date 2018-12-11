@@ -7,8 +7,12 @@ import 'swiper/dist/css/swiper.css'
 
 Vue.config.productionTip = false
 Vue.prototype.jumpTo = function (url) {
+  if (url == '/promotion') {
+    window.location.href = url
+  } else {
+    mui.alert("App正常维护，请到网页版操作版操作http://adv.lzttkf.com")
+  }
   // window.location.href = url
-  mui.alert("App正常维护，请到网页版操作版操作http://adv.lzttkf.com")
 }
 Vue.prototype.goBack = function () {
   window.history.back()
