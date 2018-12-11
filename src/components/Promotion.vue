@@ -3,7 +3,7 @@
 
 		<div class="contain">
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
-			<canvas id="myCanvas" width="200vw" height="282vw" v-if="!qrImg"></canvas>
+			<canvas id="myCanvas" width="400vw" height="564vw" v-if="!qrImg"></canvas>
 			<img v-bind:src="qrImg" alt="" data-preview-src="" data-preview-group="1" v-else>
 			<!-- <div class="desc">长按保存二维码</div> -->
 		</div>
@@ -201,17 +201,36 @@ export default {
 		img2.src = '../../static/img/personal/qrCode.jpg'
 		var that = this
 		img2.onload = function(){
-			cas2.drawImage(img2, 0, 0, 200, 282)
+			cas2.drawImage(img2, 0, 0, 400, 564)
 			cas2.font = '8px Georgia'
 			cas2.textAlign = 'center'
-			cas2.fillText(that.nickname, 100, 105);
-			cas2.drawImage(img1, 71, 113, 60, 60)
+			cas2.fillText(that.nickname, 200, 210);
+			cas2.drawImage(img1, 142, 226, 120, 120)
 		}
+
+		
 
 		// setTimeout(() => {
 		// 	this.qrImg = canvas2.toDataURL('image/jpeg', 0.3)
 		// 	// console.log(this.qrImg)
 		// }, 2000);
+
+		var dataURLtoBlob = function(dataurl) {
+			var arr = dataurl.split(',')
+			var mime = arr[0].match(/:(.*?);/)[1]
+			var bstr = atob(arr[1])
+			var n = bstr.length
+			var u8arr = new Uint8Array(n)
+			while(n--){
+				u8arr[n] = bstr.charCodeAt(n);
+			}
+			return new Blob([u8arr], {type:mime});
+		}
+		setTimeout(() => {
+			var imgUrl = canvas2.toDataURL('image/jpeg', 1)
+			var blob = dataURLtoBlob(imgUrl);
+			this.qrImg = URL.createObjectURL(blob);
+		}, 1500);
 
 	},
 	methods: {
