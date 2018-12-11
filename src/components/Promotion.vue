@@ -156,28 +156,6 @@ function cutImageSuffix(imageUrl) {
 
 function bb(){
 	var oCanvas = document.getElementById("myCanvas");
-
-	/* 参考
-	Canvas2Image.saveAsPNG(oCanvas);  // 这将会提示用户保存PNG图片
-	Canvas2Image.saveAsJPEG(oCanvas); // 这将会提示用户保存JPG图片
-	Canvas2Image.saveAsBMP(oCanvas);  // 这将会提示用户保存BMP图片
-	// 返回一个包含PNG图片的<img>元素
-	var oImgPNG = Canvas2Image.saveAsPNG(oCanvas, true);   
-	// 返回一个包含JPG图片的<img>元素
-	var oImgJPEG = Canvas2Image.saveAsJPEG(oCanvas, true); 
-	                                                       
-	// 返回一个包含BMP图片的<img>元素
-	var oImgBMP = Canvas2Image.saveAsBMP(oCanvas, true); 
-	 
-	// 这些函数都可以接受高度和宽度的参数
-	// 可以用来调整图片大小
-	// 把画布保存成100x100的png格式
-	Canvas2Image.saveAsPNG(oCanvas, false, 100, 100);
-	*/
-
-
-	/*自动保存为png*/
-	// 获取图片资源
 	var img_data1 = Canvas2Image.saveAsPNG(oCanvas, true).getAttribute('src');
 	saveFile(img_data1, 'qrcode.png');
 }
