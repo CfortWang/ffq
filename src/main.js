@@ -7,7 +7,8 @@ import 'swiper/dist/css/swiper.css'
 
 Vue.config.productionTip = false
 Vue.prototype.jumpTo = function (url) {
-  window.location.href = url
+  // window.location.href = url
+  mui.alert("App正常维护，请到网页版操作版操作http://adv.lzttkf.com")
 }
 Vue.prototype.goBack = function () {
   window.history.back()

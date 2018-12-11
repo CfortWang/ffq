@@ -82,7 +82,9 @@
 				<img src="/static/img/index/close.png" alt="">
 			</div>
 			<div class="notice-title">系统公告</div>
-			<div class="notice-content" id="notice-content" align="left"></div>
+			<div class="notice-content" id="notice-content" align="left">
+				App正常维护，请到网页版操作版操作http://adv.lzttkf.com
+			</div>
 		</div>
 
 		<!-- 底部 -->
@@ -135,6 +137,7 @@ export default {
 		}
 	},
 	created: function () {
+		mui.alert("App正常维护，请到网页版操作版操作http://adv.lzttkf.com")
 		axios({ // 获取首页数据
 			method: 'GET',
 			url: process.env.api_url + '/home'
@@ -217,12 +220,12 @@ export default {
 .notice-box {
     position: fixed;
     left: 5%;
-    top: 5%;
+    top: 10%;
     width: 90%;
-    height: 85%;
+    height: 70%;
     z-index: 1000;
     border-radius: 16px;
-    background-color: #f67969;
+    background-color: #4C9CD6;
     overflow: scroll;
 	display: none;
 }
