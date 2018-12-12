@@ -5,7 +5,7 @@
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
 			<canvas id="myCanvas" width="400vw" height="564vw" v-if="!qrImg"></canvas>
 			<img v-bind:src="qrImg" alt="" data-preview-src="" data-preview-group="1" v-else>
-			<div class="desc">长按保存二维码</div>
+			<div class="desc" v-if="qrImg">长按保存二维码</div>
 		</div>
 		<!-- <p class="save-img" v-on:click="save()">保存二维码</p> -->
 		
@@ -121,12 +121,13 @@ export default {
 			qrCodeUrl: '',
 			imageUrl: '',
 			qrImg: '',
-			formData: ''
+			formData: '',
+			showDesc: false
 		}
 	},
 	created: function () {
 		this.qrImg = vueCookie.get("qrImg")
-		if (!this.qrImg) {
+		if (this.qrImg == '' || this.qrImg == null) {
 			if (vueCookie.get('nickname')) {
 				this.recommendCode = vueCookie.get('userID')
 				this.nickname = vueCookie.get('nickname') + '邀您加入'
@@ -147,8 +148,6 @@ export default {
 					this.$router.push({name: 'Login'})
 				})
 			}
-		} else {
-			document.getElementsByClassName('desc')[0].style.display = 'block'
 		}
 
 	},
@@ -204,11 +203,9 @@ export default {
 					this.hideLoading()
 					if (response.data.code == 'success') {
 						this.qrImg = response.data.data.url
-						document.getElementsByClassName('desc')[0].style.display = 'block'
 						vueCookie.set("qrImg", this.qrImg, { expires: '1Y' })
 					} else {
 						this.showMsg(response.data.msg)
-
 					}
 				}).catch(ex => {
 					this.hideLoading()
@@ -265,6 +262,5 @@ canvas#myCanvas{
 	font-size: 16px;
 	margin-top: 10px;
 	text-align: center;
-	display: none;
 }
 </style>
