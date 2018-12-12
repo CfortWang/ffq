@@ -238,6 +238,7 @@ export default {
 					vueCookie.set('totalAmount', '', 1)
 					vueCookie.set('isVerification', '', 1)
 					vueCookie.set('recommenderID', '', 1)
+					vueCookie.set('qrImg', '', 1)
 					this.$router.push({name: 'Login'})
 				} else {
 					this.showMsg(response.date.message)

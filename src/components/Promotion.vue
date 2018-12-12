@@ -5,9 +5,9 @@
 			<qrcode :tag="img" :value="qrCodeUrl" :options="{ size: 120 }"></qrcode>
 			<canvas id="myCanvas" width="400vw" height="564vw" v-if="!qrImg"></canvas>
 			<img v-bind:src="qrImg" alt="" data-preview-src="" data-preview-group="1" v-else>
-			<!-- <div class="desc">长按保存二维码</div> -->
+			<div class="desc">长按保存二维码</div>
 		</div>
-		<p class="save-img" v-on:click="save()">保存二维码</p>
+		<!-- <p class="save-img" v-on:click="save()">保存二维码</p> -->
 		
 		<!-- 底部 -->
 		<div class="footer">
@@ -109,49 +109,6 @@ function cutImageSuffix(imageUrl) {
     return imageUrl.substring(index);
 }
 
-// 图片下载操作,指定图片类型
-function download() {
-	var canvas = document.getElementById("myCanvas")
-	var imgdata = canvas.toDataURL('image/png', 0);
-	var img = new Image()
-	img.src = imgdata
-	var ctx = canvas.getContext('2d');
-	ctx.drawImage(img, 0, 0, img.width, img.height);
-	//将mime-type改为image/octet-stream,强制让浏览器下载
-	// var fixtype = function (type) {
-	// 	type = type.toLocaleLowerCase().replace(/jpg/i, 'jpeg');
-	// 	var r = type.match(/png|jpeg|bmp|gif/)[0];
-	// 	return 'image/' + r;
-	// }
-	// imgdata = imgdata.replace(fixtype(type), 'image/octet-stream')
-	//将图片保存到本地
-	var dataURLtoBlob = function(dataurl) {
-		var arr = dataurl.split(',')
-		var mime = arr[0].match(/:(.*?);/)[1]
-		var bstr = atob(arr[1])
-		var n = bstr.length
-		var u8arr = new Uint8Array(n)
-		while(n--){
-			u8arr[n] = bstr.charCodeAt(n);
-		}
-		return new Blob([u8arr], {type:mime});
-	}
-	var saveFile = function (data, filename) {
-		var link = document.createElement('a');
-		// var strDataURI = data.substr(22, data.length);
-		// var blob = dataURLtoBlob(data);
-		// var objurl = URL.createObjectURL(blob);
-		link.href = data;
-		link.download = filename;
-		// console.log(objurl)
-		var event = document.createEvent('MouseEvents');
-		event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-		link.dispatchEvent(event);
-	}
-	var filename = 'qrcode.png'
-	saveFile(imgdata, filename);
-}
-
 export default {
 	name: 'Promotion',
 	components: {
@@ -163,82 +120,106 @@ export default {
 			recommendCode: '',
 			qrCodeUrl: '',
 			imageUrl: '',
-			qrImg: ''
+			qrImg: '',
+			formData: ''
 		}
 	},
 	created: function () {
-		if (vueCookie.get('nickname')) {
-            this.recommendCode = vueCookie.get('userID')
-			this.nickname = vueCookie.get('nickname') + '邀您加入'
-			this.qrCodeUrl = "https://fafa.gxwhkj.cn/register?recommendCode=" + this.recommendCode
-        } else {
-			axios({ // 获取个人信息
-				method: 'GET',
-				url: process.env.api_url + '/user/info',
-				withCredentials: true,
-				headers: {"lang": 'zh'}
-			}).then((response) => {
-				let responseData = response.data.data
-				this.nickname = responseData.name
-				// let recommendCode = responseData.recommend_code
-				this.recommendCode = responseData.id
+		this.qrImg = vueCookie.get("qrImg")
+		if (!this.qrImg) {
+			if (vueCookie.get('nickname')) {
+				this.recommendCode = vueCookie.get('userID')
+				this.nickname = vueCookie.get('nickname') + '邀您加入'
 				this.qrCodeUrl = "https://fafa.gxwhkj.cn/register?recommendCode=" + this.recommendCode
-			}).catch((ex) => {
-				this.$router.push({name: 'Login'})
-			})
+			} else {
+				axios({ // 获取个人信息
+					method: 'GET',
+					url: process.env.api_url + '/user/info',
+					withCredentials: true,
+					headers: {"lang": 'zh'}
+				}).then((response) => {
+					let responseData = response.data.data
+					this.nickname = responseData.name
+					// let recommendCode = responseData.recommend_code
+					this.recommendCode = responseData.id
+					this.qrCodeUrl = "https://fafa.gxwhkj.cn/register?recommendCode=" + this.recommendCode
+				}).catch((ex) => {
+					this.$router.push({name: 'Login'})
+				})
+			}
+		} else {
+			document.getElementsByClassName('desc')[0].style.display = 'block'
 		}
 
 	},
 	mounted () {
-		let canvas1 = document.getElementsByTagName('canvas')[0]
-		let canvas2 = document.getElementById('myCanvas')
-		let cas1 = canvas1.getContext('2d')
-		let cas2 = canvas2.getContext('2d')
-		
-		let img1 = new Image()
-		let img2 = new Image()
-		img1.src = canvas1.toDataURL('jpg')
-		img2.src = '../../static/img/personal/qrCode.jpg'
-		var that = this
-		img2.onload = function(){
-			cas2.drawImage(img2, 0, 0, 400, 564)
-			cas2.font = '8px Georgia'
-			cas2.textAlign = 'center'
-			cas2.fillText(that.nickname, 200, 210);
-			cas2.drawImage(img1, 142, 226, 120, 120)
-		}
-
-		
-
-		// setTimeout(() => {
-		// 	this.qrImg = canvas2.toDataURL('image/jpeg', 0.3)
-		// 	// console.log(this.qrImg)
-		// }, 2000);
-
-		var dataURLtoBlob = function(dataurl) {
-			var arr = dataurl.split(',')
-			var mime = arr[0].match(/:(.*?);/)[1]
-			var bstr = atob(arr[1])
-			var n = bstr.length
-			var u8arr = new Uint8Array(n)
-			while(n--){
-				u8arr[n] = bstr.charCodeAt(n);
+		if (!this.qrImg) {
+			let canvas1 = document.getElementsByTagName('canvas')[0]
+			let canvas2 = document.getElementById('myCanvas')
+			let cas1 = canvas1.getContext('2d')
+			let cas2 = canvas2.getContext('2d')
+			
+			let img1 = new Image()
+			let img2 = new Image()
+			img1.src = canvas1.toDataURL('jpg')
+			img2.src = '../../static/img/personal/qrCode.jpg'
+			var that = this
+			img2.onload = function(){
+				cas2.drawImage(img2, 0, 0, 400, 564)
+				cas2.font = '8px Georgia'
+				cas2.textAlign = 'center'
+				cas2.fillText(that.nickname, 200, 210);
+				cas2.drawImage(img1, 142, 226, 120, 120)
 			}
-			return new Blob([u8arr], {type:mime});
+
+			
+
+			// setTimeout(() => {
+			// 	this.qrImg = canvas2.toDataURL('image/jpeg', 0.3)
+			// 	// console.log(this.qrImg)
+			// }, 2000);
+
+			var dataURLtoBlob = function(dataurl) {
+				var arr = dataurl.split(',')
+				var mime = arr[0].match(/:(.*?);/)[1]
+				var bstr = atob(arr[1])
+				var n = bstr.length
+				var u8arr = new Uint8Array(n)
+				while(n--){
+					u8arr[n] = bstr.charCodeAt(n);
+				}
+				return new Blob([u8arr], {type:mime});
+			}
+			setTimeout(() => {
+				var imgUrl = canvas2.toDataURL('image/jpeg', 1)
+				var blob = dataURLtoBlob(imgUrl);
+				this.formData = new FormData()
+				this.formData.append('smfile', blob, "image.png")
+				this.formData.append('ssl', true)
+				let config = {
+					headers:{'Content-Type':'multipart/form-data'}
+				}
+				this.showLoading()
+				axios.post('https://sm.ms/api/upload',this.formData,config).then(response => {
+					this.hideLoading()
+					if (response.data.code == 'success') {
+						this.qrImg = response.data.data.url
+						document.getElementsByClassName('desc')[0].style.display = 'block'
+						vueCookie.set("qrImg", this.qrImg, { expires: '1Y' })
+					} else {
+						this.showMsg(response.data.msg)
+
+					}
+				}).catch(ex => {
+					this.hideLoading()
+					console.log(ex)
+				})
+			}, 1000);
 		}
-		// setTimeout(() => {
-		// 	var imgUrl = canvas2.toDataURL('image/jpeg', 1)
-		// 	var blob = dataURLtoBlob(imgUrl);
-		// 	this.qrImg = URL.createObjectURL(blob);
-		// }, 1500);
 
 	},
 	methods: {
-		save: function (e) {
-			// download()
-			var canvasObj = document.getElementById("myCanvas")
-			Canvas2Image.saveAsPNG(canvasObj, 100, 200)
-		}
+		
 	}
 }
 </script>
@@ -284,5 +265,6 @@ canvas#myCanvas{
 	font-size: 16px;
 	margin-top: 10px;
 	text-align: center;
+	display: none;
 }
 </style>
