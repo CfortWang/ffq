@@ -1,5 +1,5 @@
 // 默认配置
-axios.defaults.baseURL = 'https://api.gxwhkj.cn'; 
+// axios.defaults.baseURL = 'https://api.gxwhkj.cn'; 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 export const request = (config) => {
@@ -19,9 +19,8 @@ axios.interceptors.request.use(
 // http response 拦截器
 axios.interceptors.response.use(
     (response) => {
-        // 判断是否存在alert属性
-        if (response.data.data.alert || response.data.data.data.alert) {
-            response.data.data.has = 1
+        if (response.data.alert) {
+            mui.alert(response.data.alert)
         }
         return response;
     },
