@@ -108,7 +108,7 @@ function cutImageSuffix(imageUrl) {
     var index = imageUrl.lastIndexOf('.');
     return imageUrl.substring(index);
 }
-
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'Promotion',
 	components: {
@@ -133,7 +133,7 @@ export default {
 				this.nickname = vueCookie.get('nickname') + '邀您加入'
 				this.qrCodeUrl = "https://fafa.gxwhkj.cn/register?recommendCode=" + this.recommendCode
 			} else {
-				axios({ // 获取个人信息
+				request({ // 获取个人信息
 					method: 'GET',
 					url: process.env.api_url + '/user/info',
 					withCredentials: true,

@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'TasksHall',
   	data () {
@@ -72,7 +73,7 @@ export default {
 	created: function () {
         this.type = this.$route.query.type
         this.showLoading()
-        axios({ // 获取任务数据
+        request({ // 获取任务数据
             method: 'GET',
             url: process.env.api_url + '/task/list',
             params: {
@@ -104,7 +105,7 @@ export default {
             }
             this.showLoading()
             this.pageNumber = pageNumber
-            axios({ // 获取任务数据
+            request({ // 获取任务数据
                 method: 'GET',
                 url: process.env.api_url + '/task/list',
                 params: {
@@ -136,7 +137,7 @@ export default {
             this.pageNumber = this.inputNumber - 1
             document.getElementById('info').style.display = 'inline-block'
             document.getElementById('pageInput').style.display = 'none'
-            axios({ // 获取任务数据
+            request({ // 获取任务数据
                 method: 'GET',
                 url: process.env.api_url + '/task/list',
                 params: {

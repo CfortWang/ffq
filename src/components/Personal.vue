@@ -141,7 +141,7 @@
 
 <script>
 import vueCookie from 'vue-cookie'
-
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'Personal',
   	data () {
@@ -175,7 +175,7 @@ export default {
 			this.isVerification = vueCookie.get('isVerification')
 			this.recommenderID = vueCookie.get('recommenderID')
 		} else {
-			axios({ // 获取个人信息
+			request({ // 获取个人信息
 				method: 'GET',
 				url: process.env.api_url + '/user/info',
 				withCredentials: true,
@@ -220,7 +220,7 @@ export default {
 	methods: {
 		logOut: function () {
 			this.showLoading()
-			axios({ // 退出登录
+			request({ // 退出登录
 				method: 'POST',
 				url: process.env.api_url + '/login/logout',
 				withCredentials: true,

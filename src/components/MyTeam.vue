@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'MyTeam',
   	data () {
@@ -99,7 +100,7 @@ export default {
 	},
 	created: function () {
         this.showLoading()
-        axios({
+        request({
             method: 'GET',
             url: process.env.api_url + '/user/myTeam',
             withCredentials: true,
@@ -115,7 +116,7 @@ export default {
             console.log(ex)
         })
 
-        axios({
+        request({
             method: 'GET',
             url: process.env.api_url + '/user/myTeamList',
             params: {
@@ -144,7 +145,7 @@ export default {
             }
             this.showLoading()
             this.pageNumber = 0
-            axios({
+            request({
                 method: 'GET',
                 url: process.env.api_url + '/user/myTeamList',
                 params: {
@@ -177,7 +178,7 @@ export default {
             this.pageNumber = 0
             this.allPages = Math.ceil(this[kind] / this.pageSize)
             this.showLoading()
-            axios({
+            request({
                 method: 'GET',
                 url: process.env.api_url + '/user/myTeamList',
                 params: {
@@ -208,7 +209,7 @@ export default {
             }
             this.showLoading()
             this.pageNumber = pageNumber
-            axios({
+            request({
                 method: 'GET',
                 url: process.env.api_url + '/user/myTeamList',
                 params: {
@@ -241,7 +242,7 @@ export default {
             this.pageNumber = this.inputNumber - 1
             document.getElementById('info').style.display = 'inline-block'
             document.getElementById('pageInput').style.display = 'none'
-            axios({
+            request({
                 method: 'GET',
                 url: process.env.api_url + '/user/myTeamList',
                 params: {

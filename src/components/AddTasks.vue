@@ -70,6 +70,7 @@
 
 <script>
 import vueCookie from 'vue-cookie'
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'AddTasks',
   	data () {
@@ -91,7 +92,7 @@ export default {
         // 缓存获取用户等级
         if (vueCookie.get('userLevelID')) {
             this.userLevel = vueCookie.get('userLevelID')
-            axios({ // 获取广告单价
+            request({ // 获取广告单价
                 method: 'GET',
                 url: process.env.api_url + '/task/hallList',
                 withCredentials: true,
@@ -104,7 +105,7 @@ export default {
             })
 
         } else {// 接口获取用户等级
-            axios({ // 获取用户级别
+            request({ // 获取用户级别
                 method: 'GET',
                 url: process.env.api_url + '/user/info',
                 withCredentials: true,
@@ -113,7 +114,7 @@ export default {
                 let responseData = response.data.data
                 this.userLevel = responseData.user_level_id
                 
-                axios({ // 获取广告单价
+                request({ // 获取广告单价
                     method: 'GET',
                     url: process.env.api_url + '/task/hallList',
                     withCredentials: true,
@@ -197,7 +198,7 @@ export default {
                 return false
             }
             this.showLoading()
-            axios({ // 发布任务
+            request({ // 发布任务
                 method: 'POST',
                 url: process.env.api_url + '/task',
                 params: {

@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'News',
   	data () {
@@ -31,7 +32,7 @@ export default {
 		}
 	},
 	created: function () {
-		axios({ // 获取消息列表
+		request({ // 获取消息列表
             method: 'GET',
             url: process.env.api_url + '/home/news',
             params: {

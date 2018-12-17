@@ -143,26 +143,26 @@ export default {
 		}
 	},
 	created: function () {
-		// axios({ // 获取首页数据
-		// 	method: 'GET',
-		// 	url: process.env.api_url + '/home'
-		// }).then((response) => {
-		// 	let responseData = response.data.data
-		// 	console.log(responseData)
-		// 	this.banner = responseData.banner
-		// 	this.news = responseData.news.content
-		// 	this.newsLink = responseData.news.url
-		// }).catch((ex) => {
-		// 	console.log(ex)
-		// })
-		request({
-			method: "get",
+		request({ // 获取首页数据
+			method: 'GET',
 			url: process.env.api_url + '/home'
-		}).then(function (response) {
-			console.log(response)
-		}).catch(function (ex) {
+		}).then((response) => {
+			let responseData = response.data.data
+			console.log(responseData)
+			this.banner = responseData.banner
+			this.news = responseData.news.content
+			this.newsLink = responseData.news.url
+		}).catch((ex) => {
 			console.log(ex)
 		})
+		// request({
+		// 	method: "get",
+		// 	url: process.env.api_url + '/home'
+		// }).then(function (response) {
+		// 	console.log(response)
+		// }).catch(function (ex) {
+		// 	console.log(ex)
+		// })
 	},
 	methods: {
 		closeNotice: function (e) {

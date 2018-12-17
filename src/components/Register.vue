@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'Register',
   	data () {
@@ -114,7 +115,7 @@ export default {
             }
             this.showLoading()
             this.countDown = 60
-            axios({ // 获取验证码
+            request({ // 获取验证码
                 method: 'POST',
                 url: process.env.api_url + '/login/msg',
                 params: {
@@ -203,7 +204,7 @@ export default {
                 return false
             }
             this.showLoading()
-            axios({ // 注册
+            request({ // 注册
                 method: 'POST',
                 url: process.env.api_url + '/login/create',
                 params: {

@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'WithdrawList',
   	data () {
@@ -84,7 +85,7 @@ export default {
 	},
 	created: function () {
         this.showLoading()
-        axios({ // 获取提现记录
+        request({ // 获取提现记录
             method: 'GET',
             url: process.env.api_url + '/user/cashoutList',
             params: {
@@ -124,7 +125,7 @@ export default {
             }
             this.showLoading()
             this.pageNumber = pageNumber
-            axios({ // 获取任务数据
+            request({ // 获取任务数据
                 method: 'GET',
                 url: process.env.api_url + '/user/cashoutList',
                 params: {
@@ -155,7 +156,7 @@ export default {
             this.pageNumber = this.inputNumber - 1
             document.getElementById('info').style.display = 'inline-block'
             document.getElementById('pageInput').style.display = 'none'
-            axios({ // 获取任务数据
+            request({ // 获取任务数据
                 method: 'GET',
                 url: process.env.api_url + '/user/cashoutList',
                 params: {

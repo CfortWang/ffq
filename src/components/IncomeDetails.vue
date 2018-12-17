@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'IncomeDetails',
   	data () {
@@ -75,7 +76,7 @@ export default {
 	},
 	created: function () {
         this.showLoading()
-        axios({ // 获取收支明细
+        request({ // 获取收支明细
             method: 'GET',
             url: process.env.api_url + '/user/accountList',
             params: {
@@ -107,7 +108,7 @@ export default {
             }
             this.showLoading()
             this.pageNumber = pageNumber
-            axios({ // 获取收支明细
+            request({ // 获取收支明细
                 method: 'GET',
                 url: process.env.api_url + '/user/accountList',
                 params: {
@@ -138,7 +139,7 @@ export default {
             this.pageNumber = this.inputNumber - 1
             document.getElementById('info').style.display = 'inline-block'
             document.getElementById('pageInput').style.display = 'none'
-            axios({ // 获取收支明细
+            request({ // 获取收支明细
                 method: 'GET',
                 url: process.env.api_url + '/user/accountList',
                 params: {

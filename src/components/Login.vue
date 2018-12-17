@@ -35,6 +35,7 @@
 
 <script>
 import vueCookie from 'vue-cookie'
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'Login',
   	data () {
@@ -69,7 +70,7 @@ export default {
                 return false
             }
             this.showLoading()
-            axios({ // 登录
+            request({ // 登录
                 method: 'POST',
                 url: process.env.api_url + '/login',
                 params: {

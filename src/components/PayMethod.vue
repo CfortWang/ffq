@@ -33,6 +33,7 @@
 
 <script>
 import $ from 'jquery'
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'PayMethod',
   	data () {
@@ -60,7 +61,7 @@ export default {
             this.showLoading()
             if (this.payWay == 'alipay') {
                 
-                axios({
+                request({
                     method: 'POST',
                     url: process.env.api_url + '/pay/ali',
                     params: {

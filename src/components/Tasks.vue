@@ -65,6 +65,7 @@
 
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'Tasks',
   	components: {
@@ -86,7 +87,7 @@ export default {
 		}
 	},
 	created: function () {
-		axios({ // 获取轮播图
+		request({ // 获取轮播图
 			method: 'GET',
 			url: process.env.api_url + '/home'
 		}).then((response) => {

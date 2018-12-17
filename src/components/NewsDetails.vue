@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'NewsDetails',
   	data () {
@@ -39,7 +40,7 @@ export default {
 	},
 	created: function () {
         this.newsID = this.$route.query.id
-        axios({ // 获取消息详情
+        request({ // 获取消息详情
             method: 'GET',
             url: process.env.api_url + '/home/newsDetail',
             params: {

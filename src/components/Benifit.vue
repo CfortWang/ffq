@@ -239,6 +239,8 @@ function getWeekDay(dateString) {
         return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
     }
 }
+
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'Benifit',
   	data () {
@@ -285,7 +287,7 @@ export default {
         this.lastMonthStart = time.getFullYear() + '-' + time.getMonth() + '-01'
         this.lastMonthEnd = this.today.slice(0, 8) + '01'
         
-        axios({ // 获取收益
+        request({ // 获取收益
             method: 'GET',
             url: process.env.api_url + '/user/gain',
             params: {
@@ -318,7 +320,7 @@ export default {
             this.showLoading()
             document.getElementsByClassName('current')[0].classList.remove("current")
             e.target.classList.add("current")
-            axios({ // 获取收益
+            request({ // 获取收益
                 method: 'GET',
                 url: process.env.api_url + '/user/gain',
                 params: {
@@ -346,7 +348,7 @@ export default {
             let endDay = document.getElementById("endDay").innerHTML
             this.customizeStart = startYear + '-' + startMonth + '-' + startDay
             this.customizeEnd = endYear + '-' + endMonth + '-' + endDay
-            axios({
+            request({
                 method: 'GET',
                 url: process.env.api_url + '/user/gain',
                 params: {

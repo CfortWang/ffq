@@ -71,6 +71,7 @@
 
 <script>
 import vueCookie from 'vue-cookie'
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'JoinVip',
   	data () {
@@ -89,7 +90,7 @@ export default {
             this.nickname = vueCookie.get('nickname')
         } else {
             // 接口获取用户等级与用户昵称
-            axios({ // 获取个人信息
+            request({ // 获取个人信息
                 method: 'GET',
                 url: process.env.api_url + '/user/info',
                 withCredentials: true,
@@ -127,7 +128,7 @@ export default {
                 return false
             } else {
                 this.showLoading()
-                axios({ // 获取个人信息
+                request({ // 获取个人信息
                     method: 'POST',
                     url: process.env.api_url + '/user/levelUp',
                     params: {level_id: vipLevel},

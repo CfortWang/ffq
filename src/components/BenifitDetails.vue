@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'BenifitDetails',
   	data () {
@@ -89,7 +90,7 @@ export default {
         this.type = getParams.type
         this.startTime = getParams.startTime
         this.endTime = getParams.endTime
-        axios({
+        request({
             method: 'GET',
             url: process.env.api_url + '/user/gainList',
             params: {
@@ -123,7 +124,7 @@ export default {
             }
             this.showLoading()
             this.pageNumber = pageNumber
-            axios({
+            request({
                 method: 'GET',
                 url: process.env.api_url + '/user/gainList',
                 params: {
@@ -156,7 +157,7 @@ export default {
             this.pageNumber = this.inputNumber - 1
             document.getElementById('info').style.display = 'inline-block'
             document.getElementById('pageInput').style.display = 'none'
-            axios({
+            request({
                 method: 'GET',
                 url: process.env.api_url + '/user/gainList',
                 params: {

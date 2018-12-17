@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'Superior',
   	data () {
@@ -39,7 +40,7 @@ export default {
 	methods: {
         setRecommend: function () {
             this.showLoading()
-            axios({ // 绑定上级
+            request({ // 绑定上级
                 method: 'POST',
                 url: process.env.api_url + '/user/setRecommend',
                 params: {

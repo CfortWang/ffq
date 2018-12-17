@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'Wallet',
   	data () {
@@ -46,7 +47,7 @@ export default {
 		}
 	},
 	created: function () {
-        axios({ // 获取总资产
+        request({ // 获取总资产
             method: 'GET',
             url: process.env.api_url + '/user/account',
             withCredentials: true,

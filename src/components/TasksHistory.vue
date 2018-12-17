@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'TasksHistory',
   	data () {
@@ -58,7 +59,7 @@ export default {
 	created: function () {
         this.taskStatus = this.$route.query.status
         this.showLoading()
-        axios({ // 获取任务列表
+        request({ // 获取任务列表
             method: 'GET',
             url: process.env.api_url + '/task/joinlist',
             params: {
@@ -90,7 +91,7 @@ export default {
             }
             this.showLoading()
             this.pageNumber = pageNumber
-            axios({ // 获取任务数据
+            request({ // 获取任务数据
                 method: 'GET',
                 url: process.env.api_url + '/task/joinlist',
                 params: {
@@ -122,7 +123,7 @@ export default {
             this.pageNumber = this.inputNumber - 1
             document.getElementById('info').style.display = 'inline-block'
             document.getElementById('pageInput').style.display = 'none'
-            axios({ // 获取任务数据
+            request({ // 获取任务数据
                 method: 'GET',
                 url: process.env.api_url + '/task/joinlist',
                 params: {

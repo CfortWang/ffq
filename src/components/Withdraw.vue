@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'Withdraw',
   	data () {
@@ -71,7 +72,7 @@ export default {
 		}
 	},
 	created: function () {
-        axios({ // 获取总资产
+        request({ // 获取总资产
             method: 'GET',
             url: process.env.api_url + '/user/account',
             withCredentials: true,
@@ -105,7 +106,7 @@ export default {
                 this.showMsg("请输入发发圈登录密码！")
                 return false
             }
-            axios({ // 申请提现
+            request({ // 申请提现
                 method: 'POST',
                 url: process.env.api_url + '/user/cashout',
                 params: {

@@ -140,7 +140,7 @@ function cutImageSuffix(imageUrl) {
     var index = imageUrl.lastIndexOf('.');
     return imageUrl.substring(index);
 }
-
+import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'TasksHistoryDetails',
   	data () {
@@ -158,7 +158,7 @@ export default {
 	created: function () {
         this.taskID = this.$route.query.id
         this.showLoading()
-        axios({ // 获取任务详情
+        request({ // 获取任务详情
             method: 'GET',
             url: process.env.api_url + '/task/detail',
             params: {
@@ -238,7 +238,7 @@ export default {
             //     this.showMsg(ex.response.data.message)
             // })
             this.showLoading()
-            axios({ // 提交任务
+            request({ // 提交任务
                 method: 'POST',
                 url: process.env.api_url + '/task/done',
                 params: {
