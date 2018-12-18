@@ -21,17 +21,9 @@
                 </div>
                 <div style="overflow: hidden;text-decoration: line-through;margin: 0px 8px "></div>
             </div>
-            <div class="vip-list selected" v-on:click="chooseLevel" data-level="1">
-                <div class="desc">会员</div>
-                <div class="price">￥98</div>
-            </div>
-            <div class="vip-list" v-on:click="chooseLevel" data-level="2">
-                <div class="desc">中级会员</div>
-                <div class="price">￥368</div>
-            </div>
-            <div class="vip-list" v-on:click="chooseLevel" data-level="3">
-                <div class="desc">高级会员</div>
-                <div class="price">￥988</div>
+            <div class="vip-list" v-for="(item, index) of memberInfo" v-if="index > 0" v-bind:key="item.index" v-on:click="chooseLevel" v-bind:data-level="index" v-bind:class="{selected: index==1}">
+                <div class="desc">{{item.name}}</div>
+                <div class="price">￥{{item.price}}</div>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -80,7 +72,8 @@ export default {
             userLevelID: '',
             isAgree: true,
             payID: '',
-            payType: 'user'
+            payType: 'user',
+            memberInfo: []
 		}
 	},
 	created: function () {
@@ -96,14 +89,39 @@ export default {
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
-                let responseData = response.data.data
-                this.nickname = responseData.name
-                this.userLevelID = responseData.user_level_id
+                if (response.data.status == 200) {
+                    let responseData = response.data.data
+                    this.nickname = responseData.name
+                    this.userLevelID = responseData.user_level_id
+                } else {
+                    this.showMsg(response.data.message)
+                }
             }).catch((ex) => {
                 this.$route.push({name: 'Login'})
+                console.log(ex)
             })
         }
-	},
+
+        request({ // 获取会员信息
+            method: 'GET',
+            url: process.env.api_url + '/user/levelList',
+            withCredentials: true,
+            headers: {"lang": 'zh'}
+        }).then((response) => {
+            console.log(response)
+            if (response.data.code == 200) {
+                this.memberInfo = response.data.data
+                var a = document.getElementsByClassName("vip-list")
+                console.log(a.length)
+            } else {
+                this.showMsg(response.data.message)
+            }
+        }).catch((ex) => {
+            console.log(ex)
+            this.showMsg(ex.statusText)
+        })
+        
+    },
 	methods: {
 		changeStatus: function () {
             this.isAgree = !this.isAgree

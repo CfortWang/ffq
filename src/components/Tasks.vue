@@ -23,19 +23,19 @@
         <div class="task-menu">
             <div class="free" v-on:click="jumpTo('/tasksHall?type=0')">
                 <img src="/static/img/tasks/task1.png" alt="">
-                <div class="task-title">自由任务大厅</div>
+                <div class="task-title">{{hallList[0].name}}</div>
             </div>
             <div class="member" v-on:click="jumpTo('/tasksHall?type=1')">
                 <img src="/static/img/tasks/task2.png" alt="">
-                <div class="task-title">会员任务大厅</div>
+				<div class="task-title">{{hallList[1].name}}</div>
             </div>
             <div class="intermediate" v-on:click="jumpTo('/tasksHall?type=2')">
                 <img src="/static/img/tasks/task3.png" alt="">
-                <div class="task-title">中级任务大厅</div>
+                <div class="task-title">{{hallList[2].name}}</div>
             </div>
             <div class="advanced" v-on:click="jumpTo('/tasksHall?type=3')">
                 <img src="/static/img/tasks/task4.png" alt="">
-                <div class="task-title">高级任务大厅</div>
+                <div class="task-title">{{hallList[3].name}}</div>
             </div>
         </div>
 
@@ -83,7 +83,8 @@ export default {
 				centeredSlides: true,
 				loop: true
 			},
-			bannerList: ''
+			bannerList: '',
+			hallList: []
 		}
 	},
 	created: function () {
@@ -96,6 +97,17 @@ export default {
 		}).catch((ex) => {
 			console.log(ex)
 		})
+
+		request({ // 获取任务大厅
+			method: 'GET',
+			url: process.env.api_url + '/task/hallList'
+		}).then((response) => {
+			this.hallList = response.data.data
+			console.log(this.hallList)
+		}).catch((ex) => {
+			console.log(ex)
+		})
+		
 	},
 	methods: {
 

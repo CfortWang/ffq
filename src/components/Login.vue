@@ -138,7 +138,7 @@ export default {
 .remember-pwd{
     text-align: left;
     font-size: 14px;
-    height: 20px;
+    /* height: 20px; */
     padding-bottom: 10px;
 }
 .remember-pwd span{
@@ -146,7 +146,7 @@ export default {
 }
 .unselect, .selected{
     width: 16px;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .bottom-desc{

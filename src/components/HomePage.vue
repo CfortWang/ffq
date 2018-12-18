@@ -77,20 +77,12 @@
 			</div>
 		</div>
 
-		<div class="notice-box">
+		<div class="notice-box" v-show="noticeSwitch">
 			<div class="close-button" v-on:click="closeNotice($event)">
 				<img src="/static/img/index/close.png" alt="">
 			</div>
 			<div class="notice-title">系统公告</div>
-			<div class="notice-content" id="notice-content" align="left">
-				通 知：<br/>
-1.  由于APP急于上线没测试好，导致用户使用期间系统频繁出现各种问题，无法正常使用。为解决好当前系统出错问题，现决定停止用户APP访问，待APP测试稳定后再开放。<br/>
-2.  为保证发发圈正常运作，当前暂时开启网页版使用，网页版数据为2018年12月2日当日数据（账号钱包金额不会有变）。<br/>
-3.  这两天大家在APP的任务佣金经系统审核、删选后不会少，会补上。等APP测试好上线，开通实名认证功能后恢复游客向上级返佣，恢复100元提现。<br/>
-4.  回网页版的制度不变仍为游客不返佣，满300提现。<br/>
-由此给大家带来不便敬请谅解。感谢发发圈的会员们长期以来对平台的支持与热爱。<br/>
-网页版地址：http://adv.lzttkf.com
-			</div>
+			<div class="notice-content" id="notice-content" align="left" v-html="noticeText"></div>
 		</div>
 
 		<!-- 底部 -->
@@ -120,6 +112,7 @@
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import {request} from '../utils/httpAxios.js'
+import vueCookie from 'vue-cookie'
 export default {
 	name: 'HomePage',
   	components: {
@@ -139,7 +132,9 @@ export default {
 			},
 			banner: '',
 			news:'',
-			newsLink: ''
+			newsLink: '',
+			noticeSwitch: false,
+			noticeText: ''
 		}
 	},
 	created: function () {
@@ -152,6 +147,10 @@ export default {
 			this.banner = responseData.banner
 			this.news = responseData.news.content
 			this.newsLink = responseData.news.url
+			if (responseData.is_model_close === 0) {
+				this.noticeSwitch = true
+			}
+			this.noticeText = responseData.model_text
 		}).catch((ex) => {
 			console.log(ex)
 		})
@@ -164,6 +163,18 @@ export default {
 		// 	console.log(ex)
 		// })
 	},
+	// mounted () {
+	// 	request({ // 获取协议数据
+	// 		method: 'GET',
+	// 		url: process.env.api_url + '/home/protocol'
+	// 	}).then((response) => {
+	// 		let responseData = response.data.data
+	// 		console.log(responseData)
+	// 		vueCookie.set("")
+	// 	}).catch((ex) => {
+	// 		console.log(ex)
+	// 	})
+	// },
 	methods: {
 		closeNotice: function (e) {
 			e.currentTarget.parentElement.style.display = 'none'

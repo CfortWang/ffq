@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="details" v-on:click="jumpTo('incomeDetails')">收支明细</div>
-        <div class="withdraw" v-on:click="jumpTo('withdraw')">我要提现</div>
+        <div class="withdraw" v-on:click="judge">我要提现</div>
 
 		<!-- 底部 -->
 		<div class="footer">
@@ -43,7 +43,10 @@ export default {
 	name: 'Wallet',
   	data () {
 		return {
-			totalAmount: ''
+            totalAmount: '',
+            cashoutSwitch: false,
+            max: '',
+            min: ''
 		}
 	},
 	created: function () {
@@ -54,13 +57,24 @@ export default {
             headers: {"lang": 'zh'}
         }).then((response) => {
             let responseData = response.data.data
+            if (responseData.is_callout_close === 0) {
+                this.cashoutSwitch = true
+            }
             this.totalAmount = responseData.total_amount
+            this.max = responseData.cashout_max
+            this.min = responseData.cashout_min
         }).catch((ex) => {
             console.log(ex)
         })
 	},
 	methods: {
-
+        judge: function () {
+            if (this.cashoutSwitch) {
+                this.jumpTo('withdraw?max=' + this.max + '&min=' + this.min)
+            } else {
+                this.showMsg("提现功能暂时关闭！")
+            }
+        }
 	}
 }
 </script>

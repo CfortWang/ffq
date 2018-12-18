@@ -68,10 +68,15 @@ export default {
             payMethod: '',
             alipayName: '',
             alipayAccount: '',
-            password: ''
+            password: '',
+            max: '',
+            min: ''
 		}
 	},
 	created: function () {
+        this.max = parseInt(this.$route.query.max)
+        this.min = parseInt(this.$route.query.min)
+        console.log(this.max + this.min)
         request({ // 获取总资产
             method: 'GET',
             url: process.env.api_url + '/user/account',
@@ -88,6 +93,14 @@ export default {
         cashOut: function () {
             if (this.amount == '' || this.amount == null) {
                 this.showMsg("请输入提现金额！")
+                return false
+            }
+            if (this.amount > this.totalAmount) {
+                this.showMsg("账户余额不足！")
+                return false
+            }
+            if (this.amount < this.min || this.amount > this.max) {
+                this.showMsg("提现金额应在" + this.min + '到' + this.max + "之间")
                 return false
             }
             if (this.payMethod == '' || this.payMethod == null) {
@@ -136,7 +149,7 @@ export default {
 
 <style scoped>
 .my-assets{
-    height: 95px;
+    /* height: 95px; */
     padding: 40px 0;
     background: -webkit-linear-gradient(180deg,#4C9CD6,#2d9cec);
 }
@@ -184,14 +197,18 @@ export default {
     font-size: 16px;
     border: 1px solid #EEE;
     padding-left: 10px;
+    margin-bottom: 0px!important;
 }
 .withdraw-input select{
     box-sizing: content-box;
     height: 38px;
-    width: 90%;
+    width: 86%;
     font-size: 16px;
-    border: 1px solid #EEE;
+    border: 1px solid #EEE!important;
+    padding: 0px;
     padding-left: 10px;
+    margin-bottom: 0px!important;
+    -webkit-appearance: auto;
 }
 select:focus{
     outline: none;
@@ -204,6 +221,7 @@ select:focus{
     width: 45%;
     display: inline-block;
     background: #4C9CD6;
+    border: 1px solid #4C9CD6;
     color: #fff;
     height: 35px;
     line-height: 35px;
