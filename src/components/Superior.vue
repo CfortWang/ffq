@@ -31,7 +31,7 @@ export default {
 	},
 	created: function () {
         this.recommenderID = this.$route.query.recommenderID
-        if (this.recommenderID) {
+        if (this.recommenderID != 0 && this.recommenderID != '' && this.recommenderID != null) {
             this.hasRecommender = true
         } else {
             this.hasRecommender = false

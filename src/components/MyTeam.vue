@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import vueCookie from 'vue-cookie'
 import {request} from '../utils/httpAxios.js'
 export default {
 	name: 'MyTeam',
@@ -108,6 +109,7 @@ export default {
         }).then((response) => {
             let responseData = response.data.data
             this.allNumber = responseData.all
+            vueCookie.set('recommendCount', this.allNumber, 1)
             this.direct = responseData.direct
             this.inDirect = responseData.indirect
             this.allPages = Math.ceil(this.allNumber / this.pageSize)
