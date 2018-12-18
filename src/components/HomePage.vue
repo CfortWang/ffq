@@ -163,18 +163,6 @@ export default {
 		// 	console.log(ex)
 		// })
 	},
-	// mounted () {
-	// 	request({ // 获取协议数据
-	// 		method: 'GET',
-	// 		url: process.env.api_url + '/home/protocol'
-	// 	}).then((response) => {
-	// 		let responseData = response.data.data
-	// 		console.log(responseData)
-	// 		vueCookie.set("")
-	// 	}).catch((ex) => {
-	// 		console.log(ex)
-	// 	})
-	// },
 	methods: {
 		closeNotice: function (e) {
 			e.currentTarget.parentElement.style.display = 'none'

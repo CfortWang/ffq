@@ -77,7 +77,7 @@ export default {
                     phoneNumber: this.phoneNumber,
                     password: this.password
                 },
-                timeout: 10000,
+                timeout: 1000,
                 withCredentials: true,
                 headers: {"lang": 'zh'}
             }).then((response) => {
@@ -98,9 +98,10 @@ export default {
                 this.hideLoading()
                 console.log(ex)
                 var str = ex + ''
-                if (str.search('timeout') !== -1) {
-                    this.showMsg("登录超时，请重试！")
-                }
+                this.showMsg("登录超时，请重试！")
+                // if (str.search('timeout') !== -1) {
+                //     this.showMsg("登录超时，请重试！")
+                // }
             })
         }
 	}
