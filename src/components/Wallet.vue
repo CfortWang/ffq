@@ -99,6 +99,7 @@ export default {
     color: #ffffff;
     padding-top: 10px;
     line-height: 50px;
+    display: block!important;
 }
 .details, .withdraw{
     background: #ffffff;
