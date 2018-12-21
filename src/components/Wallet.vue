@@ -7,7 +7,8 @@
             </div>
             <div class="wallet">
                 <p class="wallet-title">我的总资产</p>
-                <p class="wallet-amount" style="display: none;">{{totalAmount}}</p>
+             
+                <p class="wallet-amount">{{totalAmount}}</p>
             </div>
         </div>
         <div class="details" v-on:click="jumpTo('incomeDetails')">收支明细</div>
@@ -99,6 +100,7 @@ export default {
     color: #ffffff;
     padding-top: 10px;
     line-height: 50px;
+    display: none;
 }
 .details, .withdraw{
     background: #ffffff;
