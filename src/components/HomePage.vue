@@ -48,7 +48,7 @@
 					</div>
 					<p class="option-name">用户帮助</p>
 				</div>
-				<div class="menu-option" v-on:click="showMsg('即将上线，敬请期待。')">
+				<div class="menu-option" v-on:click="toShop">
 					<div class="option-icon">
 						<img src="/static/img/index/shop.png" alt="">
 					</div>
@@ -166,6 +166,9 @@ export default {
 	methods: {
 		closeNotice: function (e) {
 			e.currentTarget.parentElement.style.display = 'none'
+		},
+		toShop:function (e) {
+			window.location.href='/shopmall.html'
 		}
 	}
 }

@@ -152,7 +152,7 @@ export default {
                 if (response.data.code == 200) {
                     let imageUrl = response.data.data.url
                     this.imageArr.push(imageUrl)
-                    document.getElementsByClassName('reg-msg-contents')[0].innerHTML = "图片上传成功！"
+                    // document.getElementsByClassName('reg-msg-contents')[0].innerHTML = "图片上传成功！"
                 } else {
                     let responseMessage = response.data.message
                     this.showMsg(responseMessage)

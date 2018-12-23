@@ -72,7 +72,7 @@
                 <div class="page">
                     <a class="pre" v-on:click="getTeamList(userID, pageNumber - 1, type, 'down')" hidefocus="true"><span>&lt;</span></a>
                     <a class="info" id="info" hidefocus="true" v-on:click="showInput">{{pageNumber - 0 + 1}}/{{allPages}}</a>
-                    <input type="number" id="pageInput" v-model="inputNumber" v-on:blur="inputBlur">
+                    <input type="number" id="pageInput" v-model="inputNumber" v-on:blur="inputBlur" style="min-width: 70px;">
                     <a class="next" v-on:click="getTeamList(userID, pageNumber + 1, type, 'up')" hidefocus="true"><span>&gt;</span></a>
                 </div>
             </div>

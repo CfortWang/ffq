@@ -7,7 +7,7 @@
             <div class="header-title">支付订单</div>
         </div>
         <div class="empty"></div>
-        <div>
+        <div v-if="open">
             <!-- <div class="wechat-pay justified" data-way="wechat" v-on:click="changePay($event)">
                 <div class="wechat-icon">
                     <img src="/static/img/personal/wechat-pay.png"/>
@@ -28,6 +28,9 @@
             </div>
             <div class="sure-pay-btn" v-on:click="goToPay"><span>确认支付</span></div>
         </div>
+        <div style="text-align: center;font-size: 22px;padding-top: 20px;" v-else>
+            此功能尚未开启
+        </div>
   	</div>
 </template>
 
@@ -38,6 +41,7 @@ export default {
 	name: 'PayMethod',
   	data () {
 		return {
+		    open:false,
             payWay: 'alipay',
             payReturnUrl: '',
             payType: '',
