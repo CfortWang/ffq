@@ -87,7 +87,7 @@ export default {
     background: -webkit-linear-gradient(180deg,#4C9CD6,#2d9cec);
 }
 .wallet{
-    /* padding-bottom: 20px; */
+    padding-bottom: 20px;
 }
 .wallet-title{
     font-size: 13px;
@@ -100,7 +100,7 @@ export default {
     color: #ffffff;
     padding-top: 10px;
     line-height: 50px;
-    display: block;
+    display: none;
 }
 .details, .withdraw{
     background: #ffffff;
