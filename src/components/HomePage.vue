@@ -9,7 +9,7 @@
 		</swiper>
 
 		<!-- 滚动文字 -->
-		<div class="marquee">
+		<div class="marquee" v-if="news">
 			<marquee v-on:click="jumpTo(newsLink)">{{news}}</marquee>
 		</div>
 

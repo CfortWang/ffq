@@ -20,8 +20,8 @@
         </div>
 
 		<!-- 任务菜单 -->
-        <div class="task-menu" v-for="item in hallList" v-bind:key="item.index" >
-            <div class="task-hall" v-on:click="jumpTo('/tasksHall?type=' + item.user_level)">
+        <div class="task-menu">
+            <div class="task-hall" v-for="item in hallList" v-bind:key="item.index" v-on:click="jumpTo('/tasksHall?type=' + item.user_level)">
                 <img src="/static/img/tasks/task4.png" alt="">
                 <div class="task-title">{{item.name}}</div>
             </div>
