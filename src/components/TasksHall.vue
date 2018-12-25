@@ -84,12 +84,15 @@ export default {
             withCredentials: true,
             headers: {"lang": 'zh'}
         }).then((response) => {
-            this.hideLoading()
-            this.taskList = response.data.data.data
-            this.allPages = Math.ceil(response.data.data.count / this.pageSize)
+            if (response.data.code == 200) {
+                this.hideLoading()
+                this.taskList = response.data.data.data
+                this.allPages = Math.ceil(response.data.data.count / this.pageSize)
+            } else {
+                this.showMsg(response.data.message)
+            }
         }).catch((ex) => {
             this.hideLoading()
-            this.showMsg(ex.response.data.message)
             console.log(ex)
         })
 	},

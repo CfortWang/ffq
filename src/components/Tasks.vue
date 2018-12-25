@@ -20,22 +20,10 @@
         </div>
 
 		<!-- 任务菜单 -->
-        <div class="task-menu">
-            <div class="free" v-on:click="jumpTo('/tasksHall?type=0')">
-                <img src="/static/img/tasks/task1.png" alt="">
-                <div class="task-title">{{hallList[0].name}}</div>
-            </div>
-            <div class="member" v-on:click="jumpTo('/tasksHall?type=1')">
-                <img src="/static/img/tasks/task2.png" alt="">
-				<div class="task-title">{{hallList[1].name}}</div>
-            </div>
-            <div class="intermediate" v-on:click="jumpTo('/tasksHall?type=2')">
-                <img src="/static/img/tasks/task3.png" alt="">
-                <div class="task-title">{{hallList[2].name}}</div>
-            </div>
-            <div class="advanced" v-on:click="jumpTo('/tasksHall?type=3')">
+        <div class="task-menu" v-for="item in hallList" v-bind:key="item.index" >
+            <div class="task-hall" v-on:click="jumpTo('/tasksHall?type=' + item.user_level)">
                 <img src="/static/img/tasks/task4.png" alt="">
-                <div class="task-title">{{hallList[3].name}}</div>
+                <div class="task-title">{{item.name}}</div>
             </div>
         </div>
 
